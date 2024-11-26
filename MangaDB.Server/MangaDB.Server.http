@@ -1,0 +1,6 @@
+@MangaDB.Server_HostAddress = http://localhost:5247
+
+GET {{MangaDB.Server_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
