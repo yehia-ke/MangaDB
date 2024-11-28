@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using Repository.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,17 +15,19 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddTransient<SqlConnection>(_ => new SqlConnection(connectionString));
 
 // Add CORS policy to allow requests from React frontend.
-var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
-
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigins", policy =>
     {
+        var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
         policy.WithOrigins(allowedOrigins)
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
 });
+
+// Register the AuthRepository as a scoped service.
+builder.Services.AddScoped<AuthRepository>(provider => new AuthRepository(connectionString));
 
 var app = builder.Build();
 
@@ -40,7 +43,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowSpecificOrigins");
+app.UseCors("AllowSpecificOrigins");  // Apply CORS policy here
 app.UseAuthorization();
 
 app.MapControllers();

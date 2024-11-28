@@ -2,7 +2,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Logging;
 
-namespace YourAppNamespace.Controllers
+namespace MangaDB.Server.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
