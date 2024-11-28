@@ -12,12 +12,6 @@ builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Retrieve the connection string from appsettings.json
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-// Register the SQL Server connection as a singleton or transient service
-builder.Services.AddSingleton(new SqlConnection(connectionString));
-
 app.UseDefaultFiles();
 app.UseStaticFiles();
 // Configure the HTTP request pipeline.
