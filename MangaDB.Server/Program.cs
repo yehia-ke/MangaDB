@@ -10,6 +10,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+// Register the SQL Server connection as a singleton or transient service BEFORE builder.Build()
+builder.Services.AddSingleton(new SqlConnection(connectionString));
+
 var app = builder.Build();
 
 app.UseDefaultFiles();
