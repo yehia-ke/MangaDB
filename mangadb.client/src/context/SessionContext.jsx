@@ -22,6 +22,7 @@ export const SessionProvider = ({ children }) => {
   const logout = () => {
     setUser(null);
     localStorage.removeItem("user"); // Remove user data
+
   };
 
   useEffect(() => {

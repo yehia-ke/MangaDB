@@ -12,7 +12,7 @@ const PrivateRoute = ({ children }) => {
   const { user } = useSession();
 
   if (!user) {
-    return <Navigate to="/login" />;
+    return <Navigate to="/" />;
   }
 
   return children;
@@ -27,7 +27,7 @@ function App() {
           {/* Public Routes */}
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-
+          <Route path="/signup" element={<SignUp />} />
           {/* Private Route for About */}
           <Route
             path="/about"

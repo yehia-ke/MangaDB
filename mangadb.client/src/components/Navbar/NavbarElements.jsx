@@ -35,7 +35,6 @@ export const NavLink = styled(Link)`
     font-family: 'Satoshi-BoldItalic';
   }
 `;
-
 /*export const Bars = styled(FaBars)`
   display: flex;
   color: #000000;
