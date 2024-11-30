@@ -19,7 +19,7 @@ const LoginForm = () => {
             // Make POST request to the API
             const response = await axios.post("https://localhost:7281/api/login/validate", {
                 mobileNumber,
-                password
+                password,
             });
 
             if (response.status === 200) {
