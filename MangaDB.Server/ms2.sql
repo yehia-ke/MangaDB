@@ -1007,3 +1007,144 @@ Exec Initiate_balance_payment @mobile_num = '01234567890', @amount =100, @paymen
 
 Exec Redeem_voucher_points @mobile_num = '01234567890', @voucher_id = 3 
 
+
+
+INSERT INTO Customer_profile (nationalID, first_name, last_name, email, address, date_of_birth) VALUES
+(1, 'John', 'Doe', 'john.doe@example.com', '1', '1990-01-15'),
+(2, 'Jane', 'Smith', 'jane.smith@example.com', '2', '1985-05-20'),
+(3, 'Alice', 'Johnson', 'alice.johnson@example.com', '3', '1992-03-30'),
+(4, 'Bob', 'Brown', 'bob.brown@example.com', '4', '1988-07-25'),
+(5, 'Charlie', 'Davis', 'charlie.davis@example.com', '5', '1995-08-10');
+
+INSERT INTO Customer_Account (mobileNo, pass, balance, account_type, start_date, status, points, nationalID) VALUES
+('01234567890', 'password123', 1000.0, 'prepaid', '2023-01-01', 'active', 100, 1),
+('09876543210', 'mypassword', 1500.0, 'postpaid', '2023-02-01', 'active', 200, 2),
+('01122334455', 'securepass', 500.0, 'prepaid', '2023-03-01', 'active', 150, 3),
+('02233445566', 'pass1234', 750.0, 'postpaid', '2023-04-01', 'onhold', 300, 4),
+('03344556677', 'newpassword', 1200.0, 'prepaid', '2023-05-01', 'active', 0, 5);
+
+INSERT INTO Service_Plan (SMS_offered, minutes_offered, data_offered, name, price, description) VALUES
+(100, 500, 2000, 'Basic Plan', 20, 'Basic plan with limited features'),
+(200, 1000, 5000, 'Standard Plan', 35, 'Standard plan with more features'),
+(300, 2000, 10000, 'Premium Plan', 50, 'Premium plan with unlimited features'),
+(150, 750, 3000, 'Family Plan', 45, 'Plan for families with shared benefits'),
+(250, 1500, 8000, 'Business Plan', 60, 'Plan designed for business users');
+
+INSERT INTO Subscription (mobileNo, planID, subscription_date, status) VALUES
+('01234567890', 1, '2024-11-21', 'active'),
+('09876543210', 2, '2023-02-01', 'active'),
+('01122334455', 1, '2023-03-01', 'active'),
+('02233445566', 3, '2023-04-01', 'onhold'),
+('03344556677', 1, '2023-05-01', 'active');
+
+INSERT INTO Plan_Usage (start_date, end_date, data_consumption, minutes_used, SMS_sent, mobileNo, planID) VALUES
+('2024-11-01', '2025-01-31', 1500, 300, 50, '01234567890', 1),
+('2023-02-01', '2023-02-28', 4000, 800, 150, '09876543210', 2),
+('2024-11-03', '2024-12-05', 1000, 200, 30, '01122334455', 1),
+('2023-04-01', '2023-04-30', 6000, 1200, 250, '02233445566', 3),
+('2023-05-01', '2023-05-31', 2000, 400, 100, '03344556677', 1);
+
+INSERT INTO Payment (amount, date_of_payment, payment_method, status, mobileNo) VALUES
+(20.0, '2023-01-15', 'credit', 'successful', '01234567890'),
+(35.0, '2023-02-15', 'cash', 'successful', '09876543210'),
+(50.0, '2023-03-15', 'credit', 'pending', '01122334455'),
+(75.0, '2023-05-15', 'cash', 'pending', '02233445566'),
+(100.0, '2023-03-15', 'credit', 'successful', '03344556677');
+
+INSERT INTO Process_Payment (paymentID, planID) VALUES
+(1, 1),
+(2, 2),
+(3, 1),
+(4, 3),
+(5, 1);
+
+INSERT INTO Wallet (current_balance, currency, last_modified_date, nationalID, mobileNo) VALUES
+(500.00, 'USD', '2023-01-01', 1, '01234567890'),
+(300.00, 'USD', '2023-02-01', 2, '09876543210'),
+(150.00, 'USD', '2023-03-01', 3, '01122334455'),
+(200.00, 'USD', '2023-04-01', 4, '02233445566'),
+(100.00, 'USD', '2023-05-01', 5, '03344556677');
+
+INSERT INTO Transfer_money (walletID1, walletID2, amount, transfer_date) VALUES
+(1, 2, 50.00, '2023-01-10'),
+(2, 3, 30.00, '2023-02-15'),
+(3, 4, 20.00, '2023-03-20'),
+(4, 5, 10.00, '2023-04-25');
+
+INSERT INTO Benefits (description, validity_date, status, mobileNo) VALUES
+('10% off on next recharge', '2023-12-31', 'active', '01234567890'),
+('Free SMS for a month', '2023-11-30', 'active', '09876543210'),
+('Data rollover for unused data', '2023-10-31', 'active', '01122334455'),
+('Discount on family plans', '2023-09-30', 'expired', '02233445566'),
+('Cashback on every recharge', '2023-08-31', 'active', '03344556677');
+
+INSERT INTO Points_Group (benefitID, pointsAmount, PaymentID) VALUES
+(1, 100, 1),
+(2, 200, 2),
+(3, 150, 3),
+(4, 50, 4),
+(5, 75, 5);
+
+INSERT INTO Exclusive_Offer (benefitID, internet_offered, SMS_offered, minutes_offered) VALUES
+(1, 500, 100, 50),
+(2, 1000, 200, 100),
+(3, 1500, 300, 150);
+
+INSERT INTO Plan_Provides_Benefits (benefitID, planID) VALUES
+(1, 1),
+(2, 2),
+(3, 3),
+(4, 1),
+(5, 2);
+
+INSERT INTO Cashback (benefitID, walletID, amount, credit_date) VALUES
+(1, 1, 10, '2023-01-15'),
+(2, 2, 15, '2023-02-15'),
+(3, 3, 20, '2023-03-15'),
+(4, 4, 5, '2023-04-15'),
+(5, 5, 8, '2023-05-15');
+
+INSERT INTO Shop (name, category) VALUES
+('Tech Store', 'Electronics'),
+('Grocery Mart', 'Groceries'),
+('Fashion Hub', 'Clothing'),
+('Book World', 'Books'),
+('Home Essentials', 'Home Goods');
+
+INSERT INTO Physical_Shop (shopID, address, working_hours) VALUES
+(1, '123 Tech Lane', '9 AM - 9 PM'),
+(2, '456 Grocery Ave', '8 AM - 10 PM'),
+(3, '789 Fashion St', '10 AM - 8 PM');
+
+INSERT INTO E_shop (shopID, URL, rating) VALUES
+(1, 'www.techstore.com', 4),
+(2, 'www.grocerymart.com', 5),
+(3, 'www.fashionhub.com', 4),
+(4, 'www.bookworld.com', 5),
+(5, 'www.homeessentials.com', 3);
+
+INSERT INTO Voucher (value, expiry_date, points, mobileNo, shopID, redeem_date) VALUES
+(50, '2023-12-31', 100, '01234567890', 1, NULL),
+(30, '2023-11-30', 60, '09876543210', 2, NULL),
+(20, '2023-10-31', 40, '01122334455', 3, NULL),
+(10, '2023-09-30', 20, '02233445566', 4, NULL),
+(15, '2023-08-31', 30, '03344556677', 5, NULL);
+
+INSERT INTO Technical_Support_Ticket (mobileNo, issue_description, priority_level, status) VALUES
+('01234567890', 'Network issues', 2, 'In Progress'),
+('01234567890', 'Unable to recharge', 1, 'Open'),
+('09876543210', 'Network issues', 2, 'In Progress'),
+('01122334455', 'Billing error', 1, 'Resolved'),
+('02233445566', 'Account locked', 3, 'Open'),
+('03344556677', 'Data not working', 2, 'In Progress');
+
+-------------------------------------BACKUP DONT TOUCH----------------------------------------
+BACKUP DATABASE Milestone2DB_24
+TO Disk = 'C:\SQLBackup\Backup_With_Values.BAK'
+-------------------------------------BACKUP DONT TOUCH----------------------------------------
+
+
+-------------------------------------RUN THIS TO RESTORE DATABASE WITH VALUES-----------------
+RESTORE DATABASE Milestone2DB_24
+FROM Disk = 'C:\SQLBackup\Backup_With_Values.BAK'
+-------------------------------------RUN THIS TO RESTORE DATABASE WITH VALUES-----------------
