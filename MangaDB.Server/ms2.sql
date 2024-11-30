@@ -1143,8 +1143,15 @@ BACKUP DATABASE Milestone2DB_24
 TO Disk = 'C:\SQLBackup\Backup_With_Values.BAK'
 -------------------------------------BACKUP DONT TOUCH----------------------------------------
 
-
 -------------------------------------RUN THIS TO RESTORE DATABASE WITH VALUES-----------------
+
+ALTER DATABASE Milestone2DB_24 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
+
 RESTORE DATABASE Milestone2DB_24
-FROM Disk = 'C:\SQLBackup\Backup_With_Values.BAK'
+FROM DISK = 'C:\SQLBackup\Backup_With_Values.BAK'
+WITH REPLACE,
+     MOVE 'Milestone2DB_24' TO 'C:\Users\yehia\Milestone2DB_24.mdf',
+     MOVE 'Milestone2DB_24_log' TO 'C:\Users\yehia\Milestone2DB_24_log.ldf';
+
+ALTER DATABASE Milestone2DB_24 SET MULTI_USER;
 -------------------------------------RUN THIS TO RESTORE DATABASE WITH VALUES-----------------
