@@ -1,77 +1,89 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { useSession } from "../../context/SessionContext";
 
-const LoginForm = () => {
-    const [mobileNumber, setMobileNumber] = useState("");
-    const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
-    const [message, setMessage] = useState(null);
+const LoginPage = () => {
+  const [mobileNumber, setMobileNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (event) => {
-        event.preventDefault();
+  const { login } = useSession();
+  const navigate = useNavigate();
 
-        if (!mobileNumber || !password) {
-            setError("Mobile number and password are required.");
-            return;
-        }
+  const handleSubmit = async (event) => {
+    event.preventDefault();
 
-        try {
-            // Make POST request to the API
-            const response = await axios.post("https://localhost:7281/api/login/validate", {
-                mobileNumber,
-                password,
-            });
+    if (!mobileNumber || !password) {
+      setError("Mobile number and password are required.");
+      return;
+    }
 
-            if (response.status === 200) {
-                // Successful login
-                setMessage(response.data.message);
-                setError(null);
-            }
-        } catch (error) {
-            if (error.response) {
-                // The request was made, but the server responded with a status code
-                if (error.response.status === 401) {
-                    setError("Invalid mobile number or password.");
-                } else {
-                    setError("An error occurred while processing the login request.");
-                }
-            } else {
-                // Something else happened
-                setError("Network error. Please try again.");
-            }
-            setMessage(null);
-        }
-    };
+    setLoading(true);
+    setError(null);
 
-    return (
+    // Hardcoded admin credentials
+    if (mobileNumber === "admin" && password === "admin") {
+      login({ mobileNumber, role: "admin" });
+      setLoading(false);
+      navigate("/admin");
+      return;
+    }
+
+    try {
+      // Example API request for regular users
+      const response = await axios.post("https://localhost:7281/api/login/validate", {
+        mobileNumber,
+        password,
+      });
+
+      if (response.status === 200) {
+        login({ ...response.data, role: "user" }); // Assume API returns user data
+        setLoading(false);
+        navigate("/about"); // Redirect regular users
+      }
+    } catch (error) {
+      setLoading(false);
+      if (error.response && error.response.status === 401) {
+        setError("Invalid mobile number or password.");
+      } else {
+        setError("An error occurred. Please try again.");
+      }
+    }
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <form onSubmit={handleSubmit}>
         <div>
-            <h2>Login</h2>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label>Mobile Number:</label>
-                    <input
-                        type="text"
-                        value={mobileNumber}
-                        onChange={(e) => setMobileNumber(e.target.value)}
-                        required
-                    />
-                </div>
-                <div>
-                    <label>Password:</label>
-                    <input
-                        type="password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        required
-                    />
-                </div>
-                <button type="submit">Login</button>
-            </form>
-
-            {error && <p style={{ color: "red" }}>{error}</p>}
-            {message && <p style={{ color: "green" }}>{message}</p>}
+          <label>Mobile Number:</label>
+          <input
+            type="text"
+            value={mobileNumber}
+            onChange={(e) => setMobileNumber(e.target.value)}
+            placeholder="Enter your mobile number"
+            required
+          />
         </div>
-    );
+        <div>
+          <label>Password:</label>
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            required
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? "Logging in..." : "Login"}
+        </button>
+      </form>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </div>
+  );
 };
 
-export default LoginForm;
+export default LoginPage;
