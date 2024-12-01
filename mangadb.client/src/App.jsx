@@ -6,56 +6,67 @@ import About from "./pages/about";
 import SignUp from "./pages/signup/signup";
 import Login from "./pages/login/LoginPage";
 import AdminPage from "./pages/admin/AdminPage";
+import AdminPage2 from "./pages/admin/AdminPage2";
 import AdminRoute from "./components/AdminRoute";
 import TestPage from "./pages/TestPage/TestPage";
 
 const PrivateRoute = ({ children }) => {
-  const { user } = useSession();
+    const { user } = useSession();
 
-  if (!user) {
-    return <Navigate to="/" />;
-  }
+    if (!user) {
+        return <Navigate to="/" />;
+    }
 
-  return children;
+    return children;
 };
 
 function App() {
-  return (
-    <SessionProvider>
-      <Router>
-        <Navbar />
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<Home />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/test" element={<TestPage />} />
-          {/* Private Route for About */}
-          <Route
-            path="/about"
-            element={
-              <PrivateRoute>
-                <About />
-              </PrivateRoute>
-            }
-          />
+    return (
+        <SessionProvider>
+            <Router>
+                <Navbar />
+                <Routes>
+                    {/* Public Routes */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/signup" element={<SignUp />} />
+                    <Route path="/test" element={<TestPage />} />
+                    {/* Private Route for About */}
+                    <Route
+                        path="/about"
+                        element={
+                            <PrivateRoute>
+                                <About />
+                            </PrivateRoute>
+                        }
+                    />
 
-          {/* Admin Route */}
-          <Route
-            path="/admin"
-            element={
-              <AdminRoute>
-                <AdminPage />
-              </AdminRoute>
-            }
-          />
+                    {/* Admin Route */}
+                    <Route
+                        path="/admin"
+                        element={
+                            <AdminRoute>
+                                <AdminPage />
+                            </AdminRoute>
+                        }
+                    />
 
-          {/* Catch-All Route */}
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-      </Router>
-    </SessionProvider>
-  );
+                    {/* New AdminPage2 Route */}
+                    <Route
+                        path="/admin2"
+                        element={
+                            <AdminRoute>
+                                <AdminPage2 />
+                            </AdminRoute>
+                        }
+                    />
+
+                    {/* Catch-All Route */}
+                    <Route path="*" element={<Navigate to="/" />} />
+                </Routes>
+            </Router>
+        </SessionProvider>
+    );
 }
 
 export default App;

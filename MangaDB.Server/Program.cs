@@ -37,6 +37,8 @@ builder.Services.AddScoped<AccountsSubscribedToPlanRepository>(provider => new A
 builder.Services.AddScoped<TotalUsageRepository>(provider => new TotalUsageRepository(connectionString));
 builder.Services.AddScoped<RemoveBenefitsRepository>(provider => new RemoveBenefitsRepository(connectionString));
 builder.Services.AddScoped<SMSOffersRepository>(provider => new SMSOffersRepository(connectionString));
+builder.Services.AddScoped<GetCustomersWallets>(provider => new GetCustomersWallets(connectionString));
+builder.Services.AddScoped<GetEshopVouchers>(provider => new GetEshopVouchers(connectionString));
 
 var app = builder.Build();
 

@@ -18,6 +18,8 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly TotalUsageRepository _totalUsageRepository;
         private readonly RemoveBenefitsRepository _removeBenefitsRepository;
         private readonly SMSOffersRepository _smsOffersRepository;
+        private readonly GetCustomersWallets _getCustomersWalletsRepository;
+        private readonly GetEshopVouchers _gfetEshopVouchers;
 
         public AdminController(
             ViewCustomerProfilesRepository customerProfilesRepository,
@@ -27,7 +29,9 @@ namespace ControllersMangaDB.Server.Controllers
             AccountsSubscribedToPlanRepository accountsSubscribedToPlanRepository,
             TotalUsageRepository totalUsageRepository,
             RemoveBenefitsRepository removeBenefitsRepository,
-            SMSOffersRepository smsOffersRepository)
+            SMSOffersRepository smsOffersRepository,
+            GetCustomersWallets getCustomersWalletsRepository,
+            GetEshopVouchers eshopVouchersRepository)
         {
             _customerProfilesRepository = customerProfilesRepository;
             _physicalStoresRepository = physicalStoresRepository;
@@ -37,6 +41,8 @@ namespace ControllersMangaDB.Server.Controllers
             _totalUsageRepository = totalUsageRepository;
             _removeBenefitsRepository = removeBenefitsRepository;
             _smsOffersRepository = smsOffersRepository;
+            _getCustomersWalletsRepository = getCustomersWalletsRepository;
+            _gfetEshopVouchers = eshopVouchersRepository;
         }
 
         // 2. View details for all customer profiles along with their active accounts.
@@ -186,12 +192,65 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving SMS offers." });
             }
         }
+
+        // 1. View details of all wallets along with their customer names
+        [HttpGet]
+        [Route("wallets")]
+        public async Task<IActionResult> GetAllWalletsWithCustomerNames()
+        {
+            try
+            {
+                // Fetch wallet and customer details using the repository method
+                var wallets = await _getCustomersWalletsRepository.GetAllWalletsAsync();
+                return Ok(wallets); // Return the data as JSON
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving wallet details." });
+            }
+        }
+
+        //2. View the list of all E-shops along with their redeemed voucher’s ids and values
+
+        [HttpGet]
+        [Route("eshops/vouchers")]
+        public async Task<IActionResult> GetAllEshopsWithVouchers()
+        {
+            try
+            {
+                // Fetch the E-shop vouchers from the repository
+                var eshopsWithVouchers = await _gfetEshopVouchers.GetAllEshopsWithVouchersAsync();
+
+                // Return the data as a response
+                return Ok(eshopsWithVouchers);
+            }
+            catch (Exception ex)
+            {
+                // Handle error and return a server error response
+                return StatusCode(500, new { message = "An error occurred while retrieving E-shop voucher details.", error = ex.Message });
+            }
+        }
     }
 
-    // DTO for Remove Benefits Request
-    public class RemoveBenefitsRequest
+   
+
+// DTO for Remove Benefits Request
+public class RemoveBenefitsRequest
     {
         public string MobileNo { get; set; }
         public int PlanId { get; set; }
     }
+
+
+    // DTO for View details of all wallets along with their customer names.
+    public class WalletWithCustomerDto
+    {
+        public int WalletId { get; set; }
+        public decimal Balance { get; set; }
+        public string NationalId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+    }
+
+
 }

@@ -137,3 +137,35 @@ p {
   margin: 10px 0; /* Add spacing between paragraphs */
   text-align: center; /* Center-align paragraphs */
 }
+
+/* Add this to your existing admincss.module.css */
+
+/* Black background button */
+.blackButton {
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    position: absolute; /* Position the button absolutely */
+    /* Use top, right, bottom, and left to control where it goes */
+    top: 100px; /* Set this to position the button from the top */
+    right: 20px; /* Set this to position the button from the right */
+    /* You can also use left and bottom as needed */
+}
+
+    .blackButton:hover {
+        background-color: #444;
+    }
+
+    .blackButton:active {
+        background-color: #222;
+    }
+
+    .blackButton:disabled {
+        background-color: #666;
+        cursor: not-allowed;
+    }
