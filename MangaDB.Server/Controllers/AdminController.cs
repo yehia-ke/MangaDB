@@ -20,6 +20,7 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly SMSOffersRepository _smsOffersRepository;
         private readonly GetCustomersWallets _getCustomersWalletsRepository;
         private readonly GetEshopVouchers _gfetEshopVouchers;
+        private readonly GetAccountPayments _getAccountPayments;
 
         public AdminController(
             ViewCustomerProfilesRepository customerProfilesRepository,
@@ -31,7 +32,8 @@ namespace ControllersMangaDB.Server.Controllers
             RemoveBenefitsRepository removeBenefitsRepository,
             SMSOffersRepository smsOffersRepository,
             GetCustomersWallets getCustomersWalletsRepository,
-            GetEshopVouchers eshopVouchersRepository)
+            GetEshopVouchers eshopVouchersRepository,
+            GetAccountPayments getAccountPayments)
         {
             _customerProfilesRepository = customerProfilesRepository;
             _physicalStoresRepository = physicalStoresRepository;
@@ -43,6 +45,7 @@ namespace ControllersMangaDB.Server.Controllers
             _smsOffersRepository = smsOffersRepository;
             _getCustomersWalletsRepository = getCustomersWalletsRepository;
             _gfetEshopVouchers = eshopVouchersRepository;
+            _getAccountPayments = getAccountPayments;
         }
 
         // 2. View details for all customer profiles along with their active accounts.
@@ -230,6 +233,25 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving E-shop voucher details.", error = ex.Message });
             }
         }
+
+        // HTTP GET to retrieve payment transactions with account details
+        [HttpGet]
+        [Route("payments")]
+        public async Task<IActionResult> GetAllPaymentsWithAccounts()
+        {
+            try
+            {
+                // Fetch account payment details using the repository method
+                var rawPayments = await _getAccountPayments.GetAllAccountPaymentsAsync();
+
+                // Return the raw data directly as JSON
+                return Ok(rawPayments);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving payment transaction details." });
+            }
+        }
     }
 
    
@@ -252,5 +274,6 @@ public class RemoveBenefitsRequest
         public string LastName { get; set; }
     }
 
+    // DTO for Account Payment
 
 }

@@ -6,7 +6,8 @@ import styles from './admincss.module.css';
 function Admin2() {
     const navigate = useNavigate(); // Initialize navigate function
     const [wallets, setWallets] = useState([]);
-    const [eshops, setEshops] = useState([]); // New state to store E-shop details
+    const [eshops, setEshops] = useState([]); // State to store E-shop details
+    const [payments, setPayments] = useState([]); // New state to store Payment details
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
 
@@ -15,6 +16,7 @@ function Admin2() {
     useEffect(() => {
         fetchWalletDetails();
         fetchEshopDetails(); // Fetch E-shop details
+        fetchPaymentDetails(); // Fetch Payment details
     }, []);
 
     // Fetch wallet details
@@ -40,6 +42,20 @@ function Admin2() {
             setEshops(response.data);
         } catch (err) {
             setError('Failed to fetch E-shop details.');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Fetch Payment details
+    const fetchPaymentDetails = async () => {
+        setLoading(true);
+        try {
+            const response = await axios.get(`${apiUrl}/payments`); // Replace with your actual payment API endpoint
+            console.log(response.data); // Log the response to inspect its structure
+            setPayments(response.data);
+        } catch (err) {
+            setError('Failed to fetch payment details.');
         } finally {
             setLoading(false);
         }
@@ -96,6 +112,35 @@ function Admin2() {
                             <tr key={index}>
                                 <td>{eshop.voucherID || 'N/A'}</td>
                                 <td>{eshop.value || 'N/A'}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </section>
+
+            {/* Payment Transactions */}
+            <section>
+                <h2>Payment Transactions</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Payment ID</th>
+                            <th>Amount</th>
+                            <th>Payment Date</th>
+                            <th>Payment Method</th>
+                            <th>Status</th>
+                            <th>Mobile No</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {payments.map((payment, index) => (
+                            <tr key={index}>
+                                <td>{payment.paymentID || 'N/A'}</td>
+                                <td>{payment.amount || 'N/A'}</td>
+                                <td>{new Date(payment.date_of_payment).toLocaleDateString() || 'N/A'}</td>
+                                <td>{payment.payment_method || 'N/A'}</td>
+                                <td>{payment.status || 'N/A'}</td>
+                                <td>{payment.mobileNo || 'N/A'}</td>
                             </tr>
                         ))}
                     </tbody>
