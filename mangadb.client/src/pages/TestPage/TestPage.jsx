@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import "./App.css";
+import "../general.module.css";
 
-function App() {
+function TestPage() {
     const [connectionMessage, setConnectionMessage] = useState("");  // State to store success message
     const [errorMessage, setErrorMessage] = useState("");  // State to store error message
 
@@ -58,4 +58,4 @@ function App() {
     }
 }
 
-export default App;
+export default TestPage;

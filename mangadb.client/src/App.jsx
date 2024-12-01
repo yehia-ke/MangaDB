@@ -7,6 +7,7 @@ import SignUp from "./pages/signup/signup";
 import Login from "./pages/login/LoginPage";
 import AdminPage from "./pages/admin/AdminPage";
 import AdminRoute from "./components/AdminRoute";
+import TestPage from "./pages/TestPage/TestPage";
 
 const PrivateRoute = ({ children }) => {
   const { user } = useSession();
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
+          <Route path="/test" element={<TestPage />} />
           {/* Private Route for About */}
           <Route
             path="/about"

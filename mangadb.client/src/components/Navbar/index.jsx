@@ -34,11 +34,15 @@ const Navbar = () => {
         <NavLink to="/about" activeStyle>
           About
         </NavLink>
+        <NavLink to="/test" activeStyle>
+          Test
+        </NavLink>
         {user?.role === "admin" && (
           <NavLink to="/admin" activeStyle>
             Admin
           </NavLink>
         )}
+
         {!user ? (
           <>
             <NavLink to="/login" activeStyle>
