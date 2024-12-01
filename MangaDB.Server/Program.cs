@@ -1,4 +1,5 @@
 using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Configuration;
 using Repository.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -28,6 +29,14 @@ builder.Services.AddCors(options =>
 
 // Register the AuthRepository as a scoped service.
 builder.Services.AddScoped<AuthRepository>(provider => new AuthRepository(connectionString));
+builder.Services.AddScoped<ViewCustomerProfilesRepository>(provider => new ViewCustomerProfilesRepository(connectionString));
+builder.Services.AddScoped<PhysicalStoresWithVouchersRepository>(provider => new PhysicalStoresWithVouchersRepository(connectionString));
+builder.Services.AddScoped<ResolvedTicketsRepository>(provider => new ResolvedTicketsRepository(connectionString));
+builder.Services.AddScoped<AccountsWithPlansRepository>(provider => new AccountsWithPlansRepository(connectionString));
+builder.Services.AddScoped<AccountsSubscribedToPlanRepository>(provider => new AccountsSubscribedToPlanRepository(connectionString));
+builder.Services.AddScoped<TotalUsageRepository>(provider => new TotalUsageRepository(connectionString));
+builder.Services.AddScoped<RemoveBenefitsRepository>(provider => new RemoveBenefitsRepository(connectionString));
+builder.Services.AddScoped<SMSOffersRepository>(provider => new SMSOffersRepository(connectionString));
 
 var app = builder.Build();
 
@@ -52,3 +61,5 @@ app.MapControllers();
 app.MapFallbackToFile("/index.html");
 
 app.Run();
+
+
