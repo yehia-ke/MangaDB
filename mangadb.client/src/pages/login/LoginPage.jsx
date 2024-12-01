@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useSession } from "../../context/SessionContext";
+import styles from "./loginpage.module.css";
 
 const LoginPage = () => {
   const [mobileNumber, setMobileNumber] = useState("");
@@ -54,7 +55,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>

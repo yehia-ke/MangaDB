@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import styles from "../general.module.css";
+import styles from './admincss.module.css'; // Import the CSS module
 
 function AdminPage() {
   // State variables
@@ -19,10 +19,16 @@ function AdminPage() {
   const [date, setDate] = useState('');
   const [mobileNo, setMobileNo] = useState('');
   const [startDate, setStartDate] = useState('');
+  const [smsMobileNo, setSmsMobileNo] = useState(''); // For SMS Offers
+  const [removeMobileNo, setRemoveMobileNo] = useState(''); // For Remove Benefits
+  const [removePlanId, setRemovePlanId] = useState(''); // For Remove Benefits
 
   // Error and loading states
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
+
+  // Message state for remove benefits success message
+  const [removeBenefitsMessage, setRemoveBenefitsMessage] = useState('');
 
   // Base API URL
   const apiUrl = 'https://localhost:7281/api/admin';
@@ -130,19 +136,39 @@ function AdminPage() {
 
   const fetchSmsOffers = async (e) => {
     e.preventDefault();
-    if (!mobileNo) {
+    if (!smsMobileNo) {
       setError('Please provide a valid Mobile Number.');
       return;
     }
     try {
       setLoading(true);
       const response = await axios.get(`${apiUrl}/accounts/sms-offers`, {
-        params: { mobileNo },
+        params: { mobileNo: smsMobileNo },
       });
       setSmsOffers(response.data);
       setLoading(false);
     } catch (err) {
       setError('Failed to fetch SMS offers.');
+      setLoading(false);
+    }
+  };
+
+  const removeBenefits = async (e) => {
+    e.preventDefault();
+    if (!removeMobileNo || !removePlanId) {
+      setError('Please provide a valid Mobile Number and Plan ID.');
+      return;
+    }
+    try {
+      setLoading(true);
+      const response = await axios.post(`${apiUrl}/benefits/remove`, {
+        mobileNo: removeMobileNo,
+        planId: parseInt(removePlanId),
+      });
+      setRemoveBenefitsMessage('Benefits removed successfully.');
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to remove benefits.');
       setLoading(false);
     }
   };
@@ -267,23 +293,23 @@ function AdminPage() {
       {/* Accounts Subscribed to Plan */}
       <section>
         <h2>Accounts Subscribed to Plan</h2>
-        <form onSubmit={fetchAccountsSubscribed}>
-          <label>
-            Plan ID:
+        <form onSubmit={fetchAccountsSubscribed} className={styles.form}>
+          <div>
+            <label>Plan ID:</label>
             <input
               type="number"
               value={planId}
               onChange={(e) => setPlanId(e.target.value)}
             />
-          </label>
-          <label>
-            Date:
+          </div>
+          <div>
+            <label>Date:</label>
             <input
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
             />
-          </label>
+          </div>
           <button type="submit">Fetch Accounts</button>
         </form>
         {accountsSubscribed.length > 0 && (
@@ -311,23 +337,23 @@ function AdminPage() {
       {/* Total Usage */}
       <section>
         <h2>Total Usage</h2>
-        <form onSubmit={fetchTotalUsage}>
-          <label>
-            Mobile No:
+        <form onSubmit={fetchTotalUsage} className={styles.form}>
+          <div>
+            <label>Mobile No:</label>
             <input
               type="text"
               value={mobileNo}
               onChange={(e) => setMobileNo(e.target.value)}
             />
-          </label>
-          <label>
-            Start Date:
+          </div>
+          <div>
+            <label>Start Date:</label>
             <input
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
             />
-          </label>
+          </div>
           <button type="submit">Fetch Usage</button>
         </form>
         {totalUsage.length > 0 && (
@@ -354,18 +380,45 @@ function AdminPage() {
         )}
       </section>
 
+      {/* Remove Benefits */}
+      <section>
+        <h2>Remove Benefits</h2>
+        <form onSubmit={removeBenefits} className={styles.form}>
+          <div>
+            <label>Mobile No:</label>
+            <input
+              type="text"
+              value={removeMobileNo}
+              onChange={(e) => setRemoveMobileNo(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Plan ID:</label>
+            <input
+              type="number"
+              value={removePlanId}
+              onChange={(e) => setRemovePlanId(e.target.value)}
+            />
+          </div>
+          <button type="submit">Remove Benefits</button>
+        </form>
+        {removeBenefitsMessage && (
+          <p style={{ color: 'green' }}>{removeBenefitsMessage}</p>
+        )}
+      </section>
+
       {/* SMS Offers */}
       <section>
         <h2>SMS Offers</h2>
-        <form onSubmit={fetchSmsOffers}>
-          <label>
-            Mobile No:
+        <form onSubmit={fetchSmsOffers} className={styles.form}>
+          <div>
+            <label>Mobile No:</label>
             <input
               type="text"
-              value={mobileNo}
-              onChange={(e) => setMobileNo(e.target.value)}
+              value={smsMobileNo}
+              onChange={(e) => setSmsMobileNo(e.target.value)}
             />
-          </label>
+          </div>
           <button type="submit">Fetch SMS Offers</button>
         </form>
         {smsOffers.length > 0 && (
