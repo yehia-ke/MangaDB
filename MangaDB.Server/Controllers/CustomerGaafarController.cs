@@ -43,17 +43,17 @@ namespace ControllersMangaDB.Server.Controllers
         // 3. View the total usage of the input account on each subscribed plan from a given input date.
         [HttpGet]
         [Route("consumption")]
-        public async Task<IActionResult> GetPlanConsumption([FromBody] GetPlanConsumptionRequest request)
+        public async Task<IActionResult> GetPlanConsumption([FromQuery] string plan_name, [FromQuery] DateTime start_date,[FromQuery] DateTime end_date)
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.plan_name) || request.start_date == DateTime.MinValue
-                || request.end_date == DateTime.MinValue)
+            if (string.IsNullOrWhiteSpace(plan_name) || start_date == DateTime.MinValue
+                || end_date == DateTime.MinValue)
             {
                 return BadRequest(new { message = "Plan name, start date, and end date are required." });
             }
 
             try
             {
-                var planConsumption = await _getConsumption.GetTotalConsumption(request.plan_name, request.start_date, request.end_date);
+                var planConsumption = await _getConsumption.GetTotalConsumption(plan_name, start_date, end_date);
                 return Ok(planConsumption);
             }
             catch (Exception)

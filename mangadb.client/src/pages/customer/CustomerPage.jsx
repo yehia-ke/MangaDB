@@ -13,7 +13,7 @@ function CustomerPage() {
   
 
   // Input states
-    const [planName, setPlanName] = useState('');
+    const [plan_name, setPlanName] = useState('');
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
 
@@ -45,18 +45,14 @@ function CustomerPage() {
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
-    if (!planName || !start_date || !end_date) {
+    if (!plan_name || !start_date || !end_date) {
         setError('Please provide a valid Plan ID and Date.');
         return;
     }
     try {
       setLoading(true);
         const response = await axios.get(`${apiUrl}gaafar/consumption`, {
-            params: {
-                planName,
-                start_date,
-                end_date
-            },
+            params: { plan_name,start_date,end_date },
         });
       setPlanConsumption(response.data);
       setLoading(false);
@@ -113,7 +109,7 @@ function CustomerPage() {
             <label>Plan name:</label>
             <input
               type="text"
-              value={planName}
+              value={plan_name}
               onChange={(e) => setPlanName(e.target.value)}
             />
           </div>
