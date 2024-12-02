@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Repository.Repository;
+using System.ComponentModel.DataAnnotations;
 
 namespace ControllersMangaDB.Server.Controllers
 {
@@ -11,13 +12,16 @@ namespace ControllersMangaDB.Server.Controllers
     public class CustomerGaafarController : ControllerBase
     {
         private readonly ViewAllOfferedServicePlans _viewAllOfferedServicePlans;
+        private readonly GetConsumption _getConsumption;
 
         public CustomerGaafarController(
             ViewAllOfferedServicePlans viewAllOfferedServicePlans
+            , GetConsumption getConsumption
 
             )
         {
             _viewAllOfferedServicePlans = viewAllOfferedServicePlans;
+            _getConsumption = getConsumption;
         }
 
         // 2. View details for all offered service plans.
@@ -36,23 +40,40 @@ namespace ControllersMangaDB.Server.Controllers
             }
         }
 
-        // 3.  the total usage of the input account on each subscribed plan from a given input date.
+        // 3. View the total usage of the input account on each subscribed plan from a given input date.
         [HttpGet]
-        [Route("account-usage-plan")]
-        public async Task<IActionResult> GetAccountUsagePlan()
+        [Route("consumption")]
+        public async Task<IActionResult> GetPlanConsumption([FromBody] GetPlanConsumptionRequest request)
         {
+            if (request == null || string.IsNullOrWhiteSpace(request.plan_name) || request.start_date == DateTime.MinValue
+                || request.end_date == DateTime.MinValue)
+            {
+                return BadRequest(new { message = "Plan name, start date, and end date are required." });
+            }
+
             try
             {
-                var accountUsagePlans = await _viewAllOfferedServicePlans.GetAllOfferedServicePlansAsync();
-                return Ok(accountUsagePlans);
+                var planConsumption = await _getConsumption.GetTotalConsumption(request.plan_name, request.start_date.ToString("yyyy-MM-dd"), request.end_date.ToString("yyyy-MM-dd"));
+                return Ok(planConsumption);
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving account usage plans." });
+                return StatusCode(500, new { message = "An error occurred while retrieving plan consumption." });
             }
         }
 
 
+    }
+
+    // DTO for Get Plan Consumption Request
+    public class GetPlanConsumptionRequest
+    {
+        [Required]
+        public string plan_name { get; set; }
+        [Required]
+        public DateTime start_date { get; set; }
+        [Required]
+        public DateTime end_date { get; set; }
     }
 
    
