@@ -10,15 +10,16 @@ function CustomerPage() {
     // State variables
     const [servicePlans, setServicePlans] = useState([]);
     const [planConsumption, setPlanConsumption] = useState([]);
-  
+    const setError = async(err) => {
+      alert(err);
+    };
 
   // Input states
-    const [planName, setPlanName] = useState('');
+    const [plan_name, setPlanName] = useState('');
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
 
   // Error and loading states
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
 
@@ -45,14 +46,14 @@ function CustomerPage() {
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
+    if (!plan_name || !start_date || !end_date) {
+        setError('Please provide a valid Plan ID and Date.');
+        return;
+    }
     try {
       setLoading(true);
         const response = await axios.get(`${apiUrl}gaafar/consumption`, {
-            params: {
-                plan_name: planName,
-                start_date: start_date,
-                end_date: end_date,
-            },
+            params: { plan_name,start_date,end_date },
         });
       setPlanConsumption(response.data);
       setLoading(false);
@@ -68,7 +69,6 @@ function CustomerPage() {
       <h1>Customer Dashboard</h1>
       
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Service Plans */}
       <section>
@@ -109,7 +109,7 @@ function CustomerPage() {
             <label>Plan name:</label>
             <input
               type="text"
-              value={planName}
+              value={plan_name}
               onChange={(e) => setPlanName(e.target.value)}
             />
           </div>

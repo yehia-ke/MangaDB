@@ -9,12 +9,12 @@ namespace ControllersMangaDB.Server.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class CustomerGaafarController : ControllerBase
+    public class CustomerHassanController : ControllerBase
     {
         private readonly ViewAllOfferedServicePlans _viewAllOfferedServicePlans;
         private readonly GetConsumption _getConsumption;
 
-        public CustomerGaafarController(
+        public CustomerHassanController(
             ViewAllOfferedServicePlans viewAllOfferedServicePlans
             , GetConsumption getConsumption
 

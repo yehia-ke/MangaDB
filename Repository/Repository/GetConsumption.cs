@@ -15,7 +15,7 @@ namespace Repository.Repository
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<List<Dictionary<string, object>>> GetTotalConsumption(string plan_name, string start_date, string end_date)
+        public async Task<List<Dictionary<string, object>>> GetTotalConsumption(string plan_name, DateTime start_date, DateTime end_date)
         {
             var consumptions = new List<Dictionary<string, object>>();
 
@@ -24,24 +24,25 @@ namespace Repository.Repository
                 using var connection = new SqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                var command = new SqlCommand("Consumption", connection);
+                var command = new SqlCommand("SELECT * FROM dbo.Consumption(@Plan_name, @start_date, @end_date)", connection);
                 
                 command.Parameters.AddWithValue("@Plan_name", plan_name);
                 command.Parameters.AddWithValue("@start_date", start_date);
                 command.Parameters.AddWithValue("@end_date", end_date);
 
-                using (var reader = await command.ExecuteReaderAsync())
+
+                using var reader = await command.ExecuteReaderAsync();
+                
+                while (await reader.ReadAsync())
                 {
-                    while (await reader.ReadAsync())
+                    var consumption = new Dictionary<string, object>();
+                    for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        var consumption = new Dictionary<string, object>();
-                        for (int i = 0; i < reader.FieldCount; i++)
-                        {
-                            consumption[reader.GetName(i)] = reader.GetValue(i);
-                        }
-                        consumptions.Add(consumption);
+                        consumption[reader.GetName(i)] = reader.GetValue(i);
                     }
+                    consumptions.Add(consumption);
                 }
+                
             }
             catch (Exception ex)
             {
