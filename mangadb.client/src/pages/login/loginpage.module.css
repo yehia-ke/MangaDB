@@ -1,25 +1,46 @@
 .container {
-  max-width: 400px;
+  max-width: 40%; /* 60% of the parent or viewport width */
+  width: 100%; /* Ensures it doesn't exceed max-width */
   margin: 50px auto;
-  padding: 20px;
+  min-height: 710px;
+  max-height: 710px;
+  display: flex; /* Enables flexbox */
+  flex-direction: column; /* Aligns items vertically */
+  justify-content: top; /* Centers items vertically */
+  align-items: center; /* Centers items horizontally */
   background: #4d4949;
   border: 1px solid #777b80;
   border-radius: 5px;
   box-shadow: 0 0 6px rgba(255, 255, 228, 0.4);
   font-family: Arial, sans-serif;
 }
+img {
+  width: 185px;
+  padding-top: 20px;
+}
+h1 {
+  text-align:  center;
+  color: #ffffe4;
+  margin-bottom: 1.5rem;
+  font-size: 3rem;
+  font-family: 'Satoshi-Bold';
+}
 
 h2 {
-  text-align: center;
+  padding-top: 60px;
+  text-align:  center;
   color: #ffffe4;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
+  font-family: 'Satoshi-Bold';
 }
 
 form {
   display: flex;
   flex-direction: column;
   gap: 10px;
+  max-width: 100%;
+  width: 60%;
 }
 
 form div {
@@ -29,9 +50,9 @@ form div {
 }
 
 label {
+  font-family: 'Satoshi-Bold';
   flex: 1;
   color: #ffffe4;
-  font-weight: bold;
 }
 
 input {
@@ -41,6 +62,7 @@ input {
   border-radius: 5px;
   background-color: #635f5f;
   color: #ffffe4;
+  font-family: 'Satoshi-Bold';
 }
 
 input::placeholder {
@@ -61,6 +83,7 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-family: 'Satoshi-Bold';
 }
 
 button:hover {
@@ -76,6 +99,7 @@ p {
   text-align: center;
   color: #ffffe4;
   margin-top: 10px;
+  font-family: 'Satoshi-Bold';
 }
 
 p[style="color: red;"] {
