@@ -42,7 +42,7 @@ const LoginPage = () => {
       if (response.status === 200) {
         login({ ...response.data, role: "user" }); // Assume API returns user data
         setLoading(false);
-        navigate("/about"); // Redirect regular users
+        navigate("/customer"); // Redirect regular users
       }
     } catch (error) {
       setLoading(false);
@@ -56,10 +56,10 @@ const LoginPage = () => {
 
   return (
     <div className={styles.container}>
+      <img src="src\assets\logo.png" alt="logo" />
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label>Mobile Number:</label>
           <input
             type="text"
             value={mobileNumber}
@@ -69,7 +69,6 @@ const LoginPage = () => {
           />
         </div>
         <div>
-          <label>Password:</label>
           <input
             type="password"
             value={password}
