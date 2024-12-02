@@ -41,6 +41,7 @@ builder.Services.AddScoped<GetCustomersWallets>(provider => new GetCustomersWall
 builder.Services.AddScoped<GetEshopVouchers>(provider => new GetEshopVouchers(connectionString));
 builder.Services.AddScoped<GetAccountPayments>(provider => new GetAccountPayments(connectionString));
 builder.Services.AddScoped<ViewAllOfferedServicePlans>(provider => new ViewAllOfferedServicePlans(connectionString));
+builder.Services.AddScoped<GetConsumption>(provider => new GetConsumption(connectionString));
 
 
 var app = builder.Build();
