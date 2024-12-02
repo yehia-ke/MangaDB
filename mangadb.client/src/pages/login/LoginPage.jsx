@@ -56,32 +56,40 @@ const LoginPage = () => {
 
   return (
     <div className={styles.container}>
-      <img src="src\assets\logo.png" alt="logo" />
+      <img src="src/assets/logo.png" alt="logo" className={styles.logo} />
       <h2>Login</h2>
       <form onSubmit={handleSubmit}>
-        <div>
+        <div className={styles.inputWrapper}>
           <input
             type="text"
+            id="mobileNumber"
             value={mobileNumber}
             onChange={(e) => setMobileNumber(e.target.value)}
-            placeholder="Enter your mobile number"
+            placeholder=" "
             required
           />
+          <label htmlFor="mobileNumber" className={styles.floatingLabel}>
+            Mobile Number
+          </label>
         </div>
-        <div>
+        <div className={styles.inputWrapper}>
           <input
             type="password"
+            id="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            placeholder="Enter your password"
+            placeholder=" "
             required
           />
+          <label htmlFor="password" className={styles.floatingLabel}>
+            Password
+          </label>
         </div>
         <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className={styles.error}>{error}</p>}
     </div>
   );
 };

@@ -1,78 +1,80 @@
 .container {
-  max-width: 40%; /* 60% of the parent or viewport width */
-  width: 100%; /* Ensures it doesn't exceed max-width */
+  max-width: 40%;
   margin: 50px auto;
-  min-height: 710px;
-  max-height: 710px;
-  display: flex; /* Enables flexbox */
-  flex-direction: column; /* Aligns items vertically */
-  justify-content: top; /* Centers items vertically */
-  align-items: center; /* Centers items horizontally */
+  min-height: 660px;
+  padding: 50px;
   background: #4d4949;
   border: 1px solid #777b80;
   border-radius: 5px;
   box-shadow: 0 0 6px rgba(255, 255, 228, 0.4);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   font-family: Arial, sans-serif;
 }
-img {
+
+.logo {
   width: 185px;
-  padding-top: 20px;
-}
-h1 {
-  text-align:  center;
-  color: #ffffe4;
-  margin-bottom: 1.5rem;
-  font-size: 3rem;
-  font-family: 'Satoshi-Bold';
+  margin-bottom: 20px;
 }
 
 h2 {
-  padding-top: 60px;
-  text-align:  center;
   color: #ffffe4;
+  text-align: center;
   margin-bottom: 1.5rem;
   font-size: 1.8rem;
-  font-family: 'Satoshi-Bold';
 }
 
 form {
+  width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-width: 100%;
-  width: 60%;
+  gap: 20px;
 }
 
-form div {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-label {
-  font-family: 'Satoshi-Bold';
-  flex: 1;
-  color: #ffffe4;
+.inputWrapper {
+  position: relative;
+  width: 100%;
 }
 
 input {
-  flex: 2;
-  padding: 0.8rem;
+  width: 100%;
+  padding: 15px 10px;
+  font-size: 1rem;
   border: 1px solid #777b80;
   border-radius: 5px;
   background-color: #635f5f;
   color: #ffffe4;
-  font-family: 'Satoshi-Bold';
-}
-
-input::placeholder {
-  color: #cccccc;
+  font-family: Arial, sans-serif;
 }
 
 input:focus {
   outline: none;
   border-color: #ffffe4;
   box-shadow: 0 0 4px rgba(255, 255, 228, 0.4);
+}
+
+.floatingLabel {
+  position: absolute;
+  top: 50%;
+  left: 10px;
+  transform: translateY(-50%);
+  transition: all 0.3s ease;
+  font-size: 1rem;
+  color: #ccc;
+  pointer-events: none;
+}
+
+input:focus + .floatingLabel,
+input:not(:placeholder-shown) + .floatingLabel {
+  top: 0;
+  transform: translateY(-100%);
+  font-size: 0.8rem;
+  color: #ffffe4;
+}
+
+input::placeholder {
+  color: transparent; /* Placeholder invisible when label is visible */
 }
 
 button {
@@ -83,7 +85,6 @@ button {
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  font-family: 'Satoshi-Bold';
 }
 
 button:hover {
@@ -95,14 +96,9 @@ button:disabled {
   cursor: not-allowed;
 }
 
-p {
-  text-align: center;
-  color: #ffffe4;
-  margin-top: 10px;
-  font-family: 'Satoshi-Bold';
-}
-
-p[style="color: red;"] {
+.error {
   color: #ff5f5f;
   font-weight: bold;
+  text-align: center;
+  margin-top: 10px;
 }
