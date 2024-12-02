@@ -8,8 +8,10 @@ function Admin2() {
     const [wallets, setWallets] = useState([]);
     const [eshops, setEshops] = useState([]); // State to store E-shop details
     const [payments, setPayments] = useState([]); // New state to store Payment details
-    const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
+    const setError = async(err) => {
+        alert(err);
+      };
 
     const apiUrl = 'https://localhost:7281/api/admin'; // Replace with your actual API URL
 
@@ -72,7 +74,6 @@ function Admin2() {
             </button>
 
             {loading && <p>Loading...</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
 
             {/* Wallets with Customer Names */}
             <section>

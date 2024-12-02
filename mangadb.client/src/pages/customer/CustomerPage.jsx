@@ -10,7 +10,9 @@ function CustomerPage() {
     // State variables
     const [servicePlans, setServicePlans] = useState([]);
     const [planConsumption, setPlanConsumption] = useState([]);
-  
+    const setError = async(err) => {
+      alert(err);
+    };
 
   // Input states
     const [plan_name, setPlanName] = useState('');
@@ -18,7 +20,6 @@ function CustomerPage() {
     const [end_date, setEnd_Date] = useState('');
 
   // Error and loading states
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
 
@@ -68,7 +69,6 @@ function CustomerPage() {
       <h1>Customer Dashboard</h1>
       
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Service Plans */}
       <section>

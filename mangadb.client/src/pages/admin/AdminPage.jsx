@@ -26,7 +26,6 @@ function AdminPage() {
   const [removePlanId, setRemovePlanId] = useState(''); // For Remove Benefits
 
   // Error and loading states
-  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Message state for remove benefits success message
@@ -34,6 +33,9 @@ function AdminPage() {
 
   // Base API URL
   const apiUrl = 'https://localhost:7281/api/admin';
+  const setError = async(err) => {
+    alert(err);
+  };
 
   // Load initial data
   useEffect(() => {
@@ -185,7 +187,6 @@ function AdminPage() {
                 Go to Another Page
             </button>
       {loading && <p>Loading...</p>}
-      {error && <p style={{ color: 'red' }}>{error}</p>}
 
       {/* Customer Profiles */}
       <section>
