@@ -9,6 +9,8 @@ import AdminPage from "./pages/admin/AdminPage";
 import AdminPage2 from "./pages/admin/AdminPage2";
 import AdminRoute from "./components/AdminRoute";
 import TestPage from "./pages/TestPage/TestPage";
+import CustomerPage from "./pages/customer/CustomerPage";
+import CustomerRoute from "./components/CustomerRoute";
 
 const PrivateRoute = ({ children }) => {
     const { user } = useSession();
@@ -58,6 +60,16 @@ function App() {
                             <AdminRoute>
                                 <AdminPage2 />
                             </AdminRoute>
+                        }
+                    />
+
+                    {/* Customer Route */}
+                    <Route
+                        path="/customer"
+                        element={
+                            <CustomerRoute>
+                                <CustomerPage />
+                            </CustomerRoute>
                         }
                     />
 

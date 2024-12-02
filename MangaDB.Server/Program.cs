@@ -40,6 +40,8 @@ builder.Services.AddScoped<SMSOffersRepository>(provider => new SMSOffersReposit
 builder.Services.AddScoped<GetCustomersWallets>(provider => new GetCustomersWallets(connectionString));
 builder.Services.AddScoped<GetEshopVouchers>(provider => new GetEshopVouchers(connectionString));
 builder.Services.AddScoped<GetAccountPayments>(provider => new GetAccountPayments(connectionString));
+builder.Services.AddScoped<ViewAllOfferedServicePlans>(provider => new ViewAllOfferedServicePlans(connectionString));
+
 
 var app = builder.Build();
 

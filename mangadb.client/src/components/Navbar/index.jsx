@@ -50,6 +50,16 @@ const Navbar = () => {
                     </NavLink>
                 )}
 
+                {/* Conditionally render the Customer link if the user is a customer */}
+                {user?.role === "user" && (
+                    <NavLink
+                        to="/customer"
+                        activeClassName="active"
+                    >
+                        Customer
+                    </NavLink>
+                )}
+
                 {/* Conditionally render login/signup or logout based on user session */}
                 {!user ? (
                     <>

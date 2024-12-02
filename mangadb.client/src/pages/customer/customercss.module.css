@@ -1,0 +1,171 @@
+/* General container styling */
+section {
+  max-width: 700px; /* Slightly wider to fit the table comfortably */
+  margin: 20px auto;
+  padding: 20px;
+  border: 1px solid #777b80;
+  border-radius: 5px;
+  background: #4d4949;
+  box-shadow: 0 0 2cap rgba(255, 255, 228, 0.4);
+  text-align: center;
+}
+
+/* Style for tables */
+table {
+  width: 100%; /* Set the table width to 50% */
+  margin: 20px auto; /* Center the table horizontally with spacing */
+  border-collapse: collapse; /* Remove gaps between table borders */
+  font-size: 16px; /* Set a readable font size */
+  text-align: center; /* Center table content */
+  background-color: #222; /* Dark gray background for the table */
+  color: #fff; /* White text for better contrast */
+  border: 1px solid #444; /* Border to separate the table from the background */
+}
+
+/* Header row styling */
+table thead th {
+  background-color: #444; /* Slightly lighter background for headers */
+  color: #fff; /* White text for headers */
+  font-weight: bold; /* Bold text for header cells */
+  border-bottom: 2px solid #666; /* Add a border below headers */
+  padding: 12px; /* Add padding for space */
+}
+
+/* Table body row styling */
+table tbody tr {
+  border-bottom: 1px solid #444; /* Add borders between rows */
+}
+
+/* Alternate row colors for better readability */
+table tbody tr:nth-child(even) {
+  background-color: #333; /* Slightly lighter gray for alternate rows */
+}
+
+/* Table cell styling */
+table th, table td {
+  padding: 10px 15px; /* Padding for better spacing */
+  word-wrap: break-word; /* Ensure text wraps within the cell */
+}
+
+/* Responsive tables */
+@media (max-width: 768px) {
+  table {
+    font-size: 14px; /* Adjust font size for smaller screens */
+    width: 100%; /* Expand to full width for small screens */
+  }
+
+  table thead {
+    display: none; /* Hide table headers on small screens */
+  }
+
+  table tbody tr {
+    display: block; /* Display rows as blocks */
+    margin-bottom: 15px; /* Add spacing between rows */
+    background-color: #333; /* Ensure rows remain visible on mobile */
+  }
+
+  table tbody td {
+    display: flex; /* Make cells flex containers */
+    justify-content: space-between; /* Space out key-value pairs */
+    padding: 10px; /* Add padding */
+    border: none; /* Remove borders */
+    border-bottom: 1px solid #555; /* Add a bottom border for separation */
+    color: #fff; /* Ensure text is readable on dark background */
+    text-align: center; /* Center text in table cells */
+  }
+
+  table tbody td:before {
+    content: attr(data-label); /* Use data-label for cell labels */
+    font-weight: bold; /* Bold text for labels */
+    text-transform: uppercase; /* Uppercase for consistency */
+    margin-right: 10px; /* Spacing between label and value */
+    color: #aaa; /* Slightly lighter text for labels */
+    text-align: center; /* Center-align labels */
+  }
+}
+
+/* Button styling */
+button {
+  background-color: #444; /* Dark background for buttons */
+  color: #fff; /* White text */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Rounded corners */
+  padding: 10px 15px; /* Padding for buttons */
+  cursor: pointer; /* Pointer cursor for buttons */
+  transition: background-color 0.3s; /* Smooth background change */
+  text-align: center; /* Center text in buttons */
+}
+
+button:hover {
+  background-color: #555; /* Slightly lighter background on hover */
+}
+
+button:disabled {
+  background-color: #333; /* Dark gray for disabled buttons */
+  cursor: not-allowed; /* Not-allowed cursor for disabled state */
+}
+
+/* Form inputs */
+input {
+  padding: 10px; /* Add padding inside input fields */
+  margin: 10px auto; /* Center inputs and add spacing */
+  border: 1px solid #777b80; /* Subtle border for inputs */
+  border-radius: 3px; /* Rounded corners */
+  background-color: #333; /* Dark background for inputs */
+  color: #fff; /* White text for inputs */
+  display: block; /* Make inputs block-level to center them */
+  text-align: center; /* Center text in inputs */
+}
+
+/* Headings styling */
+h1, h2 {
+  color: #fff; /* White text for headings */
+  text-align: center; /* Center-align headings */
+}
+
+h1 {
+  margin-bottom: 30px; /* Add spacing below main heading */
+}
+
+h2 {
+  margin-bottom: 20px; /* Add spacing below section headings */
+}
+
+/* Paragraphs */
+p {
+  color: #fff; /* White text for paragraphs */
+  margin: 10px 0; /* Add spacing between paragraphs */
+  text-align: center; /* Center-align paragraphs */
+}
+
+/* Add this to your existing admincss.module.css */
+
+/* Black background button */
+.blackButton {
+    background-color: transparent;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 16px;
+    position: absolute; /* Position the button absolutely */
+    /* Use top, right, bottom, and left to control where it goes */
+    top: 100px; /* Set this to position the button from the top */
+    right: 20px; /* Set this to position the button from the right */
+    /* You can also use left and bottom as needed */
+}
+
+    .blackButton:hover {
+        background-color: #444;
+    }
+
+    .blackButton:active {
+        background-color: #222;
+    }
+
+    .blackButton:disabled {
+        background-color: #666;
+        cursor: not-allowed;
+    }
