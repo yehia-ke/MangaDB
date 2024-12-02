@@ -1,6 +1,7 @@
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using Repository.Repository;
+using YourNamespace;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -42,6 +43,9 @@ builder.Services.AddScoped<GetEshopVouchers>(provider => new GetEshopVouchers(co
 builder.Services.AddScoped<GetAccountPayments>(provider => new GetAccountPayments(connectionString));
 builder.Services.AddScoped<ViewAllOfferedServicePlans>(provider => new ViewAllOfferedServicePlans(connectionString));
 builder.Services.AddScoped<GetConsumption>(provider => new GetConsumption(connectionString));
+builder.Services.AddScoped<CashbackRepository>(provider => new CashbackRepository(connectionString));
+builder.Services.AddScoped<GetAccountPaymentPoints>(provider => new GetAccountPaymentPoints(connectionString));
+builder.Services.AddScoped<CashbackAmountRepository>(provider => new CashbackAmountRepository(connectionString));
 
 
 var app = builder.Build();

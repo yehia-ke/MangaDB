@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Repository.Repository;
+using YourNamespace;
 
 namespace ControllersMangaDB.Server.Controllers
 {
@@ -21,6 +22,9 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly GetCustomersWallets _getCustomersWalletsRepository;
         private readonly GetEshopVouchers _gfetEshopVouchers;
         private readonly GetAccountPayments _getAccountPayments;
+        private readonly CashbackRepository _cashbackRepository;
+        private readonly GetAccountPaymentPoints _getAccountPaymentPoints;
+        private readonly CashbackAmountRepository _cashbackReAmountpository;
 
         public AdminController(
             ViewCustomerProfilesRepository customerProfilesRepository,
@@ -33,7 +37,10 @@ namespace ControllersMangaDB.Server.Controllers
             SMSOffersRepository smsOffersRepository,
             GetCustomersWallets getCustomersWalletsRepository,
             GetEshopVouchers eshopVouchersRepository,
-            GetAccountPayments getAccountPayments)
+            GetAccountPayments getAccountPayments,
+            CashbackRepository cashbackRepository,
+            GetAccountPaymentPoints getAccountPaymentPoints,
+            CashbackAmountRepository cashbackReAmountpository)
         {
             _customerProfilesRepository = customerProfilesRepository;
             _physicalStoresRepository = physicalStoresRepository;
@@ -46,6 +53,9 @@ namespace ControllersMangaDB.Server.Controllers
             _getCustomersWalletsRepository = getCustomersWalletsRepository;
             _gfetEshopVouchers = eshopVouchersRepository;
             _getAccountPayments = getAccountPayments;
+            _cashbackRepository = cashbackRepository;
+            _getAccountPaymentPoints = getAccountPaymentPoints;
+            _cashbackReAmountpository = cashbackReAmountpository;
         }
 
         // 2. View details for all customer profiles along with their active accounts.
@@ -252,12 +262,92 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving payment transaction details." });
             }
         }
+
+        //4. View the total number of cashback transactions per each wallet ID.
+
+        [HttpGet("total-transactions")]
+        public async Task<IActionResult> GetTotalCashbackTransactionsPerWallet()
+        {
+            try
+            {
+                // Call the repository to get the cashback transaction counts
+                var result = await _cashbackRepository.GetTotalCashbackTransactionsPerWalletAsync();
+
+                if (result == null || result.Count == 0)
+                {
+                    return NotFound("No cashback transactions found.");
+                }
+
+                // Return the result as a JSON response
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                // Log the error (you could use a proper logging mechanism here)
+                Console.Error.WriteLine($"Error: {ex.Message}");
+                return StatusCode(500, "Internal server error.");
+            }
+        }
+
+        [HttpGet("payment-points/{mobileNum}")]
+        public async Task<IActionResult> GetAccountPaymentPoints(string mobileNum)
+        {
+            try
+            {
+                var (transactionCount, totalPoints) = await _getAccountPaymentPoints.GetAccountPaymentPointsAsync(mobileNum);
+
+                // Convert the tuple to a structured object for serialization
+                var response = new
+                {
+                    TransactionCount = transactionCount,
+                    TotalPoints = totalPoints
+                };
+
+                return Ok(response); // Return as JSON
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors (e.g., log it, return a specific error response)
+                return StatusCode(500, new { Message = $"Internal server error: {ex.Message}" });
+            }
+        }
+
+        [HttpGet("amount/{walletID}/{planID}")]
+        public async Task<IActionResult> GetCashbackAmount(int walletID, int planID)
+        {
+            // Validate input parameters
+            if (walletID <= 0 || planID <= 0)
+            {
+                return BadRequest("Invalid wallet ID or plan ID.");
+            }
+
+            try
+            {
+                // Get the cashback amount from the repository
+                int cashbackAmount = await _cashbackReAmountpository.GetCashbackAmountAsync(walletID, planID);
+
+                // Check if cashback amount is found or not
+                if (cashbackAmount <= 0)
+                {
+                    return NotFound("Cashback amount not found.");
+                }
+
+                // Return the cashback amount
+                return Ok(new { CashbackAmount = cashbackAmount });
+            }
+            catch (Exception ex)
+            {
+                // Log and return internal server error
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
     }
 
-   
 
-// DTO for Remove Benefits Request
-public class RemoveBenefitsRequest
+
+    // DTO for Remove Benefits Request
+    public class RemoveBenefitsRequest
     {
         public string MobileNo { get; set; }
         public int PlanId { get; set; }
