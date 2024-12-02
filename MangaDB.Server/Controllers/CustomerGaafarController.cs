@@ -53,7 +53,7 @@ namespace ControllersMangaDB.Server.Controllers
 
             try
             {
-                var planConsumption = await _getConsumption.GetTotalConsumption(request.plan_name, request.start_date.ToString("yyyy-MM-dd"), request.end_date.ToString("yyyy-MM-dd"));
+                var planConsumption = await _getConsumption.GetTotalConsumption(request.plan_name, request.start_date, request.end_date);
                 return Ok(planConsumption);
             }
             catch (Exception)

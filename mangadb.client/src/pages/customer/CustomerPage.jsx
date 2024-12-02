@@ -45,13 +45,17 @@ function CustomerPage() {
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
+    if (!planName || !start_date || !end_date) {
+        setError('Please provide a valid Plan ID and Date.');
+        return;
+    }
     try {
       setLoading(true);
         const response = await axios.get(`${apiUrl}gaafar/consumption`, {
             params: {
-                plan_name: planName,
-                start_date: start_date,
-                end_date: end_date,
+                planName,
+                start_date,
+                end_date
             },
         });
       setPlanConsumption(response.data);
