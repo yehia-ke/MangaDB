@@ -13,15 +13,18 @@ namespace ControllersMangaDB.Server.Controllers
     {
         private readonly ViewAllOfferedServicePlans _viewAllOfferedServicePlans;
         private readonly GetConsumption _getConsumption;
+        private readonly ViewAllOfferedUnsubscribedPlans _viewAllOfferedUnsubscribedPlans;
 
         public CustomerGaafarController(
             ViewAllOfferedServicePlans viewAllOfferedServicePlans
             , GetConsumption getConsumption
+            , ViewAllOfferedUnsubscribedPlans viewAllOfferedUnsubscribedPlans
 
             )
         {
             _viewAllOfferedServicePlans = viewAllOfferedServicePlans;
             _getConsumption = getConsumption;
+            _viewAllOfferedUnsubscribedPlans = viewAllOfferedUnsubscribedPlans;
         }
 
         // 2. View details for all offered service plans.
@@ -62,7 +65,26 @@ namespace ControllersMangaDB.Server.Controllers
             }
         }
 
+        // 4. View details for all offered unsubscribed service plans.
+        [HttpGet]
+        [Route("unsubscribed-plans")]
+        public async Task<IActionResult> GetUnsubscribedPlans([FromQuery] string mobileNoUnsubscribedPlans)
+        {
+            if (string.IsNullOrWhiteSpace(mobileNoUnsubscribedPlans))
+            {
+                return BadRequest(new { message = "Mobile Number required." });
+            }
 
+            try
+            {
+                var unsubscribedPlans = await _viewAllOfferedUnsubscribedPlans.GetAllOfferedUnsubscribedPlans(mobileNoUnsubscribedPlans);
+                return Ok(unsubscribedPlans);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving plan consumption." });
+            }
+        }
     }
 
     // DTO for Get Plan Consumption Request
