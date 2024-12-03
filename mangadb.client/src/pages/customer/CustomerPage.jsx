@@ -225,7 +225,7 @@ function CustomerPage() {
                           <td>{cashback.benefitID}</td>
                           <td>{cashback.walletID}</td>
                           <td>{cashback.amount}</td>
-                          <td>{cashback.credit_date}</td>
+                          <td>{new Date(cashback.credit_date).toLocaleDateString()}</td>
                       </tr>
                   ))}
               </tbody>

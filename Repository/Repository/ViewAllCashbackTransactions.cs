@@ -33,10 +33,10 @@ namespace Repository.Repository
                 string nationalID = "";
                 while (await reader1.ReadAsync())
                 {
-                    nationalID = "" + reader1.GetValue(1);
+                    nationalID = "" + reader1.GetValue(0);
                 }
 
-                Console.WriteLine(nationalID);
+                reader1.Close();
 
                 var command = new SqlCommand("SELECT * FROM Cashback_Wallet_Customer(@NID)", connection);
                 command.Parameters.AddWithValue("@NID", nationalID);
@@ -48,6 +48,11 @@ namespace Repository.Repository
                     var cashbackTransaction = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
+                        /*if(i == 4)
+                            cashbackTransaction[reader.GetName(i)] = ((DateTime)reader.GetValue(i)).ToString("yyyy-MM-dd");
+                        else
+                            cashbackTransaction[reader.GetName(i)] = reader.GetValue(i);*/
+
                         cashbackTransaction[reader.GetName(i)] = reader.GetValue(i);
                     }
                     cashbackTransactions.Add(cashbackTransaction);
