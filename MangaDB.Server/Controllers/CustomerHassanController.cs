@@ -61,22 +61,5 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving plan consumption." });
             }
         }
-
-
     }
-
-    // DTO for Get Plan Consumption Request
-    public class GetPlanConsumptionRequest
-    {
-        [Required]
-        public string plan_name { get; set; }
-        [Required]
-        public DateTime start_date { get; set; }
-        [Required]
-        public DateTime end_date { get; set; }
-    }
-
-   
-
-
 }
