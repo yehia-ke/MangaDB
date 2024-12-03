@@ -68,16 +68,16 @@ namespace ControllersMangaDB.Server.Controllers
         // 4. View details for all offered unsubscribed service plans.
         [HttpGet]
         [Route("unsubscribed-plans")]
-        public async Task<IActionResult> GetUnsubscribedPlans([FromQuery] string mobileNoUnsubscribedPlans)
+        public async Task<IActionResult> GetUnsubscribedPlans([FromQuery] string mobileNo)
         {
-            if (string.IsNullOrWhiteSpace(mobileNoUnsubscribedPlans))
+            if (string.IsNullOrWhiteSpace(mobileNo))
             {
                 return BadRequest(new { message = "Mobile Number required." });
             }
 
             try
             {
-                var unsubscribedPlans = await _viewAllOfferedUnsubscribedPlans.GetAllOfferedUnsubscribedPlans(mobileNoUnsubscribedPlans);
+                var unsubscribedPlans = await _viewAllOfferedUnsubscribedPlans.GetAllOfferedUnsubscribedPlans(mobileNo);
                 return Ok(unsubscribedPlans);
             }
             catch (Exception)

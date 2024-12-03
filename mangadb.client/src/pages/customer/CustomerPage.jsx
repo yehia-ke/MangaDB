@@ -7,7 +7,8 @@ import styles from './customercss.module.css'; // Import the CSS module
 import { useSession } from "../../context/SessionContext";
 
 function CustomerPage() {
-  const { user } = useSession();
+    const { user } = useSession();
+    var mobileNo = user.mobileNumber;
     const navigate = useNavigate();
     // State variables
     const [servicePlans, setServicePlans] = useState([]);
@@ -21,7 +22,6 @@ function CustomerPage() {
     const [plan_name, setPlanName] = useState('');
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
-    const [mobileNoUnsubscribedPlans, setMobileNoUnsubscribedPlans] = useState('');
 
   // Error and loading states
   const [loading, setLoading] = useState(false);
@@ -34,6 +34,7 @@ function CustomerPage() {
   useEffect(() => {
       fetchOfferedServicePlans();
       fetchTotalPlanConsumption();
+      fetchUnsubscribedPlans();
   }, []);
 
   const fetchOfferedServicePlans = async () => {
@@ -67,21 +68,16 @@ function CustomerPage() {
     }
   };
 
-  const fetchUnsubscribedPlans = async (e) => {
-    e.preventDefault();
-    if (!mobileNoUnsubscribedPlans) {
-        setError('Please provide a valid Mobile Number.');
-        return;
-    }
+  const fetchUnsubscribedPlans = async () => {
     try {
       setLoading(true);
         const response = await axios.get(`${apiUrl}gaafar/unsubscribed-plans`, {
-            params: { mobileNoUnsubscribedPlans },
+            params: { mobileNo },
         });
       setUnsubscribedPlans(response.data);
       setLoading(false);
     } catch (err) {
-      setError('Failed to fetch total plan consumption.');
+      setError('Failed to fetch unsubscribed plans.');
       setLoading(false);
     }
   };
@@ -121,6 +117,37 @@ function CustomerPage() {
             ))}
           </tbody>
         </table>
+      </section>
+
+      {/* Unsubscribed plans */}
+      <section>
+        <h2>Unsubcribed Plans</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Plan ID</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>SMS Offered</th>
+                      <th>Minutes Offered</th>
+                      <th>Data Offered</th>
+                      <th>Description</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {unsubscribedPlans.map((plan, index) => (
+                      <tr key={index}>
+                          <td>{plan.planID}</td>
+                          <td>{plan.name}</td>
+                          <td>{plan.price}</td>
+                          <td>{plan.SMS_offered}</td>
+                          <td>{plan.minutes_offered}</td>
+                          <td>{plan.data_offered}</td>
+                          <td>{plan.description}</td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
       </section>
 
       {/* Total Plan Consumption */}
@@ -171,50 +198,6 @@ function CustomerPage() {
                 </tr>
               ))}
             </tbody>
-          </table>
-        )}
-      </section>
-
-      {/* Unsubscribed plans */}
-      <section>
-        <h2>Unsubcribed Plans</h2>
-        <form onSubmit={fetchUnsubscribedPlans} className={styles.form}>
-          <div>
-            <label>Mobile No:</label>
-            <input
-              type="text"
-              value={mobileNoUnsubscribedPlans}
-              onChange={(e) => setMobileNoUnsubscribedPlans(e.target.value)}
-            />
-          </div>
-          <button type="submit">Fetch Unsubcribed Plans</button>
-        </form>
-        {unsubscribedPlans.length > 0 && (
-          <table>
-              <thead>
-                  <tr>
-                      <th>Plan ID</th>
-                      <th>Name</th>
-                      <th>Price</th>
-                      <th>SMS Offered</th>
-                      <th>Minutes Offered</th>
-                      <th>Data Offered</th>
-                      <th>Description</th>
-                  </tr>
-              </thead>
-              <tbody>
-                  {unsubscribedPlans.map((plan, index) => (
-                      <tr key={index}>
-                          <td>{plan.planID}</td>
-                          <td>{plan.name}</td>
-                          <td>{plan.price}</td>
-                          <td>{plan.SMS_offered}</td>
-                          <td>{plan.minutes_offered}</td>
-                          <td>{plan.data_offered}</td>
-                          <td>{plan.description}</td>
-                      </tr>
-                  ))}
-              </tbody>
           </table>
         )}
       </section>
