@@ -46,6 +46,9 @@ builder.Services.AddScoped<GetConsumption>(provider => new GetConsumption(connec
 builder.Services.AddScoped<CashbackRepository>(provider => new CashbackRepository(connectionString));
 builder.Services.AddScoped<GetAccountPaymentPoints>(provider => new GetAccountPaymentPoints(connectionString));
 builder.Services.AddScoped<CashbackAmountRepository>(provider => new CashbackAmountRepository(connectionString));
+builder.Services.AddScoped<ViewAllOfferedUnsubscribedPlans>(provider => new ViewAllOfferedUnsubscribedPlans(connectionString));
+builder.Services.AddScoped<ViewAllCurrentMonthPlanUsages>(provider => new ViewAllCurrentMonthPlanUsages(connectionString));
+builder.Services.AddScoped<ViewAllCashbackTransactions>(provider => new ViewAllCashbackTransactions(connectionString));
 
 
 

@@ -4,12 +4,18 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './customercss.module.css'; // Import the CSS module
+import { useSession } from "../../context/SessionContext";
 
 function CustomerPage() {
+    const { user } = useSession();
+    var mobileNo = user.mobileNumber;
     const navigate = useNavigate();
     // State variables
     const [servicePlans, setServicePlans] = useState([]);
     const [planConsumption, setPlanConsumption] = useState([]);
+    const [unsubscribedPlans, setUnsubscribedPlans] = useState([]);
+    const [currentMonthPlanUsage, setCurrentMonthPlanUsage] = useState([]);
+    const [cashbackTransactions, setCashbackTransactions] = useState([]);
     const setError = async(err) => {
       alert(err);
     };
@@ -30,6 +36,9 @@ function CustomerPage() {
   useEffect(() => {
       fetchOfferedServicePlans();
       fetchTotalPlanConsumption();
+      fetchUnsubscribedPlans();
+      fetchCurrentMonthPlanUsages();
+      fetchCashbackTransactions();
   }, []);
 
   const fetchOfferedServicePlans = async () => {
@@ -63,6 +72,47 @@ function CustomerPage() {
     }
   };
 
+  const fetchUnsubscribedPlans = async () => {
+    try {
+      setLoading(true);
+        const response = await axios.get(`${apiUrl}gaafar/unsubscribed-plans`, {
+            params: { mobileNo },
+        });
+      setUnsubscribedPlans(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch unsubscribed plans.');
+      setLoading(false);
+    }
+  };
+
+  const fetchCurrentMonthPlanUsages = async () => {
+    try {
+      setLoading(true);
+        const response = await axios.get(`${apiUrl}gaafar/current-month-plan-usages`, {
+            params: { mobileNo },
+        });
+      setCurrentMonthPlanUsage(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch current month plan usage.');
+      setLoading(false);
+    }
+  };
+
+  const fetchCashbackTransactions = async () => {
+    try {
+      setLoading(true);
+        const response = await axios.get(`${apiUrl}gaafar/cashback-transactions`, {
+            params: { mobileNo },
+        });
+      setCashbackTransactions(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch cashback transactions.');
+      setLoading(false);
+    }
+  };
 
   return (
     <div>
@@ -99,6 +149,87 @@ function CustomerPage() {
             ))}
           </tbody>
         </table>
+      </section>
+
+      {/* Unsubscribed plans */}
+      <section>
+        <h2>Unsubcribed Plans</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Plan ID</th>
+                      <th>Name</th>
+                      <th>Price</th>
+                      <th>SMS Offered</th>
+                      <th>Minutes Offered</th>
+                      <th>Data Offered</th>
+                      <th>Description</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {unsubscribedPlans.map((plan, index) => (
+                      <tr key={index}>
+                          <td>{plan.planID}</td>
+                          <td>{plan.name}</td>
+                          <td>{plan.price}</td>
+                          <td>{plan.SMS_offered}</td>
+                          <td>{plan.minutes_offered}</td>
+                          <td>{plan.data_offered}</td>
+                          <td>{plan.description}</td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
+      </section>
+
+       {/* Current Month Plan Usage */}
+      <section>
+        <h2>Current Month Plan Usage</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Data Consumption</th>
+                      <th>Minutes Used</th>
+                      <th>SMS Sent</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {currentMonthPlanUsage.map((consumption, index) => (
+                      <tr key={index}>
+                          <td>{consumption.data_consumption}</td>
+                          <td>{consumption.minutes_used}</td>
+                          <td>{consumption.SMS_sent}</td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
+      </section>
+
+      {/* Cashback transactions */}
+      <section>
+        <h2>Cashback Transactions</h2>
+          <table>
+              <thead>
+                  <tr>
+                      <th>Cashback ID</th>
+                      <th>Benefit ID</th>
+                      <th>Wallet ID</th>
+                      <th>Amount</th>
+                      <th>Credit Date</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  {cashbackTransactions.map((cashback, index) => (
+                      <tr key={index}>
+                          <td>{cashback.cashbackID}</td>
+                          <td>{cashback.benefitID}</td>
+                          <td>{cashback.walletID}</td>
+                          <td>{cashback.amount}</td>
+                          <td>{new Date(cashback.credit_date).toLocaleDateString()}</td>
+                      </tr>
+                  ))}
+              </tbody>
+          </table>
       </section>
 
       {/* Total Plan Consumption */}
