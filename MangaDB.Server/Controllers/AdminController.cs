@@ -25,6 +25,9 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly CashbackRepository _cashbackRepository;
         private readonly GetAccountPaymentPoints _getAccountPaymentPoints;
         private readonly CashbackAmountRepository _cashbackReAmountpository;
+        private readonly WalletTransferAmountRepository _walletTransferAmountRepository;
+        private readonly WalletLinkedRepository _walletLinkedRepository;
+        private readonly UpdatePointsRepository _updatePointsRepository;
 
         public AdminController(
             ViewCustomerProfilesRepository customerProfilesRepository,
@@ -40,7 +43,10 @@ namespace ControllersMangaDB.Server.Controllers
             GetAccountPayments getAccountPayments,
             CashbackRepository cashbackRepository,
             GetAccountPaymentPoints getAccountPaymentPoints,
-            CashbackAmountRepository cashbackReAmountpository)
+            CashbackAmountRepository cashbackReAmountpository,
+            WalletTransferAmountRepository walletTransferAmountRepository,
+            WalletLinkedRepository walletLinkedRepository,
+            UpdatePointsRepository updatePointsRepository)
         {
             _customerProfilesRepository = customerProfilesRepository;
             _physicalStoresRepository = physicalStoresRepository;
@@ -56,6 +62,9 @@ namespace ControllersMangaDB.Server.Controllers
             _cashbackRepository = cashbackRepository;
             _getAccountPaymentPoints = getAccountPaymentPoints;
             _cashbackReAmountpository = cashbackReAmountpository;
+            _walletTransferAmountRepository = walletTransferAmountRepository;
+            _walletLinkedRepository = walletLinkedRepository;
+            _updatePointsRepository = updatePointsRepository;
         }
 
         // 2. View details for all customer profiles along with their active accounts.
@@ -341,6 +350,82 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
+        [HttpGet("average-transaction/{walletID:int}/{startDate:datetime}/{endDate:datetime}")]
+        public async Task<IActionResult> GetAverageTransactionAmount(
+            int walletID,
+            DateTime startDate,
+            DateTime endDate)
+        {
+            try
+            {
+                var averageAmount = await _walletTransferAmountRepository.GetAverageTransactionAmountAsync(walletID, startDate, endDate);
+                return Ok(new { WalletID = walletID, AverageAmount = averageAmount });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = "An error occurred while processing your request.", Details = ex.Message });
+            }
+        }
+
+        [HttpGet("check-mobile/{mobileNumber}")]
+        public IActionResult CheckMobileNumber(string mobileNumber)
+        {
+            // Validate mobile number format
+            if (string.IsNullOrWhiteSpace(mobileNumber) || mobileNumber.Length != 11)
+            {
+                return BadRequest("Invalid mobile number format.");
+            }
+
+            try
+            {
+                bool isLinked = _walletLinkedRepository.IsMobileNumberLinkedToWallet(mobileNumber);
+                if (isLinked)
+                {
+                    return Ok(new { Message = "Mobile number is linked to a wallet." });
+                }
+                else
+                {
+                    return NotFound(new { Message = "Mobile number is not linked to a wallet." });
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any errors
+                return StatusCode(500, new { Message = "An error occurred while processing your request.", Error = ex.Message });
+            }
+        }
+
+        [HttpGet("update-point/{mobileNumber}")]
+        public async Task<IActionResult> UpdatePoints(string mobileNumber)
+        {
+            // Validate input
+            if (string.IsNullOrWhiteSpace(mobileNumber) || mobileNumber.Length != 11)
+            {
+                return BadRequest(new { Message = "Invalid mobile number format." });
+            }
+
+            try
+            {
+                bool success = await _updatePointsRepository.UpdatePointsAsync(mobileNumber);
+
+                if (success)
+                {
+                    return Ok(new { Message = "Points updated successfully." });
+                }
+                else
+                {
+                    return StatusCode(500, new { Message = "Failed to update points." });
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.Error.WriteLine($"Error: {ex.Message}\n{ex.StackTrace}");
+                return StatusCode(500, new { Message = "An error occurred.", Error = ex.Message });
+            }
+        }
+
+
 
     }
 

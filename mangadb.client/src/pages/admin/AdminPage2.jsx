@@ -18,6 +18,20 @@ function Admin2() {
     const [paymentPointsError, setPaymentPointsError] = useState('');
     const [walletID, setWalletID] = useState('');
     const [planID, setPlanID] = useState('');
+    const [walletIDForAverageTransaction, setWalletIDForAverageTransaction] = useState('');
+    const [startDate, setStartDate] = useState('');
+    const [endDate, setEndDate] = useState('');
+    const [averageTransactionAmount, setAverageTransactionAmount] = useState(null);
+    const [averageError, setAverageError] = useState('');
+    const [loadingAverageTransaction, setLoadingAverageTransaction] = useState(false);
+    const [mobileNumber2, setMobileNumber2] = useState('');
+    const [mobileCheckMessage, setMobileCheckMessage] = useState('');
+    const [mobileCheckError, setMobileCheckError] = useState('');
+    const [mobileNumber3, setMobileNumber3] = useState('');
+    const [updatePointsMessage, setUpdatePointsMessage] = useState('');
+    const [updatePointsError, setUpdatePointsError] = useState('');  // Renamed error to updatePointsError
+    const [updatePointsLoading, setUpdatePointsLoading] = useState(false);  // Renamed loading to updatePointsLoading
+
 
     const apiUrl = 'https://localhost:7281/api/admin';
 
@@ -130,6 +144,95 @@ function Admin2() {
             setLoading(false);
         }
     };
+
+    // Fetch average transaction
+    const handleFetchAverageTransaction = async (e) => {
+        e.preventDefault();
+        setAverageError('');
+        setAverageTransactionAmount(null);
+        setLoadingAverageTransaction(true);
+
+        if (!walletIDForAverageTransaction || !startDate || !endDate) {
+            setAverageError('Please provide Wallet ID, Start Date, and End Date.');
+            setLoadingAverageTransaction(false);
+            return;
+        }
+
+        if (new Date(startDate) > new Date(endDate)) {
+            setAverageError('Start Date cannot be later than End Date.');
+            setLoadingAverageTransaction(false);
+            return;
+        }
+
+        try {
+            const response = await axios.get(`${apiUrl}/average-transaction/${walletIDForAverageTransaction}/${startDate}/${endDate}`);
+
+            if (response.data.averageAmount === 0) {
+                setAverageError('The Average Transaction Amount is 0. This may indicate that the Wallet ID is incorrect or there are no transactions.');
+            } else {
+                setAverageTransactionAmount(response.data);
+            }
+        } catch (err) {
+            setAverageError('Failed to fetch average transaction amount. Please try again.');
+        } finally {
+            setLoadingAverageTransaction(false);
+        }
+    };
+
+
+    // Function to handle mobile number check
+    const handleCheckMobileNumber = async (e) => {
+        e.preventDefault();
+        setMobileCheckMessage('');
+        setMobileCheckError('');
+
+        if (!mobileNumber2 || mobileNumber2.length !== 11) {
+            setMobileCheckError('Invalid mobile number format. Please enter an 11-digit number.');
+            return;
+        }
+
+        try {
+            const response = await axios.get(`${apiUrl}/check-mobile/${mobileNumber2}`);
+
+            // Set the message from the response JSON
+            setMobileCheckMessage(response.data.message);
+        } catch (err) {
+            if (err.response && err.response.status === 404) {
+                setMobileCheckMessage(err.response.data.message);
+            } else {
+                setMobileCheckError('An error occurred while checking the mobile number.');
+            }
+        }
+    };
+
+    const handleUpdatePoints = async (e) => {
+        e.preventDefault();
+
+        // Validate mobile number
+        if (mobileNumber3.length !== 11) {
+            setUpdatePointsError('Invalid mobile number. Please enter an 11-digit mobile number.');
+            return;
+        }
+
+        setUpdatePointsLoading(true);
+        setUpdatePointsMessage('');
+        setUpdatePointsError('');
+
+        try {
+            const response = await axios.get(`${apiUrl}/update-point/${mobileNumber3}`);
+
+            if (response.status === 200) {
+                setUpdatePointsMessage('Points updated successfully!');
+            } else {
+                setUpdatePointsError(response.data.Message || 'Failed to update points.');
+            }
+        } catch (err) {
+            setUpdatePointsError('An error occurred while updating points. Please try again.');
+        } finally {
+            setUpdatePointsLoading(false);
+        }
+    };
+
 
 
     return (
@@ -299,6 +402,89 @@ function Admin2() {
                         <h3>Cashback Amount: {cashbackAmount}</h3> {/* Show the actual cashback amount */}
                     </div>
                 )}
+            </section>
+
+            {/* Average Transaction */}
+            <section>
+                <h2>Fetch Average Transaction</h2>
+                <form onSubmit={handleFetchAverageTransaction} className={styles.form}>
+                    <div>
+                        <label>Wallet ID:</label>
+                        <input
+                            type="number"
+                            value={walletIDForAverageTransaction}
+                            onChange={(e) => setWalletIDForAverageTransaction(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>Start Date:</label>
+                        <input
+                            type="date"
+                            value={startDate}
+                            onChange={(e) => setStartDate(e.target.value)}
+                        />
+                    </div>
+                    <div>
+                        <label>End Date:</label>
+                        <input
+                            type="date"
+                            value={endDate}
+                            onChange={(e) => setEndDate(e.target.value)}
+                        />
+                    </div>
+                    <button type="submit">Fetch Average Transaction</button>
+                </form>
+                {loadingAverageTransaction && <p>Loading...</p>}
+                {averageError && <p style={{ color: 'red' }}>{averageError}</p>}
+                {averageTransactionAmount !== null && averageTransactionAmount != 0 && <p>Average Transaction Amount: {averageTransactionAmount.averageAmount}</p>}
+            </section>
+
+            <section>
+                <h2>Check if Mobile Number is Linked to Wallet</h2>
+                <form onSubmit={handleCheckMobileNumber} className={styles.form}>
+                    <div>
+                        <label>Mobile Number:</label>
+                        <input
+                            type="text"
+                            value={mobileNumber2}
+                            onChange={(e) => setMobileNumber2(e.target.value)}
+                            placeholder="Enter 11-digit mobile number"
+                            required
+                        />
+                    </div>
+                    <button type="submit">Check Mobile Number</button>
+                </form>
+
+                {/* Display error message if any */}
+                {mobileCheckError && <p style={{ color: 'red' }}>{mobileCheckError}</p>}
+
+                {/* Display success or failure message */}
+                {mobileCheckMessage && <p>{mobileCheckMessage}</p>}
+
+            </section>
+
+            <section>
+                <h1>Update Points</h1>
+
+                <form onSubmit={handleUpdatePoints} className={styles.form}>
+                    <div>
+                        <label>Mobile Number:</label>
+                        <input
+                            type="text"
+                            value={mobileNumber3}
+                            onChange={(e) => setMobileNumber3(e.target.value)}
+                            placeholder="Enter 11-digit mobile number"
+                            required
+                        />
+                    </div>
+                    <button type="submit" disabled={updatePointsLoading}>Update Points</button>  {/* Updated loading state name */}
+                </form>
+
+                {updatePointsLoading && <p>Loading...</p>}  {/* Updated loading state name */}
+
+                {/* Display messages */}
+                {updatePointsMessage && <p style={{ color: 'green' }}>{updatePointsMessage}</p>}  {/* Success message */}
+                {updatePointsError && <p style={{ color: 'red' }}>{updatePointsError}</p>}  {/* Error message */}
             </section>
 
         </div>

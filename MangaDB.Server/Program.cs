@@ -46,6 +46,9 @@ builder.Services.AddScoped<GetConsumption>(provider => new GetConsumption(connec
 builder.Services.AddScoped<CashbackRepository>(provider => new CashbackRepository(connectionString));
 builder.Services.AddScoped<GetAccountPaymentPoints>(provider => new GetAccountPaymentPoints(connectionString));
 builder.Services.AddScoped<CashbackAmountRepository>(provider => new CashbackAmountRepository(connectionString));
+builder.Services.AddScoped<WalletTransferAmountRepository>(provider => new WalletTransferAmountRepository(connectionString));
+builder.Services.AddScoped<WalletLinkedRepository>(provider => new WalletLinkedRepository(connectionString));
+builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsRepository(connectionString));
 
 
 var app = builder.Build();
