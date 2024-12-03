@@ -49,15 +49,6 @@ builder.Services.AddScoped<CashbackAmountRepository>(provider => new CashbackAmo
 builder.Services.AddScoped<ViewAllOfferedUnsubscribedPlans>(provider => new ViewAllOfferedUnsubscribedPlans(connectionString));
 builder.Services.AddScoped<ViewAllCurrentMonthPlanUsages>(provider => new ViewAllCurrentMonthPlanUsages(connectionString));
 builder.Services.AddScoped<ViewAllCashbackTransactions>(provider => new ViewAllCashbackTransactions(connectionString));
-
-
-
-
-
-
-
-
-
 builder.Services.AddScoped<WalletTransferAmountRepository>(provider => new WalletTransferAmountRepository(connectionString));
 builder.Services.AddScoped<WalletLinkedRepository>(provider => new WalletLinkedRepository(connectionString));
 builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsRepository(connectionString));
