@@ -21,6 +21,18 @@ const PrivateRoute = ({ children }) => {
 
     return children;
 };
+const LoginRoute = ({ children }) => {
+    const { user } = useSession();
+
+    if (user && user.role==="admin") {
+        return <Navigate to="/admin" />;
+    }
+    if (user && user.role==="user") {
+        return <Navigate to="/customer" />;
+    }
+
+    return children;
+};
 
 function App() {
     return (
@@ -30,18 +42,18 @@ function App() {
                 <Routes>
                     {/* Public Routes */}
                     <Route path="/" element={<Home />} />
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/login" element={
+                        <LoginRoute>
+                            <Login /> 
+                            </LoginRoute>
+                            } 
+                            />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/test" element={<TestPage />} />
                     {/* Private Route for About */}
                     <Route
                         path="/about"
-                        element={
-                            <PrivateRoute>
-                                <About />
-                            </PrivateRoute>
-                        }
-                    />
+                        element={<About />}/>
 
                     {/* Admin Route */}
                     <Route

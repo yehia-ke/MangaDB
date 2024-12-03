@@ -40,7 +40,7 @@ const LoginPage = () => {
       });
 
       if (response.status === 200) {
-        login({ ...response.data, role: "user" }); // Assume API returns user data
+        login({ ...response.data, role: "user", mobileNumber: mobileNumber }); // Assume API returns user data
         setLoading(false);
         navigate("/customer"); // Redirect regular users
       }
