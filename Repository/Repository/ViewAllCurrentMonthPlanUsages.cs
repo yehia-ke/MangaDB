@@ -6,46 +6,48 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-    public class ViewAllOfferedUnsubscribedPlans
+    public class ViewAllCurrentMonthPlanUsages
     {
         private readonly string _connectionString;
 
-        public ViewAllOfferedUnsubscribedPlans(string connectionString)
+        public ViewAllCurrentMonthPlanUsages(string connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<List<Dictionary<string, object>>> GetAllOfferedUnsubscribedPlans(string mobileNo)
+        public async Task<List<Dictionary<string, object>>> GetAllCurrentMonthPlanUsages(string mobileNo)
         {
-            var unsubscribedPlans = new List<Dictionary<string, object>>();
+            var currentMonthPlanUsages = new List<Dictionary<string, object>>();
 
             try
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                var command = new SqlCommand($"EXEC Unsubscribed_Plans @mobile_num = '{mobileNo}'", connection);
+                var command = new SqlCommand("SELECT * FROM Usage_Plan_CurrentMonth(@mobile_num)", connection);
+
+                command.Parameters.AddWithValue("@mobile_num", mobileNo);
 
                 using var reader = await command.ExecuteReaderAsync();
                 
                 while (await reader.ReadAsync())
                 {
-                    var unsubscribedPlan = new Dictionary<string, object>();
+                    var currentMonthPlanUsage = new Dictionary<string, object>();
                     for (int i = 0; i < reader.FieldCount; i++)
                     {
-                        unsubscribedPlan[reader.GetName(i)] = reader.GetValue(i);
+                        currentMonthPlanUsage[reader.GetName(i)] = reader.GetValue(i);
                     }
-                    unsubscribedPlans.Add(unsubscribedPlan);
+                    currentMonthPlanUsages.Add(currentMonthPlanUsage);
                 }
                 
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"An error occurred while retrieving all offered unsubscribed plans: {ex.Message}");
+                Console.Error.WriteLine($"An error occurred while retrieving all current month plan usages: {ex.Message}");
                 throw;
             }
 
-            return unsubscribedPlans;
+            return currentMonthPlanUsages;
         }
     }
 }

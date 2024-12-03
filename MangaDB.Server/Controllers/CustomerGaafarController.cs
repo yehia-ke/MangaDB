@@ -14,17 +14,23 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewAllOfferedServicePlans _viewAllOfferedServicePlans;
         private readonly GetConsumption _getConsumption;
         private readonly ViewAllOfferedUnsubscribedPlans _viewAllOfferedUnsubscribedPlans;
+        private readonly ViewAllCurrentMonthPlanUsages _viewAllCurrentMonthPlanUsages;
+        private readonly ViewAllCashbackTransactions _viewAllCashbackTransactions;
 
         public CustomerGaafarController(
             ViewAllOfferedServicePlans viewAllOfferedServicePlans
             , GetConsumption getConsumption
             , ViewAllOfferedUnsubscribedPlans viewAllOfferedUnsubscribedPlans
+            , ViewAllCurrentMonthPlanUsages viewAllCurrentMonthPlanUsages
+            , ViewAllCashbackTransactions viewAllCashbackTransactions
 
             )
         {
             _viewAllOfferedServicePlans = viewAllOfferedServicePlans;
             _getConsumption = getConsumption;
             _viewAllOfferedUnsubscribedPlans = viewAllOfferedUnsubscribedPlans;
+            _viewAllCurrentMonthPlanUsages = viewAllCurrentMonthPlanUsages;
+            _viewAllCashbackTransactions = viewAllCashbackTransactions;
         }
 
         // 2. View details for all offered service plans.
@@ -70,11 +76,6 @@ namespace ControllersMangaDB.Server.Controllers
         [Route("unsubscribed-plans")]
         public async Task<IActionResult> GetUnsubscribedPlans([FromQuery] string mobileNo)
         {
-            if (string.IsNullOrWhiteSpace(mobileNo))
-            {
-                return BadRequest(new { message = "Mobile Number required." });
-            }
-
             try
             {
                 var unsubscribedPlans = await _viewAllOfferedUnsubscribedPlans.GetAllOfferedUnsubscribedPlans(mobileNo);
@@ -85,20 +86,37 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving plan consumption." });
             }
         }
+
+        // 5. View details for all current month plan usage.
+        [HttpGet]
+        [Route("current-month-plan-usages")]
+        public async Task<IActionResult> GetCurrentMonthPlanUsages([FromQuery] string mobileNo)
+        {
+            try
+            {
+                var currentMonthPlanUsages = await _viewAllCurrentMonthPlanUsages.GetAllCurrentMonthPlanUsages(mobileNo);
+                return Ok(currentMonthPlanUsages);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving current month plan usage." });
+            }
+        }
+
+        // 6. View details for all cashback transactions.
+        [HttpGet]
+        [Route("cashback-transactions")]
+        public async Task<IActionResult> GetCashbackTransactions([FromQuery] string mobileNo)
+        {
+            try
+            {
+                var cashbackTransactions = await _viewAllCashbackTransactions.GetAllCashbackTransactions(mobileNo);
+                return Ok(cashbackTransactions);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = ex });
+            }
+        }
     }
-
-    // DTO for Get Plan Consumption Request
-    public class GetPlanConsumptionRequest
-    {
-        [Required]
-        public string plan_name { get; set; }
-        [Required]
-        public DateTime start_date { get; set; }
-        [Required]
-        public DateTime end_date { get; set; }
-    }
-
-   
-
-
 }
