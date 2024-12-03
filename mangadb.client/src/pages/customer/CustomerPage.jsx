@@ -4,8 +4,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import styles from './customercss.module.css'; // Import the CSS module
+import { useSession } from "../../context/SessionContext";
 
 function CustomerPage() {
+  const { user } = useSession();
     const navigate = useNavigate();
     // State variables
     const [servicePlans, setServicePlans] = useState([]);
