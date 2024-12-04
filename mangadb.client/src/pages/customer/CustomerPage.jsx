@@ -365,17 +365,17 @@ function CustomerPage() {
                   
                   <button type="submit">Fetch Amount of Unresolved Tickets</button>
               </form>
-              {unresolvedTickets.length >= 0 && (
+              {unresolvedTickets.length > 0 && (
                   <table>
                       <thead>
                           <tr>
-                              <th>mos zebi  a7a</th>
+                              <th>Number of Unresolved Tickets</th>
                           </tr>
                       </thead>
                       <tbody>
                           {unresolvedTickets.map((ticket, index) => (
                               <tr key={index}>
-                                  <td>{ticket.count}</td>
+                                  <td>{ticket[""]}</td>
                               </tr>
                           ))}
                       </tbody>
