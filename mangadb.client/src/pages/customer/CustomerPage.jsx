@@ -31,7 +31,7 @@ function CustomerPage() {
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
     const [nid, setNid] = useState('')
-    const [planName, setPlan_name] = useState('')
+    const [plan__name, setPlan_name] = useState('')
 
   // Error and loading states
   const [loading, setLoading] = useState(false);
@@ -127,14 +127,14 @@ function CustomerPage() {
 
     const fetchRemainingAmountPlan = async (e) => { //remaining plan amount
         e.preventDefault();
-        if (!planName) {
+        if (!plan__name) {
             setError('Please provide a Plan Name.');
             return;
         }
         try {
             setLoading(true);
             const response = await axios.get(`${apiUrl}hassan/remaining-amount`, {
-                params: { mobileNo, planName },
+                params: { mobileNo, plan__name },
             });
             setRemainingAmountPlan(response.data);
             setLoading(false);
@@ -467,7 +467,7 @@ function CustomerPage() {
                       <label>Plan name:</label>
                       <input
                           type="text"
-                          value={planName}
+                          value={plan__name}
                           onChange={(e) => setPlan_name(e.target.value)}
                       />
                   </div>
@@ -484,7 +484,7 @@ function CustomerPage() {
                       <tbody>
                           {remainingAmountPlan.map((amount, index) => (
                               <tr key={index}>
-                                  <td>{amount[""]}</td>
+                                  <td>{amount.RemainingAmount}</td>
                               </tr>
                           ))}
                       </tbody>

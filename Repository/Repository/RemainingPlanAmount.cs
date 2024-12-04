@@ -14,7 +14,7 @@ namespace Repository.Repository
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
 
-        public async Task<List<Dictionary<string, object>>> GetRemainingPlanAmount(string mobileNo, string plan_name)
+        public async Task<object> GetRemainingPlanAmount(string mobileNo, string planName)
         {
             var remainingAmounts = new List<Dictionary<string, object>>();
 
@@ -23,12 +23,13 @@ namespace Repository.Repository
                 using var connection = new SqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                var commandText = "SELECT dbo.Remaining_plan_amount(@mobile_num, @plan_name)";
-                using var command = new SqlCommand(commandText, connection);
+                var command = new SqlCommand("SELECT dbo.Remaining_plan_amount(@mobile_num, @plan_name) AS RemainingAmount",connection);
+
                 command.Parameters.AddWithValue("@mobile_num", mobileNo);
-                command.Parameters.AddWithValue("@plan_name", plan_name);
+                command.Parameters.AddWithValue("@plan_name", planName);
 
                 using var reader = await command.ExecuteReaderAsync();
+
                 while (await reader.ReadAsync())
                 {
                     var remainingAmount = new Dictionary<string, object>();

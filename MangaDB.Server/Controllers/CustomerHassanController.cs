@@ -84,16 +84,16 @@ namespace ControllersMangaDB.Server.Controllers
         // 4. View remaining plan amount.
         [HttpGet]
         [Route("remaining-amount")]
-        public async Task<IActionResult> GetRemainingPlanAmount([FromQuery] string mobileNo, [FromQuery] string plan_name)
+        public async Task<IActionResult> GetRemainingPlanAmount([FromQuery] string mobileNo, [FromQuery] string plan__name)
         {
-            if (string.IsNullOrWhiteSpace(plan_name))
+            if (string.IsNullOrWhiteSpace(plan__name))
             {
                 return BadRequest(new { message = "Plan name is required." });
             }
 
             try
             {
-                var remainingPlanAmount = await _viewRemainingPlanAmount.GetRemainingPlanAmount(mobileNo, plan_name);
+                var remainingPlanAmount = await _viewRemainingPlanAmount.GetRemainingPlanAmount(mobileNo, plan__name);
                 return Ok(remainingPlanAmount);
             }
             catch (Exception)
