@@ -14,17 +14,23 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewAllActiveBenefits _viewAllActiveBenefits;
         private readonly ViewUnresolvedTickets _viewUnresolvedTickets;
         private readonly ViewHighestVoucher _viewHighestVoucher;
+        private readonly RemainingPlanAmount _viewRemainingPlanAmount;
+        private readonly ViewTopPayments _viewTopPayments;
 
         public CustomerHassanController(
             ViewAllActiveBenefits viewAllActiveBenefits,
             ViewUnresolvedTickets viewUnresolvedTickets,
-            ViewHighestVoucher viewHighestVoucher
+            ViewHighestVoucher viewHighestVoucher,
+            RemainingPlanAmount viewRemainingPlanAmount,
+            ViewTopPayments viewTopPayments
 
             )
         {
             _viewAllActiveBenefits = viewAllActiveBenefits;
             _viewUnresolvedTickets = viewUnresolvedTickets;
             _viewHighestVoucher = viewHighestVoucher;
+            _viewRemainingPlanAmount = viewRemainingPlanAmount;
+            _viewTopPayments = viewTopPayments;
         }
 
         // 1. View details for all active benefits.
@@ -72,6 +78,42 @@ namespace ControllersMangaDB.Server.Controllers
             catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred while retrieving your highest voucher." });
+            }
+        }
+
+        // 4. View remaining plan amount.
+        [HttpGet]
+        [Route("remaining-amount")]
+        public async Task<IActionResult> GetRemainingPlanAmount([FromQuery] string mobileNo, [FromQuery] string plan_name)
+        {
+            if (string.IsNullOrWhiteSpace(plan_name))
+            {
+                return BadRequest(new { message = "Plan name is required." });
+            }
+
+            try
+            {
+                var remainingPlanAmount = await _viewRemainingPlanAmount.GetRemainingPlanAmount(mobileNo, plan_name);
+                return Ok(remainingPlanAmount);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving remaining plan amount." });
+            }
+        }
+        // 3. View top payments.
+        [HttpGet]
+        [Route("top-payments")]
+        public async Task<IActionResult> GetTopPayments([FromQuery] string mobileNo)
+        {
+            try
+            {
+                var topPayment = await _viewTopPayments.GetTopPayments(mobileNo);
+                return Ok(topPayment);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving your top payments." });
             }
         }
     }
