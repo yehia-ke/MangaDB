@@ -18,6 +18,7 @@ function CustomerPage() {
     const [cashbackTransactions, setCashbackTransactions] = useState([]);
 
     const [benefits, setBenefits] = useState([]);
+    const [unresolvedTickets, setUnresolvedTickets] = useState([]);
     const setError = async(err) => {
       alert(err);
     };
@@ -26,6 +27,7 @@ function CustomerPage() {
     const [plan_name, setPlanName] = useState('');
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
+    const [nid, setNid] = useState('')
 
   // Error and loading states
   const [loading, setLoading] = useState(false);
@@ -42,6 +44,7 @@ function CustomerPage() {
       fetchCurrentMonthPlanUsages();
       fetchCashbackTransactions();
       fetchActiveBenefits();
+      fetchUnresolvedTickets();
   }, []);
 
   const fetchOfferedServicePlans = async () => {
@@ -67,6 +70,25 @@ function CustomerPage() {
       setLoading(false);
     }
     };
+
+    const fetchUnresolvedTickets = async (e) => {
+    e.preventDefault();
+    if (!nid) {
+        setError('Please provide a National ID.');
+        return;
+    }
+    try {
+      setLoading(true);
+        const response = await axios.get(`${apiUrl}hassan/unresolved-tickets`, {
+            params: { nid },
+        });
+      setUnresolvedTickets(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch unresolved tickets.');
+      setLoading(false);
+    }
+  };
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
@@ -325,6 +347,40 @@ function CustomerPage() {
                       ))}
                   </tbody>
               </table>
+          </section>
+
+
+          {/* Unresolved Tickets */}
+          <section>
+              <h2>Amount of Unresolved Tickets</h2>
+              <form onSubmit={fetchUnresolvedTickets} className={styles.form}>
+                  <div>
+                      <label>National ID:</label>
+                      <input
+                          type="text"
+                          value={nid}
+                          onChange={(e) => setNid(e.target.value)}
+                      />
+                  </div>
+                  
+                  <button type="submit">Fetch Amount of Unresolved Tickets</button>
+              </form>
+              {unresolvedTickets.length >= 0 && (
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>mos zebi  a7a</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {unresolvedTickets.map((ticket, index) => (
+                              <tr key={index}>
+                                  <td>{ticket.count}</td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+              )}
           </section>
       </div>
 

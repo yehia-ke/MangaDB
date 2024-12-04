@@ -12,15 +12,18 @@ namespace ControllersMangaDB.Server.Controllers
     public class CustomerHassanController : ControllerBase
     {
         private readonly ViewAllActiveBenefits _viewAllActiveBenefits;
+        private readonly ViewUnresolvedTickets _viewUnresolvedTickets;
         private readonly GetConsumption _getConsumption;
 
         public CustomerHassanController(
-            ViewAllActiveBenefits viewAllActiveBenefits
+            ViewAllActiveBenefits viewAllActiveBenefits,
+            ViewUnresolvedTickets viewUnresolvedTickets
             , GetConsumption getConsumption
 
             )
         {
             _viewAllActiveBenefits = viewAllActiveBenefits;
+            _viewUnresolvedTickets = viewUnresolvedTickets;
             _getConsumption = getConsumption;
         }
 
@@ -59,6 +62,21 @@ namespace ControllersMangaDB.Server.Controllers
             catch (Exception)
             {
                 return StatusCode(500, new { message = "An error occurred while retrieving plan consumption." });
+            }
+        }
+        // 2. View amount of unresolved tickets.
+        [HttpGet]
+        [Route("unresolved-tickets")]
+        public async Task<IActionResult> GetUnresolvedTickets([FromQuery] string NID)
+        {
+            try
+            {
+                var unresolvedTickets = await _viewUnresolvedTickets.GetUnresolvedTickets(NID);
+                return Ok(unresolvedTickets);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving amount of unresolved tickets." });
             }
         }
     }

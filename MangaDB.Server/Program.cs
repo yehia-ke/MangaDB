@@ -53,6 +53,7 @@ builder.Services.AddScoped<WalletTransferAmountRepository>(provider => new Walle
 builder.Services.AddScoped<WalletLinkedRepository>(provider => new WalletLinkedRepository(connectionString));
 builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsRepository(connectionString));
 builder.Services.AddScoped<ViewAllActiveBenefits>(provider => new ViewAllActiveBenefits(connectionString));
+builder.Services.AddScoped<ViewUnresolvedTickets>(provider => new ViewUnresolvedTickets(connectionString));
 
 var app = builder.Build();
 
