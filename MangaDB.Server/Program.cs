@@ -54,6 +54,7 @@ builder.Services.AddScoped<WalletLinkedRepository>(provider => new WalletLinkedR
 builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsRepository(connectionString));
 builder.Services.AddScoped<ViewAllActiveBenefits>(provider => new ViewAllActiveBenefits(connectionString));
 builder.Services.AddScoped<ViewUnresolvedTickets>(provider => new ViewUnresolvedTickets(connectionString));
+builder.Services.AddScoped<ViewHighestVoucher>(provider => new ViewHighestVoucher(connectionString));
 
 var app = builder.Build();
 

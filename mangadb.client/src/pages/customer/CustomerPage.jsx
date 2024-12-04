@@ -19,6 +19,7 @@ function CustomerPage() {
 
     const [benefits, setBenefits] = useState([]);
     const [unresolvedTickets, setUnresolvedTickets] = useState([]);
+    const [highestVoucher, setHighestVoucher] = useState([]);
     const setError = async(err) => {
       alert(err);
     };
@@ -45,6 +46,7 @@ function CustomerPage() {
       fetchCashbackTransactions();
       fetchActiveBenefits();
       fetchUnresolvedTickets();
+      fetchHighestVoucher();
   }, []);
 
   const fetchOfferedServicePlans = async () => {
@@ -71,7 +73,7 @@ function CustomerPage() {
     }
     };
 
-    const fetchUnresolvedTickets = async (e) => {
+    const fetchUnresolvedTickets = async (e) => { //amount of unresolved tickets
     e.preventDefault();
     if (!nid) {
         setError('Please provide a National ID.');
@@ -88,7 +90,22 @@ function CustomerPage() {
       setError('Failed to fetch unresolved tickets.');
       setLoading(false);
     }
-  };
+    };
+
+    const fetchHighestVoucher = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/highest-voucher`, {
+                params: { mobileNo },
+            });
+            setHighestVoucher(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch highest voucher.');
+            setLoading(false);
+        }
+    };
+    
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
@@ -382,6 +399,28 @@ function CustomerPage() {
                   </table>
               )}
           </section>
+
+          {/* Highest Voucher */}
+          <section>
+              <h2>Your Highest Voucher</h2>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Voucher ID</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {highestVoucher.map((voucher, index) => (
+                          <tr key={index}>
+                              <td>{voucher.voucherID}</td>
+                             
+                          </tr>
+                      ))}
+                  </tbody>
+              </table>
+          </section>
+          
       </div>
 
   );
