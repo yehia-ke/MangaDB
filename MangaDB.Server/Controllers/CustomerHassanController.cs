@@ -11,32 +11,32 @@ namespace ControllersMangaDB.Server.Controllers
     [Route("api/[controller]")]
     public class CustomerHassanController : ControllerBase
     {
-        private readonly ViewAllOfferedServicePlans _viewAllOfferedServicePlans;
+        private readonly ViewAllActiveBenefits _viewAllActiveBenefits;
         private readonly GetConsumption _getConsumption;
 
         public CustomerHassanController(
-            ViewAllOfferedServicePlans viewAllOfferedServicePlans
+            ViewAllActiveBenefits viewAllActiveBenefits
             , GetConsumption getConsumption
 
             )
         {
-            _viewAllOfferedServicePlans = viewAllOfferedServicePlans;
+            _viewAllActiveBenefits = viewAllActiveBenefits;
             _getConsumption = getConsumption;
         }
 
-        // 2. View details for all offered service plans.
+        // 1. View details for all active benefits.
         [HttpGet]
-        [Route("service-plans")]
-        public async Task<IActionResult> GetOfferedServicePlans()
+        [Route("benefits")]
+        public async Task<IActionResult> GetActiveBenefits()
         {
             try
             {
-                var servicePlans = await _viewAllOfferedServicePlans.GetAllOfferedServicePlansAsync();
-                return Ok(servicePlans);
+                var benefits = await _viewAllActiveBenefits.GetAllActiveBenefitsAsync();
+                return Ok(benefits);
             }
             catch (Exception)
             {
-                return StatusCode(500, new { message = "An error occurred while retrieving offered service plans." });
+                return StatusCode(500, new { message = "An error occurred while retrieving active benefits." });
             }
         }
 

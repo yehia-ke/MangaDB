@@ -52,7 +52,7 @@ builder.Services.AddScoped<ViewAllCashbackTransactions>(provider => new ViewAllC
 builder.Services.AddScoped<WalletTransferAmountRepository>(provider => new WalletTransferAmountRepository(connectionString));
 builder.Services.AddScoped<WalletLinkedRepository>(provider => new WalletLinkedRepository(connectionString));
 builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsRepository(connectionString));
-
+builder.Services.AddScoped<ViewAllActiveBenefits>(provider => new ViewAllActiveBenefits(connectionString));
 
 var app = builder.Build();
 

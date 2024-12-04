@@ -1170,8 +1170,8 @@ ALTER DATABASE Milestone2DB_24 SET SINGLE_USER WITH ROLLBACK IMMEDIATE;
 RESTORE DATABASE Milestone2DB_24
 FROM DISK = 'C:\SQLBackup\Backup_With_Values.BAK'
 WITH REPLACE,
-     MOVE 'Milestone2DB_24' TO 'C:\Users\\Milestone2DB_24.mdf',
-     MOVE 'Milestone2DB_24_log' TO 'C:\Users\\Milestone2DB_24_log.ldf';
+     MOVE 'Milestone2DB_24' TO 'C:\Users\START\Milestone2DB_24.mdf',
+     MOVE 'Milestone2DB_24_log' TO 'C:\Users\START\Milestone2DB_24_log.ldf';
 
 ALTER DATABASE Milestone2DB_24 SET MULTI_USER;
 -------------------------------------RUN THIS TO RESTORE DATABASE WITH VALUES-----------------

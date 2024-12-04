@@ -16,6 +16,8 @@ function CustomerPage() {
     const [unsubscribedPlans, setUnsubscribedPlans] = useState([]);
     const [currentMonthPlanUsage, setCurrentMonthPlanUsage] = useState([]);
     const [cashbackTransactions, setCashbackTransactions] = useState([]);
+
+    const [benefits, setBenefits] = useState([]);
     const setError = async(err) => {
       alert(err);
     };
@@ -39,6 +41,7 @@ function CustomerPage() {
       fetchUnsubscribedPlans();
       fetchCurrentMonthPlanUsages();
       fetchCashbackTransactions();
+      fetchActiveBenefits();
   }, []);
 
   const fetchOfferedServicePlans = async () => {
@@ -51,7 +54,19 @@ function CustomerPage() {
       setError('Failed to fetch offered service plans.');
       setLoading(false);
     }
-  };
+    };
+
+  const fetchActiveBenefits = async () => {  //benefit view
+    try {
+      setLoading(true);
+      const response = await axios.get(`${apiUrl}hassan/benefits`);
+      setBenefits(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch active benefits.');
+      setLoading(false);
+    }
+    };
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
@@ -283,7 +298,36 @@ function CustomerPage() {
           </table>
         )}
       </section>
+
+          {/* Active Benefits */}
+          <section>
+              <h2>Active Benefits</h2>
+              <table>
+                  <thead>
+                      <tr>
+                          <th>Benefit ID</th>
+                          <th>Description</th>
+                          <th>Validity_Date</th>
+                          <th>Status</th>
+                          
+                      </tr>
+                  </thead>
+                  <tbody>
+                      {benefits.map((benefit, index) => (
+                          benefit.mobileNo === mobileNo ?( //checking that mobile no is equal to logged in no
+                          <tr key={index}>
+                              <td>{benefit.benefitID}</td>
+                              <td>{benefit.description}</td>
+                              <td>{benefit.validity_date}</td>
+                              <td>{benefit.status}</td>             
+                              </tr>)
+                          : null                          //else display nothing
+                      ))}
+                  </tbody>
+              </table>
+          </section>
       </div>
+
   );
 
 }
