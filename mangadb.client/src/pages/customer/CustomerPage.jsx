@@ -245,7 +245,7 @@ function CustomerPage() {
         }
     }
 
-    const renewSubscription = async () => {
+    const renewSubscription = async (e) => {
         e.preventDefault();
         if (!renewMobileNo || !renewAmount || !renewPaymentMethod || !renewPlanId) {
             setError('Please provide a valid Mobile Number, Amount, Payment Method, and Plan ID.');
@@ -253,12 +253,9 @@ function CustomerPage() {
         }
         try {
         setLoading(true);
-            const response = await axios.post(`${apiUrl}/renew-subscription`, {
-                mobileNo: renewMobileNo,
-                amount: parseFloat(renewAmount),
-                paymentMethod: renewPaymentMethod,
-                planId: parseInt(renewPlanId),
-            });
+            const response = await axios.post(
+                `${apiUrl}hamed/renew-subscription?MobileNo=${encodeURIComponent(renewMobileNo)}&Amount=${encodeURIComponent(parseFloat(renewAmount))}&PaymentMethod=${encodeURIComponent(renewPaymentMethod)}&PlanId=${encodeURIComponent(renewPlanId)}`);
+            setError("Subscription Renewed Successfully");
             setRenewSubscriptionMessage('Subscription Renewed Successfully.');
             setLoading(false);
         } catch (err) {
@@ -641,9 +638,6 @@ function CustomerPage() {
             </div>
             <button type="submit">Renew Subscription</button>
             </form>
-            {renewSubscriptionMessage && (
-            <p style={{ color: 'green' }}>{renewSubscriptionMessage}</p>
-            )}
         </section>
       </div>
 
