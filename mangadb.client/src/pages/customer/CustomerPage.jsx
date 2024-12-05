@@ -234,7 +234,9 @@ function CustomerPage() {
     const fetchSubscribedPlans5Months = async () => {
         try {
             setLoading(true);
-            const response = await axios.get(`${apiUrl}hamed/subscribed-plans-5-months`);
+            const response = await axios.get(`${apiUrl}hamed/subscribed-plans-5-months`,
+            { params: {mobileNo}
+        });
             setSubscribedPlans5Months(response.data);
             setLoading(false);
         } catch (err) {
