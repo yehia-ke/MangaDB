@@ -176,6 +176,7 @@ function CustomerPage() {
       setLoading(false);
     }
   };
+
     const fetchUnsubscribedPlans = async () => {
         try {
             setLoading(true);

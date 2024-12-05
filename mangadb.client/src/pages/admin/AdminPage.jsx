@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import styles from './admincss.module.css'; // Import the CSS module
+import styles from './admincss.module.css';
 
 function AdminPage() {
     const navigate = useNavigate();
@@ -21,34 +21,23 @@ function AdminPage() {
   const [date, setDate] = useState('');
   const [mobileNo, setMobileNo] = useState('');
   const [startDate, setStartDate] = useState('');
-  const [smsMobileNo, setSmsMobileNo] = useState(''); // For SMS Offers
-  const [removeMobileNo, setRemoveMobileNo] = useState(''); // For Remove Benefits
-  const [removePlanId, setRemovePlanId] = useState(''); // For Remove Benefits
+  const [smsMobileNo, setSmsMobileNo] = useState('');
+  const [removeMobileNo, setRemoveMobileNo] = useState('');
+  const [removePlanId, setRemovePlanId] = useState('');
 
-  // Error and loading states
+
   const [loading, setLoading] = useState(false);
-
-  // Message state for remove benefits success message
-  const [removeBenefitsMessage, setRemoveBenefitsMessage] = useState('');
-
-  // Base API URL
+  
   const apiUrl = 'https://localhost:7281/api/admin';
   const setError = async(err) => {
     alert(err);
   };
 
-  // Load initial data
+
   useEffect(() => {
-    // Fetch customer profiles
     fetchCustomerProfiles();
-
-    // Fetch physical stores with vouchers
     fetchPhysicalStores();
-
-    // Fetch resolved tickets
     fetchResolvedTickets();
-
-    // Fetch accounts with plans
     fetchAccountsWithPlans();
   }, []);
 
@@ -165,11 +154,10 @@ function AdminPage() {
     }
     try {
       setLoading(true);
-      const response = await axios.post(`${apiUrl}/benefits/remove`, {
-        mobileNo: removeMobileNo,
-        planId: parseInt(removePlanId),
-      });
-      setRemoveBenefitsMessage('Benefits removed successfully.');
+      const response = await axios.post(
+        `${apiUrl}/benefits/remove?mobileNo=${encodeURIComponent(removeMobileNo)}&planId=${encodeURIComponent(removePlanId)}`
+      );
+      setError('Successfully removed Benefit');
       setLoading(false);
     } catch (err) {
       setError('Failed to remove benefits.');
@@ -182,7 +170,7 @@ function AdminPage() {
       <h1>Admin Dashboard</h1>
       <button
                 className={styles.blackButton}
-                onClick={() => navigate('/admin2')} // Add navigation on button click
+                onClick={() => navigate('/admin2')}
             >
                 Go to Another Page
             </button>
@@ -390,30 +378,31 @@ function AdminPage() {
 
       {/* Remove Benefits */}
       <section>
-        <h2>Remove Benefits</h2>
-        <form onSubmit={removeBenefits} className={styles.form}>
-          <div>
-            <label>Mobile No:</label>
-            <input
-              type="text"
-              value={removeMobileNo}
-              onChange={(e) => setRemoveMobileNo(e.target.value)}
-            />
-          </div>
-          <div>
-            <label>Plan ID:</label>
-            <input
-              type="number"
-              value={removePlanId}
-              onChange={(e) => setRemovePlanId(e.target.value)}
-            />
-          </div>
-          <button type="submit">Remove Benefits</button>
-        </form>
-        {removeBenefitsMessage && (
-          <p style={{ color: 'green' }}>{removeBenefitsMessage}</p>
-        )}
-      </section>
+      <h2>Remove Benefits</h2>
+      <form onSubmit={removeBenefits} className={styles.form}>
+        <div>
+          <label>Mobile No:</label>
+          <input
+            type="text"
+            value={removeMobileNo}
+            onChange={(e) => setRemoveMobileNo(e.target.value)}
+            placeholder="Enter Mobile No"
+          />
+        </div>
+        <div>
+          <label>Plan ID:</label>
+          <input
+            type="number"
+            value={removePlanId}
+            onChange={(e) => setRemovePlanId(e.target.value)}
+            placeholder="Enter Plan ID"
+          />
+        </div>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Removing...' : 'Remove Benefits'}
+        </button>
+      </form>
+    </section>
 
       {/* SMS Offers */}
       <section>
