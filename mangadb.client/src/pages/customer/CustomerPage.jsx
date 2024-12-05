@@ -20,6 +20,8 @@ function CustomerPage() {
     const [benefits, setBenefits] = useState([]);
     const [unresolvedTickets, setUnresolvedTickets] = useState([]);
     const [highestVoucher, setHighestVoucher] = useState([]);
+    const [remainingAmountPlan, setRemainingAmountPlan] = useState([]);
+    const [topPayments, setTopPayments] = useState([]);
 
     const [shops, setShops] = useState([]);
 
@@ -32,6 +34,7 @@ function CustomerPage() {
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
     const [nid, setNid] = useState('')
+    const [plan__name, setPlan_name] = useState('')
 
     // Error and loading states
     const [loading, setLoading] = useState(false);
@@ -40,18 +43,20 @@ function CustomerPage() {
     // Base API URL
     const apiUrl = 'https://localhost:7281/api/customer';
 
-    // Load initial data
-    useEffect(() => {
-        fetchOfferedServicePlans();
-        fetchTotalPlanConsumption();
-        fetchUnsubscribedPlans();
-        fetchCurrentMonthPlanUsages();
-        fetchCashbackTransactions();
-        fetchActiveBenefits();
-        fetchUnresolvedTickets();
-        fetchHighestVoucher();
-        fetchShops();
-    }, []);
+  // Load initial data
+  useEffect(() => {
+      fetchOfferedServicePlans();
+      fetchTotalPlanConsumption();
+      fetchUnsubscribedPlans();
+      fetchCurrentMonthPlanUsages();
+      fetchCashbackTransactions();
+      fetchActiveBenefits();
+      fetchUnresolvedTickets();
+      fetchHighestVoucher();
+      fetchRemainingAmountPlan();
+      fetchTopPayments();
+      fetchShops();
+  }, []);
 
     const fetchOfferedServicePlans = async () => {
         try {
@@ -110,7 +115,58 @@ function CustomerPage() {
         }
     };
 
+    const fetchTopPayments = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/top-payments`, {
+                params: { mobileNo },
+            });
+            setTopPayments(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch your top payments.');
+            setLoading(false);
+        }
+    };
 
+    const fetchRemainingAmountPlan = async (e) => { //remaining plan amount
+        e.preventDefault();
+        if (!plan__name) {
+            setError('Please provide a Plan Name.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/remaining-amount`, {
+                params: { mobileNo, plan__name },
+            });
+            setRemainingAmountPlan(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch remaining amount for this plan.');
+            setLoading(false);
+        }
+    };
+    
+
+  const fetchTotalPlanConsumption = async (e) => {
+    e.preventDefault();
+    if (!plan_name || !start_date || !end_date) {
+        setError('Please provide a valid Plan ID and Date.');
+        return;
+    }
+    try {
+      setLoading(true);
+        const response = await axios.get(`${apiUrl}gaafar/consumption`, {
+            params: { plan_name,start_date,end_date },
+        });
+      setPlanConsumption(response.data);
+      setLoading(false);
+    } catch (err) {
+      setError('Failed to fetch total plan consumption.');
+      setLoading(false);
+    }
+  };
     const fetchTotalPlanConsumption = async (e) => {
         e.preventDefault();
         if (!plan_name || !start_date || !end_date) {
@@ -372,7 +428,7 @@ function CustomerPage() {
                           <tr key={index}>
                               <td>{benefit.benefitID}</td>
                               <td>{benefit.description}</td>
-                              <td>{benefit.validity_date}</td>
+                                  <td>{new Date(benefit.validity_date).toLocaleDateString()}</td>
                               <td>{benefit.status}</td>             
                               </tr>)
                           : null                          //else display nothing
@@ -417,7 +473,7 @@ function CustomerPage() {
 
           {/* Highest Voucher */}
           <section>
-              <h2>Your Highest Voucher</h2>
+              <h2>Highest Voucher</h2>
               <table>
                   <thead>
                       <tr>
@@ -434,6 +490,39 @@ function CustomerPage() {
                       ))}
                   </tbody>
               </table>
+          </section>
+
+          {/* Remaining Plan Amount */}
+          <section>
+              <h2>Remaining Plan Amount</h2>
+              <form onSubmit={fetchRemainingAmountPlan} className={styles.form}>
+                  <div>
+                      <label>Plan name:</label>
+                      <input
+                          type="text"
+                          value={plan__name}
+                          onChange={(e) => setPlan_name(e.target.value)}
+                      />
+                  </div>
+                  
+                  <button type="submit">Fetch Remaining Plan Amount</button>
+              </form>
+              {remainingAmountPlan.length > 0 && (
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>Remaining Amount</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {remainingAmountPlan.map((amount, index) => (
+                              <tr key={index}>
+                                  <td>{amount.RemainingAmount}</td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+              )}
           </section>
         {/* Shops */}
         <section>
