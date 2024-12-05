@@ -58,6 +58,7 @@ builder.Services.AddScoped<ViewHighestVoucher>(provider => new ViewHighestVouche
 builder.Services.AddScoped<RemainingPlanAmount>(provider => new RemainingPlanAmount(connectionString));
 builder.Services.AddScoped<ViewTopPayments>(provider => new ViewTopPayments(connectionString));
 builder.Services.AddScoped<ViewAllShops>(provider => new ViewAllShops(connectionString));
+builder.Services.AddScoped<ViewSubscribedPlans5Months>(provider => new ViewSubscribedPlans5Months(connectionString));
 
 var app = builder.Build();
 

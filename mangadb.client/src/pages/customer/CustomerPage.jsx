@@ -24,6 +24,8 @@ function CustomerPage() {
     const [topPayments, setTopPayments] = useState([]);
 
     const [shops, setShops] = useState([]);
+    const [subscribedPlans5Months, setSubscribedPlans5Months] = useState([]);
+    const [renewSubscriptionMessage, setRenewSubscriptionMessage] = useState([]);
 
     const setError = async (err) => {
         alert(err);
@@ -35,6 +37,11 @@ function CustomerPage() {
     const [end_date, setEnd_Date] = useState('');
     const [nid, setNid] = useState('')
     const [plan__name, setPlan_name] = useState('')
+    const [renewMobileNo, setRenewMobileNo] = useState(''); // For Renew Subscriptions
+    const [renewAmount, setRenewAmount] = useState(''); // For Renew subsriptions
+    const [renewPaymentMethod, setRenewPaymentMethod] = useState(''); // For Renew Subscriptions
+    const [renewPlanId, setRenewPlanId] = useState(''); // For Renew Subscriptions
+
 
     // Error and loading states
     const [loading, setLoading] = useState(false);
@@ -56,6 +63,8 @@ function CustomerPage() {
       fetchRemainingAmountPlan();
       fetchTopPayments();
       fetchShops();
+      fetchSubscribedPlans5Months();
+      renewSubscription();
   }, []);
 
     const fetchOfferedServicePlans = async () => {
@@ -167,25 +176,6 @@ function CustomerPage() {
       setLoading(false);
     }
   };
-    const fetchTotalPlanConsumption = async (e) => {
-        e.preventDefault();
-        if (!plan_name || !start_date || !end_date) {
-            setError('Please provide a valid Plan ID and Date.');
-            return;
-        }
-        try {
-            setLoading(true);
-            const response = await axios.get(`${apiUrl}gaafar/consumption`, {
-                params: { plan_name, start_date, end_date },
-            });
-            setPlanConsumption(response.data);
-            setLoading(false);
-        } catch (err) {
-            setError('Failed to fetch total plan consumption.');
-            setLoading(false);
-        }
-    };
-
     const fetchUnsubscribedPlans = async () => {
         try {
             setLoading(true);
@@ -236,6 +226,40 @@ function CustomerPage() {
             setLoading(false);
         } catch (err) {
             setError('Failed to fetch shops.');
+            setLoading(false);
+        }
+    }
+
+    const fetchSubscribedPlans5Months = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hamed/subscribed-plans-5-months`);
+            setSubscribedPlans5Months(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch subscribed plans in the past 5 months.');
+            setLoading(false);
+        }
+    }
+
+    const renewSubscription = async () => {
+        e.preventDefault();
+        if (!renewMobileNo || !renewAmount || !renewPaymentMethod || !renewPlanId) {
+            setError('Please provide a valid Mobile Number, Amount, Payment Method, and Plan ID.');
+            return;
+        }
+        try {
+        setLoading(true);
+            const response = await axios.post(`${apiUrl}/renew-subscription`, {
+                mobileNo: renewMobileNo,
+                amount: parseFloat(renewAmount),
+                paymentMethod: renewPaymentMethod,
+                planId: parseInt(renewPlanId),
+            });
+            setRenewSubscriptionMessage('Subscription Renewed Successfully.');
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to remove benefits.');
             setLoading(false);
         }
     }
@@ -546,7 +570,78 @@ function CustomerPage() {
                 </tbody>
             </table>
         </section>
-
+        {/* Subscribed Plans in the Past 5 Months */}
+        <section>
+            <h2>Subscribed Plans in the Past 5 Months</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Plan ID</th>
+                        <th>Name</th>
+                        <th>Price</th>
+                        <th>SMS Offered</th>
+                        <th>Minutes Offered</th>
+                        <th>Data Offered</th>
+                        <th>Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {subscribedPlans5Months.map((plan5Months, index) => (
+                        <tr key={index}>
+                            <td>{plan5Months.planID}</td>
+                            <td>{plan5Months.name}</td>
+                            <td>{plan5Months.price}</td>
+                            <td>{plan5Months.SMS_offered}</td>
+                            <td>{plan5Months.minutes_offered}</td>
+                            <td>{plan5Months.data_offered}</td>
+                            <td>{plan5Months.description}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
+        {/* Renew Subscription */}
+        <section>
+            <h2>Renew Subscription</h2>
+            <form onSubmit={renewSubscription} className={styles.form}>
+            <div>
+                <label>Mobile No:</label>
+                <input
+                type="text"
+                value={renewMobileNo}
+                onChange={(e) => setRenewMobileNo(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Amount:</label>
+                <input
+                type="number"
+                value={renewAmount}
+                onChange={(e) => setRenewAmount(e.target.value)}
+                />
+            </div>       
+            <div>
+                <label>Payment Method:</label>
+                <input
+                type="text"
+                value={renewPaymentMethod}
+                onChange={(e) => setRenewPaymentMethod(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Plan ID:</label>
+                <input
+                type="number"
+                value={renewPlanId}
+                onChange={(e) => setRenewPlanId(e.target.value)}
+                />
+            </div>
+            <button type="submit">Renew Subscription</button>
+            </form>
+            {renewSubscriptionMessage && (
+            <p style={{ color: 'green' }}>{renewSubscriptionMessage}</p>
+            )}
+        </section>
       </div>
 
   );
