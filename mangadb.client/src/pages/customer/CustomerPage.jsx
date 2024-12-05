@@ -20,76 +20,80 @@ function CustomerPage() {
     const [benefits, setBenefits] = useState([]);
     const [unresolvedTickets, setUnresolvedTickets] = useState([]);
     const [highestVoucher, setHighestVoucher] = useState([]);
-    const setError = async(err) => {
-      alert(err);
+
+    const [shops, setShops] = useState([]);
+
+    const setError = async (err) => {
+        alert(err);
     };
 
-  // Input states
+    // Input states
     const [plan_name, setPlanName] = useState('');
     const [start_date, setStart_Date] = useState('');
     const [end_date, setEnd_Date] = useState('');
     const [nid, setNid] = useState('')
 
-  // Error and loading states
-  const [loading, setLoading] = useState(false);
+    // Error and loading states
+    const [loading, setLoading] = useState(false);
 
 
-  // Base API URL
-  const apiUrl = 'https://localhost:7281/api/customer';
+    // Base API URL
+    const apiUrl = 'https://localhost:7281/api/customer';
 
-  // Load initial data
-  useEffect(() => {
-      fetchOfferedServicePlans();
-      fetchTotalPlanConsumption();
-      fetchUnsubscribedPlans();
-      fetchCurrentMonthPlanUsages();
-      fetchCashbackTransactions();
-      fetchActiveBenefits();
-      fetchUnresolvedTickets();
-      fetchHighestVoucher();
-  }, []);
+    // Load initial data
+    useEffect(() => {
+        fetchOfferedServicePlans();
+        fetchTotalPlanConsumption();
+        fetchUnsubscribedPlans();
+        fetchCurrentMonthPlanUsages();
+        fetchCashbackTransactions();
+        fetchActiveBenefits();
+        fetchUnresolvedTickets();
+        fetchHighestVoucher();
+        fetchShops();
+    }, []);
 
-  const fetchOfferedServicePlans = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${apiUrl}gaafar/service-plans`);
-      setServicePlans(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch offered service plans.');
-      setLoading(false);
-    }
+    const fetchOfferedServicePlans = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}gaafar/service-plans`);
+            setServicePlans(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch offered service plans.');
+            setLoading(false);
+        }
     };
 
-  const fetchActiveBenefits = async () => {  //benefit view
-    try {
-      setLoading(true);
-      const response = await axios.get(`${apiUrl}hassan/benefits`);
-      setBenefits(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch active benefits.');
-      setLoading(false);
-    }
+    const fetchActiveBenefits = async () => {  //benefit view
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/benefits`);
+            setBenefits(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch active benefits.');
+            setLoading(false);
+        }
     };
 
     const fetchUnresolvedTickets = async (e) => { //amount of unresolved tickets
-    e.preventDefault();
-    if (!nid) {
-        setError('Please provide a National ID.');
-        return;
-    }
-    try {
-      setLoading(true);
-        const response = await axios.get(`${apiUrl}hassan/unresolved-tickets`, {
-            params: { nid },
-        });
-      setUnresolvedTickets(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch unresolved tickets.');
-      setLoading(false);
-    }
+        e.preventDefault();
+        if (!nid) {
+            setError('Please provide a National ID.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/unresolved-tickets`, {
+                params: { nid },
+            });
+            setUnresolvedTickets(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch unresolved tickets.');
+            setLoading(false);
+        }
     };
 
     const fetchHighestVoucher = async () => {
@@ -105,69 +109,80 @@ function CustomerPage() {
             setLoading(false);
         }
     };
-    
 
-  const fetchTotalPlanConsumption = async (e) => {
-    e.preventDefault();
-    if (!plan_name || !start_date || !end_date) {
-        setError('Please provide a valid Plan ID and Date.');
-        return;
-    }
-    try {
-      setLoading(true);
-        const response = await axios.get(`${apiUrl}gaafar/consumption`, {
-            params: { plan_name,start_date,end_date },
-        });
-      setPlanConsumption(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch total plan consumption.');
-      setLoading(false);
-    }
-  };
 
-  const fetchUnsubscribedPlans = async () => {
-    try {
-      setLoading(true);
-        const response = await axios.get(`${apiUrl}gaafar/unsubscribed-plans`, {
-            params: { mobileNo },
-        });
-      setUnsubscribedPlans(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch unsubscribed plans.');
-      setLoading(false);
-    }
-  };
+    const fetchTotalPlanConsumption = async (e) => {
+        e.preventDefault();
+        if (!plan_name || !start_date || !end_date) {
+            setError('Please provide a valid Plan ID and Date.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}gaafar/consumption`, {
+                params: { plan_name, start_date, end_date },
+            });
+            setPlanConsumption(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch total plan consumption.');
+            setLoading(false);
+        }
+    };
 
-  const fetchCurrentMonthPlanUsages = async () => {
-    try {
-      setLoading(true);
-        const response = await axios.get(`${apiUrl}gaafar/current-month-plan-usages`, {
-            params: { mobileNo },
-        });
-      setCurrentMonthPlanUsage(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch current month plan usage.');
-      setLoading(false);
-    }
-  };
+    const fetchUnsubscribedPlans = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}gaafar/unsubscribed-plans`, {
+                params: { mobileNo },
+            });
+            setUnsubscribedPlans(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch unsubscribed plans.');
+            setLoading(false);
+        }
+    };
 
-  const fetchCashbackTransactions = async () => {
-    try {
-      setLoading(true);
-        const response = await axios.get(`${apiUrl}gaafar/cashback-transactions`, {
-            params: { mobileNo },
-        });
-      setCashbackTransactions(response.data);
-      setLoading(false);
-    } catch (err) {
-      setError('Failed to fetch cashback transactions.');
-      setLoading(false);
-    }
-  };
+    const fetchCurrentMonthPlanUsages = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}gaafar/current-month-plan-usages`, {
+                params: { mobileNo },
+            });
+            setCurrentMonthPlanUsage(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch current month plan usage.');
+            setLoading(false);
+        }
+    };
 
+    const fetchCashbackTransactions = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}gaafar/cashback-transactions`, {
+                params: { mobileNo },
+            });
+            setCashbackTransactions(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch cashback transactions.');
+            setLoading(false);
+        }
+    };
+
+    const fetchShops = async () => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hamed/shops`);
+            setShops(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch shops.');
+            setLoading(false);
+        }
+    }
   return (
     <div>
       <h1>Customer Dashboard</h1>
@@ -420,7 +435,29 @@ function CustomerPage() {
                   </tbody>
               </table>
           </section>
-          
+        {/* Shops */}
+        <section>
+            <h2>Shops</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Shop ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {shops.map((shop, index) => (
+                        <tr key={index}>
+                            <td>{shop.shopID}</td>
+                            <td>{shop.name}</td>
+                            <td>{shop.Category}</td>
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </section>
+
       </div>
 
   );

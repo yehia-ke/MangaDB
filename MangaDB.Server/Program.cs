@@ -55,6 +55,7 @@ builder.Services.AddScoped<UpdatePointsRepository>(provider => new UpdatePointsR
 builder.Services.AddScoped<ViewAllActiveBenefits>(provider => new ViewAllActiveBenefits(connectionString));
 builder.Services.AddScoped<ViewUnresolvedTickets>(provider => new ViewUnresolvedTickets(connectionString));
 builder.Services.AddScoped<ViewHighestVoucher>(provider => new ViewHighestVoucher(connectionString));
+builder.Services.AddScoped<ViewAllShops>(provider => new ViewAllShops(connectionString));
 
 var app = builder.Build();
 
