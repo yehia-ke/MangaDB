@@ -167,24 +167,6 @@ function CustomerPage() {
       setLoading(false);
     }
   };
-    const fetchTotalPlanConsumption = async (e) => {
-        e.preventDefault();
-        if (!plan_name || !start_date || !end_date) {
-            setError('Please provide a valid Plan ID and Date.');
-            return;
-        }
-        try {
-            setLoading(true);
-            const response = await axios.get(`${apiUrl}gaafar/consumption`, {
-                params: { plan_name, start_date, end_date },
-            });
-            setPlanConsumption(response.data);
-            setLoading(false);
-        } catch (err) {
-            setError('Failed to fetch total plan consumption.');
-            setLoading(false);
-        }
-    };
 
     const fetchUnsubscribedPlans = async () => {
         try {
