@@ -15,6 +15,7 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewUnresolvedTickets _viewUnresolvedTickets;
         private readonly ViewHighestVoucher _viewHighestVoucher;
         private readonly RemainingPlanAmount _viewRemainingPlanAmount;
+        private readonly ExtraPlanAmount _viewExtraPlanAmount;
         private readonly ViewTopPayments _viewTopPayments;
 
         public CustomerHassanController(
@@ -22,6 +23,7 @@ namespace ControllersMangaDB.Server.Controllers
             ViewUnresolvedTickets viewUnresolvedTickets,
             ViewHighestVoucher viewHighestVoucher,
             RemainingPlanAmount viewRemainingPlanAmount,
+            ExtraPlanAmount viewExtraPlanAmount,
             ViewTopPayments viewTopPayments
 
             )
@@ -30,6 +32,7 @@ namespace ControllersMangaDB.Server.Controllers
             _viewUnresolvedTickets = viewUnresolvedTickets;
             _viewHighestVoucher = viewHighestVoucher;
             _viewRemainingPlanAmount = viewRemainingPlanAmount;
+            _viewExtraPlanAmount = viewExtraPlanAmount;
             _viewTopPayments = viewTopPayments;
         }
 
@@ -101,7 +104,28 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while retrieving remaining plan amount." });
             }
         }
-        // 3. View top payments.
+        // 5. View extra plan amount.
+        [HttpGet]
+        [Route("extra-amount")]
+        public async Task<IActionResult> GetExtraAmount([FromQuery] string mobileNo, [FromQuery] string plan___name)
+        {
+            if (string.IsNullOrWhiteSpace(plan___name))
+            {
+                return BadRequest(new { message = "Plan name is required." });
+            }
+
+            try
+            {
+                var extraPlanAmount = await _viewExtraPlanAmount.GetExtraPlanAmount(mobileNo, plan___name);
+                return Ok(extraPlanAmount);
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while retrieving extra plan amount." });
+            }
+        }
+
+        // 6. View top payments.
         [HttpGet]
         [Route("top-payments")]
         public async Task<IActionResult> GetTopPayments([FromQuery] string mobileNo)

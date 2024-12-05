@@ -21,6 +21,7 @@ function CustomerPage() {
     const [unresolvedTickets, setUnresolvedTickets] = useState([]);
     const [highestVoucher, setHighestVoucher] = useState([]);
     const [remainingAmountPlan, setRemainingAmountPlan] = useState([]);
+    const [extraAmountPlan, setExtraAmountPlan] = useState([]);
     const [topPayments, setTopPayments] = useState([]);
 
     const [shops, setShops] = useState([]);
@@ -37,6 +38,7 @@ function CustomerPage() {
     const [end_date, setEnd_Date] = useState('');
     const [nid, setNid] = useState('')
     const [plan__name, setPlan_name] = useState('')
+    const [plan___name, setPlan__name] = useState('')
     const [renewMobileNo, setRenewMobileNo] = useState(''); // For Renew Subscriptions
     const [renewAmount, setRenewAmount] = useState(''); // For Renew subsriptions
     const [renewPaymentMethod, setRenewPaymentMethod] = useState(''); // For Renew Subscriptions
@@ -61,6 +63,7 @@ function CustomerPage() {
       fetchUnresolvedTickets();
       fetchHighestVoucher();
       fetchRemainingAmountPlan();
+      fetchExtraAmountPlan();
       fetchTopPayments();
       fetchShops();
       fetchSubscribedPlans5Months();
@@ -156,7 +159,25 @@ function CustomerPage() {
             setLoading(false);
         }
     };
-    
+
+    const fetchExtraAmountPlan = async (e) => { //remaining plan amount
+        e.preventDefault();
+        if (!plan___name) {
+            setError('Please provide a Plan Name.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.get(`${apiUrl}hassan/extra-amount`, {
+                params: { mobileNo, plan___name },
+            });
+            setExtraAmountPlan(response.data);
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to fetch extra amount for this plan.');
+            setLoading(false);
+        }
+    };
 
   const fetchTotalPlanConsumption = async (e) => {
     e.preventDefault();
@@ -542,6 +563,39 @@ function CustomerPage() {
                           {remainingAmountPlan.map((amount, index) => (
                               <tr key={index}>
                                   <td>{amount.RemainingAmount}</td>
+                              </tr>
+                          ))}
+                      </tbody>
+                  </table>
+              )}
+          </section>
+
+          {/* Extra Plan Amount */}
+          <section>
+              <h2>Extra Plan Amount</h2>
+              <form onSubmit={fetchExtraAmountPlan} className={styles.form}>
+                  <div>
+                      <label>Plan name:</label>
+                      <input
+                          type="text"
+                          value={plan___name}
+                          onChange={(e) => setPlan__name(e.target.value)}
+                      />
+                  </div>
+
+                  <button type="submit">Fetch Extra Plan Amount</button>
+              </form>
+              {extraAmountPlan.length > 0 && (
+                  <table>
+                      <thead>
+                          <tr>
+                              <th>Extra Amount</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          {extraAmountPlan.map((amount, index) => (
+                              <tr key={index}>
+                                  <td>{amount.extraAmount}</td>
                               </tr>
                           ))}
                       </tbody>
