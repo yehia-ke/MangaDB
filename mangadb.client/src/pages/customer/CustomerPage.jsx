@@ -26,7 +26,6 @@ function CustomerPage() {
 
     const [shops, setShops] = useState([]);
     const [subscribedPlans5Months, setSubscribedPlans5Months] = useState([]);
-    const [renewSubscriptionMessage, setRenewSubscriptionMessage] = useState([]);
 
     const setError = async (err) => {
         alert(err);
@@ -43,6 +42,9 @@ function CustomerPage() {
     const [renewAmount, setRenewAmount] = useState(''); // For Renew subsriptions
     const [renewPaymentMethod, setRenewPaymentMethod] = useState(''); // For Renew Subscriptions
     const [renewPlanId, setRenewPlanId] = useState(''); // For Renew Subscriptions
+    const [cashbackMobileNo, setCashbackMobileNo] = useState(''); // For Payment Wallet Cashback
+    const [cashbackPaymentID, setCashbackPaymentID] = useState(''); // For Payment Wallet Cashback
+    const [cashbackBenefitID, setCashbackBenefitID] = useState(''); // For Payment Wallet Cashback
 
 
     // Error and loading states
@@ -68,6 +70,7 @@ function CustomerPage() {
       fetchShops();
       fetchSubscribedPlans5Months();
       renewSubscription();
+      paymentWalletCashback();
   }, []);
 
     const fetchOfferedServicePlans = async () => {
@@ -277,10 +280,26 @@ function CustomerPage() {
             const response = await axios.post(
                 `${apiUrl}hamed/renew-subscription?MobileNo=${encodeURIComponent(renewMobileNo)}&Amount=${encodeURIComponent(parseFloat(renewAmount))}&PaymentMethod=${encodeURIComponent(renewPaymentMethod)}&PlanId=${encodeURIComponent(renewPlanId)}`);
             setError("Subscription Renewed Successfully");
-            setRenewSubscriptionMessage('Subscription Renewed Successfully.');
             setLoading(false);
         } catch (err) {
-            setError('Failed to remove benefits.');
+            setError('Failed to renew Subscription.');
+            setLoading(false);
+        }
+    }
+    const paymentWalletCashback = async (e) => {
+        e.preventDefault();
+        if (!cashbackMobileNo || !cashbackPaymentID || !cashbackBenefitID) {
+            setError('Please provide a valid Mobile Number, Payment ID, and Benefit ID.');
+            return;
+        }
+        try {
+        setLoading(true);
+            const response = await axios.post(
+                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(cashbackMobileNo)}&PaymentID=${encodeURIComponent(parseFloat(cashbackPaymentID))}&BenefitID=${encodeURIComponent(cashbackBenefitID)}`);
+            setError("Wallet Updated Successfully.");
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to update wallet.');
             setLoading(false);
         }
     }
@@ -691,6 +710,38 @@ function CustomerPage() {
                 />
             </div>
             <button type="submit">Renew Subscription</button>
+            </form>
+        </section>
+
+        {/* Payment Wallet Cashback */}
+        <section>
+            <h2>Payment Wallet Cashback</h2>
+            <form onSubmit={paymentWalletCashback} className={styles.form}>
+            <div>
+                <label>Mobile No:</label>
+                <input
+                type="text"
+                value={cashbackMobileNo}
+                onChange={(e) => setCashbackMobileNo(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Payment ID:</label>
+                <input
+                type="number"
+                value={cashbackPaymentID}
+                onChange={(e) => setCashbackPaymentID(e.target.value)}
+                />
+            </div>       
+            <div>
+                <label>Benefit ID:</label>
+                <input
+                type="number"
+                value={cashbackBenefitID}
+                onChange={(e) => setCashbackBenefitID(e.target.value)}
+                />
+            </div>
+            <button type="submit">Payment Wallet Cashback</button>
             </form>
         </section>
       </div>

@@ -61,6 +61,7 @@ builder.Services.AddScoped<ViewAllShops>(provider => new ViewAllShops(connection
 builder.Services.AddScoped<ViewSubscribedPlans5Months>(provider => new ViewSubscribedPlans5Months(connectionString));
 builder.Services.AddScoped<RenewSubscription>(provider => new RenewSubscription(connectionString));
 builder.Services.AddScoped<ExtraPlanAmount>(provider => new ExtraPlanAmount(connectionString));
+builder.Services.AddScoped<PaymentWalletCashback>(provider => new PaymentWalletCashback(connectionString));
 
 
 var app = builder.Build();

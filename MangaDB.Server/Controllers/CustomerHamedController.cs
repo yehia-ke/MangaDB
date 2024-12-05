@@ -11,16 +11,19 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewAllShops _viewAllShops;
         private readonly ViewSubscribedPlans5Months _viewSubscribedPlans5Months;
         private readonly RenewSubscription _renewSubscription;
+        private readonly PaymentWalletCashback _paymentWalletCashback;
        
         public CustomerHamedController(
             ViewAllShops viewAllShops,
             ViewSubscribedPlans5Months viewSubscribedPlans5Months,
-            RenewSubscription renewSubscription
+            RenewSubscription renewSubscription,
+            PaymentWalletCashback paymentWalletCashback
         )
         {
             _viewAllShops = viewAllShops;
             _viewSubscribedPlans5Months = viewSubscribedPlans5Months;
             _renewSubscription = renewSubscription;
+            _paymentWalletCashback = paymentWalletCashback;
         }
 
         [HttpGet]
@@ -55,11 +58,12 @@ namespace ControllersMangaDB.Server.Controllers
 
         [HttpPost]
         [Route("renew-subscription")]
-        public async Task<IActionResult> RenewSubscription([FromQuery] string MobileNo, [FromQuery] float Amount, [FromQuery] string PaymentMethod, [FromQuery] int PlanId) {
-        
+        public async Task<IActionResult> RenewSubscription([FromQuery] string MobileNo, [FromQuery] float Amount, [FromQuery] string PaymentMethod, [FromQuery] int PlanId)
+        {
+
             if (string.IsNullOrWhiteSpace(MobileNo) || Amount < 0 || string.IsNullOrWhiteSpace(PaymentMethod) || PlanId <= 0)
             {
-                return BadRequest(new { message = "Mobile number, payment methos, valid amount, and valid plan ID are required." });
+                return BadRequest(new { message = "Mobile number, payment method, valid amount, and valid plan ID are required." });
             }
 
             try
@@ -72,6 +76,27 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while renewing subscription." });
             }
         }
+
+        [HttpPost]
+        [Route("payment-wallet-cashback")]
+        public async Task<IActionResult> PaymentWalletCashback([FromQuery] string MobileNo, [FromQuery] int PaymentID, [FromQuery] int BenefitID)
+        {
+
+            if (string.IsNullOrWhiteSpace(MobileNo) || PaymentID <= 0 || BenefitID <= 0)
+            {
+                return BadRequest(new { message = "Mobile number, valid payment ID, and valid benefit ID are required." });
+            }
+
+            try
+            {
+                await _paymentWalletCashback.PaymentWalletCashbackAsync(MobileNo, PaymentID, BenefitID);
+                return Ok(new { message = "Wallet updated successfully." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while updating wallet." });
+            }
+        }
     }
     public class RenewSubscriptionRequest
     {
@@ -79,5 +104,11 @@ namespace ControllersMangaDB.Server.Controllers
         public float Amount { get; set; }
         public string PaymentMethod { get; set; }
         public int PlanId { get; set; }
+    }
+    public class PaymentWalletCashbackRequest
+    {
+        public string MobileNo { get; set; }
+        public int PaymentID { get; set; }
+        public int BenefitID { get; set; }
     }
 }
