@@ -55,16 +55,16 @@ namespace ControllersMangaDB.Server.Controllers
 
         [HttpPost]
         [Route("renew-subscription")]
-        public async Task<IActionResult> RenewSubscription([FromBody] RenewSubscriptionRequest request)
-        {
-            if (request == null || string.IsNullOrWhiteSpace(request.MobileNo) || request.Amount < 0 || string.IsNullOrWhiteSpace(request.PaymentMethod) || request.PlanId <= 0)
+        public async Task<IActionResult> RenewSubscription([FromQuery] string MobileNo, [FromQuery] float Amount, [FromQuery] string PaymentMethod, [FromQuery] int PlanId) {
+        
+            if (string.IsNullOrWhiteSpace(MobileNo) || Amount < 0 || string.IsNullOrWhiteSpace(PaymentMethod) || PlanId <= 0)
             {
                 return BadRequest(new { message = "Mobile number, payment methos, valid amount, and valid plan ID are required." });
             }
 
             try
             {
-                await _renewSubscription.RenewSubscriptionAsync(request.MobileNo, request.Amount, request.PaymentMethod, request.PlanId);
+                await _renewSubscription.RenewSubscriptionAsync(MobileNo, Amount, PaymentMethod, PlanId);
                 return Ok(new { message = "Subscription renewed successfully." });
             }
             catch (Exception)
