@@ -176,16 +176,16 @@ namespace ControllersMangaDB.Server.Controllers
         // 8. Remove all benefits offered to the input account for a certain input plan ID.
         [HttpPost]
         [Route("benefits/remove")]
-        public async Task<IActionResult> RemoveBenefits([FromBody] RemoveBenefitsRequest request)
+        public async Task<IActionResult> RemoveBenefits([FromQuery] string mobileNo, [FromQuery] int planId )
         {
-            if (request == null || string.IsNullOrWhiteSpace(request.MobileNo) || request.PlanId <= 0)
+            if (mobileNo == null || string.IsNullOrWhiteSpace(mobileNo) || planId <= 0)
             {
                 return BadRequest(new { message = "Mobile number and valid plan ID are required." });
             }
 
             try
             {
-                await _removeBenefitsRepository.RemoveBenefitsAsync(request.MobileNo, request.PlanId);
+                await _removeBenefitsRepository.RemoveBenefitsAsync(mobileNo, planId);
                 return Ok(new { message = "Benefits removed successfully." });
             }
             catch (Exception)
