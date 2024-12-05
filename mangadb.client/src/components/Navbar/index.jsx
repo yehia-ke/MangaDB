@@ -32,9 +32,6 @@ const Navbar = () => {
                 <NavLink to="/" activeStyle>
                     Home
                 </NavLink>
-                <NavLink to="/about" activeStyle>
-                    About
-                </NavLink>
                 <NavLink to="/test" activeStyle>
                     Test
                 </NavLink>
@@ -75,6 +72,9 @@ const Navbar = () => {
                         <LogoutButton onClick={logout}>Logout</LogoutButton>
                     </>
                 )}
+                <NavLink to="/about" activeStyle>
+                    About
+                </NavLink>
             </NavMenu>
         </Nav>
     );

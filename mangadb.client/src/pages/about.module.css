@@ -27,6 +27,8 @@
 }
 .h1{
   color:  #ffffe4;
-  font: 100;
+  font-size: 75px;
+  font-weight: 500px;
+  padding: 450px;
   font-family: 'Panchang-Extralight';
 }

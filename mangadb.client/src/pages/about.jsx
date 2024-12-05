@@ -9,6 +9,18 @@ const About = () => {
             <h1 className={styles.h1}>
                 Yehia Eltantawi
             </h1>
+            <h1 className={styles.h1}>
+                Yusuf Zoair
+            </h1>
+            <h1 className={styles.h1}>
+                Aly Gaafar
+            </h1>
+            <h1 className={styles.h1}>
+                Hassan Almenyawi
+            </h1>
+            <h1 className={styles.h1}>
+                Ahmed Hamed
+            </h1>
         </div>
     );
 };
