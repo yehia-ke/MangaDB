@@ -324,7 +324,7 @@ function CustomerPage() {
         try {
             setLoading(true);
             const response = await axios.get(
-                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(mobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID2))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID2))}`);
+                `${apiUrl}hamed/payment-wallet-cashback-2?MobileNo=${encodeURIComponent(mobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID2))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID2))}`);
             setCashbackAmount(response.data);
             setError("Wallet Updated Successfully.");
             setLoading(false);
@@ -824,7 +824,7 @@ function CustomerPage() {
             </form>
                 {cashbackAmount !== null && (
                     <div>
-                        <h3>Cashback Amount: {cashbackAmount}</h3> {/* Show the actual cashback amount */}
+                        <h2 className={styles.h2}>Cashback Amount: {cashbackAmount}</h2> {/* Show the actual cashback amount */}
                     </div>
                 )}
         </section>
