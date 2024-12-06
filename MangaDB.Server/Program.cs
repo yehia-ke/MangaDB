@@ -62,6 +62,7 @@ builder.Services.AddScoped<ViewSubscribedPlans5Months>(provider => new ViewSubsc
 builder.Services.AddScoped<RenewSubscription>(provider => new RenewSubscription(connectionString));
 builder.Services.AddScoped<ExtraPlanAmount>(provider => new ExtraPlanAmount(connectionString));
 builder.Services.AddScoped<PaymentWalletCashback>(provider => new PaymentWalletCashback(connectionString));
+builder.Services.AddScoped<PaymentWalletCashback2>(provider => new PaymentWalletCashback2(connectionString));
 builder.Services.AddScoped<RechargeBalance>(provider => new RechargeBalance(connectionString));
 builder.Services.AddScoped<RedeemVoucher>(provider => new RedeemVoucher(connectionString));
 

@@ -45,6 +45,9 @@ function CustomerPage() {
     const [cashbackMobileNo, setCashbackMobileNo] = useState(''); // For Payment Wallet Cashback
     const [cashbackPaymentID, setCashbackPaymentID] = useState(''); // For Payment Wallet Cashback
     const [cashbackBenefitID, setCashbackBenefitID] = useState(''); // For Payment Wallet Cashback
+    const [cashbackMobileNo2, setCashbackMobileNo2] = useState(''); // For Payment Wallet Cashback 2
+    const [cashbackPaymentID2, setCashbackPaymentID2] = useState(''); // For Payment Wallet Cashback 2
+    const [cashbackBenefitID2, setCashbackBenefitID2] = useState(''); // For Payment Wallet Cashback 2
     const [rechargeMobileNo, setRechargeMobileNo] = useState(''); // For Recharge Balance
     const [rechargeAmount, setRechargeAmount] = useState(''); // For Recharge Balance
     const [rechargePaymentMethod, setRechargePaymentMethod] = useState(''); // For Recharge Balance
@@ -76,6 +79,7 @@ function CustomerPage() {
       fetchSubscribedPlans5Months();
       renewSubscription();
       paymentWalletCashback();
+      paymentWalletCashback2();
       rechargeBalance();
       redeemVoucher();
   }, []);
@@ -310,9 +314,26 @@ function CustomerPage() {
             setLoading(false);
         }
     }
+    const paymentWalletCashback2 = async (e) => {
+        e.preventDefault();
+        if (!cashbackPaymentID2 || !cashbackBenefitID2) {
+            setError('Please provide a valid Payment ID, and Benefit ID.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.post(
+                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(mobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID2))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID2))}`);
+            setError("Wallet Updated Successfully.");
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to update wallet.');
+            setLoading(false);
+        }
+    }
     const rechargeBalance = async (e) => {
         e.preventDefault();
-        if (!rechargeMobileNo || !rechargeAmount || !rechargePaymentMethod) {
+        if (!rechargeMobileNo2 || !rechargeAmount2 || !rechargePaymentMethod2) {
             setError('Please provide a valid Mobile Number, Amount, and Payment Method.');
             return;
         }
@@ -759,14 +780,6 @@ function CustomerPage() {
             <h2>Payment Wallet Cashback</h2>
             <form onSubmit={paymentWalletCashback} className={styles.form}>
             <div>
-                <label className={styles.label}>Mobile No:</label>
-                <input className={styles.inputs}
-                type="text"
-                value={cashbackMobileNo}
-                onChange={(e) => setCashbackMobileNo(e.target.value)}
-                />
-            </div>
-            <div>
                 <label className={styles.label}>Payment ID:</label>
                 <input className={styles.inputs}
                 type="number"
@@ -783,6 +796,29 @@ function CustomerPage() {
                 />
             </div>
             <button type="submit">Payment Wallet Cashback</button>
+            </form>
+        </section>
+        {/* Payment Wallet Cashback 2 */}
+        <section>
+            <h2>Payment Wallet Cashback 2</h2>
+            <form onSubmit={paymentWalletCashback2} className={styles.form}>
+            <div>
+                <label className={styles.label}>Payment ID:</label>
+                <input className={styles.inputs}
+                type="number"
+                value={cashbackPaymentID2}
+                onChange={(e) => setCashbackPaymentID2(e.target.value)}
+                />
+            </div>       
+            <div>
+                <label className={styles.label}>Benefit ID:</label>
+                <input className={styles.inputs}
+                type="number"
+                value={cashbackBenefitID2}
+                onChange={(e) => setCashbackBenefitID2(e.target.value)}
+                />
+            </div>
+            <button type="submit">Payment Wallet Cashback 2</button>
             </form>
         </section>
         {/* Recharge Balance */}

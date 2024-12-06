@@ -12,6 +12,7 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewSubscribedPlans5Months _viewSubscribedPlans5Months;
         private readonly RenewSubscription _renewSubscription;
         private readonly PaymentWalletCashback _paymentWalletCashback;
+        private readonly PaymentWalletCashback2 _paymentWalletCashback2;
         private readonly RechargeBalance _rechargeBalance;
         private readonly RedeemVoucher _redeemVoucher;
 
@@ -20,6 +21,7 @@ namespace ControllersMangaDB.Server.Controllers
             ViewSubscribedPlans5Months viewSubscribedPlans5Months,
             RenewSubscription renewSubscription,
             PaymentWalletCashback paymentWalletCashback,
+            PaymentWalletCashback2 paymentWalletCashback2,
             RechargeBalance rechargeBalance,
             RedeemVoucher redeemVoucher
         )
@@ -28,6 +30,7 @@ namespace ControllersMangaDB.Server.Controllers
             _viewSubscribedPlans5Months = viewSubscribedPlans5Months;
             _renewSubscription = renewSubscription;
             _paymentWalletCashback = paymentWalletCashback;
+            _paymentWalletCashback2 = paymentWalletCashback2;
             _rechargeBalance = rechargeBalance;
             _redeemVoucher = redeemVoucher;
         }
@@ -105,6 +108,27 @@ namespace ControllersMangaDB.Server.Controllers
         }
 
         [HttpPost]
+        [Route("payment-wallet-cashback-2")]
+        public async Task<IActionResult> PaymentWalletCashback2([FromQuery] string MobileNo, [FromQuery] int PaymentID, [FromQuery] int BenefitID)
+        {
+
+            if (string.IsNullOrWhiteSpace(MobileNo) || PaymentID <= 0 || BenefitID <= 0)
+            {
+                return BadRequest(new { message = "Mobile number, valid payment ID, and valid benefit ID are required." });
+            }
+
+            try
+            {
+                await _paymentWalletCashback2.PaymentWalletCashback2Async(MobileNo, PaymentID, BenefitID);
+                return Ok(new { message = "Wallet updated successfully." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while updating wallet." });
+            }
+        }
+
+        [HttpPost]
         [Route("recharge-balance")]
         public async Task<IActionResult> RechargeBalance([FromQuery] string MobileNo, [FromQuery] float Amount, [FromQuery] string PaymentMethod)
         {
@@ -153,6 +177,12 @@ namespace ControllersMangaDB.Server.Controllers
         public int PlanId { get; set; }
     }
     public class PaymentWalletCashbackRequest
+    {
+        public string MobileNo { get; set; }
+        public int PaymentID { get; set; }
+        public int BenefitID { get; set; }
+    }
+    public class PaymentWalletCashback2Request
     {
         public string MobileNo { get; set; }
         public int PaymentID { get; set; }
