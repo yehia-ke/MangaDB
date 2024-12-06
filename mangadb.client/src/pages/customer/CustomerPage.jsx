@@ -340,7 +340,7 @@ function CustomerPage() {
             setError("Voucher Redeemed Successfully.");
             setLoading(false);
         } catch (err) {
-            setError('Failed to redeem voucher.');
+            setError("Not enough points to redeem Voucher");
             setLoading(false);
         }
     }

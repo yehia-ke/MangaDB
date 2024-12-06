@@ -128,7 +128,7 @@ namespace ControllersMangaDB.Server.Controllers
         [Route("redeem-voucher")]
         public async Task<IActionResult> RedeemVoucher([FromQuery] string MobileNo, [FromQuery] int VoucherID)
         {
-
+            // Input validation
             if (string.IsNullOrWhiteSpace(MobileNo) || VoucherID <= 0)
             {
                 return BadRequest(new { message = "Mobile number and voucher ID are required." });
@@ -136,12 +136,30 @@ namespace ControllersMangaDB.Server.Controllers
 
             try
             {
-                await _redeemVoucher.RedeemVoucherAsync(MobileNo, VoucherID);
-                return Ok(new { message = "Voucher redeemed successfully." });
+                // Call RedeemVoucherAsync to redeem the voucher and capture the message
+                string message = await _redeemVoucher.RedeemVoucherAsync(MobileNo, VoucherID);
+
+                // Log the message for debugging purposes
+                Console.WriteLine($"Received Message: {message}");
+
+                // Check if the message indicates success or failure
+                if (message=="")
+                {
+                    return Ok(new { message = "Voucher Redeemed Successfully!"});
+                }
+                else if (message.Contains("no enough points to redeem voucher", StringComparison.OrdinalIgnoreCase))
+                {
+                    return BadRequest(new { message = "Not enough points to redeem voucher!" });
+                }
+
+                // Return a generic error if the message is unexpected
+                return StatusCode(500, new { message = "An error occurred while redeeming the voucher." });
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return StatusCode(500, new { message = "An error occurred while redeeming voucher." });
+                // Log and handle any exceptions that occur
+                Console.Error.WriteLine($"Exception: {ex.Message}");
+                return StatusCode(500, new { message = $"An error occurred: {ex.Message}" });
             }
         }
     }
