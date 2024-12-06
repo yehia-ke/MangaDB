@@ -7,19 +7,19 @@ const About = () => {
     return (
         <div className={styles.container}>
             <h1 className={styles.h1}>
-                Yehia Eltantawi
+                Yehia Eltantawi | 58-17056
             </h1>
             <h1 className={styles.h1}>
-                Yusuf Zoair
+                Yusuf Zoair | 58-25214
             </h1>
             <h1 className={styles.h1}>
-                Aly Gaafar
+                Aly Gaafar | 58-4267
             </h1>
             <h1 className={styles.h1}>
-                Hassan Almenyawi
+                Hassan Ibrahim | 58-9551
             </h1>
             <h1 className={styles.h1}>
-                Ahmed Hamed
+                Ahmed Hamed | 58-2348
             </h1>
         </div>
     );
