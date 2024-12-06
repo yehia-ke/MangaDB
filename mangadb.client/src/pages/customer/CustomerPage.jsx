@@ -278,14 +278,14 @@ function CustomerPage() {
 
     const renewSubscription = async (e) => {
         e.preventDefault();
-        if (!renewMobileNo || !renewAmount || !renewPaymentMethod || !renewPlanId) {
+        if (!renewAmount || !renewPaymentMethod || !renewPlanId) {
             setError('Please provide a valid Mobile Number, Amount, Payment Method, and Plan ID.');
             return;
         }
         try {
         setLoading(true);
             const response = await axios.post(
-                `${apiUrl}hamed/renew-subscription?MobileNo=${encodeURIComponent(renewMobileNo)}&Amount=${encodeURIComponent(parseFloat(renewAmount))}&PaymentMethod=${encodeURIComponent(renewPaymentMethod)}&PlanId=${encodeURIComponent(renewPlanId)}`);
+                `${apiUrl}hamed/renew-subscription?MobileNo=${encodeURIComponent(mobileNo)}&Amount=${encodeURIComponent(parseFloat(renewAmount))}&PaymentMethod=${encodeURIComponent(renewPaymentMethod)}&PlanId=${encodeURIComponent(renewPlanId)}`);
             setError("Subscription Renewed Successfully");
             setLoading(false);
         } catch (err) {
@@ -295,14 +295,14 @@ function CustomerPage() {
     }
     const paymentWalletCashback = async (e) => {
         e.preventDefault();
-        if (!cashbackMobileNo || !cashbackPaymentID || !cashbackBenefitID) {
-            setError('Please provide a valid Mobile Number, Payment ID, and Benefit ID.');
+        if (!cashbackPaymentID || !cashbackBenefitID) {
+            setError('Please provide a valid Payment ID, and Benefit ID.');
             return;
         }
         try {
             setLoading(true);
             const response = await axios.post(
-                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(cashbackMobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID))}`);
+                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(mobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID))}`);
             setError("Wallet Updated Successfully.");
             setLoading(false);
         } catch (err) {
@@ -329,8 +329,8 @@ function CustomerPage() {
     }
     const redeemVoucher = async (e) => {
         e.preventDefault();
-        if (!redeemMobileNo || !redeemVoucherID) {
-            setError('Please provide a valid Mobile Number and Voucher ID.');
+        if (!redeemVoucherID) {
+            setError('Please provide a valid Voucher ID.');
             return;
         }
         try {
@@ -820,14 +820,6 @@ function CustomerPage() {
         <section>
             <h2>Redeem Voucher</h2>
             <form onSubmit={redeemVoucher} className={styles.form}>
-            <div>
-                <label>Mobile No:</label>
-                <input
-                type="text"
-                value={redeemMobileNo}
-                onChange={(e) => setRedeemMobileNo(e.target.value)}
-                />
-            </div>
             <div>
                 <label>Voucher ID:</label>
                 <input
