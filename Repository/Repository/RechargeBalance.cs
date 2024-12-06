@@ -7,35 +7,34 @@ using System.Threading.Tasks;
 
 namespace Repository.Repository
 {
-    public class PaymentWalletCashback
+    public class RechargeBalance
     {
         private readonly string _connectionString;
 
-        public PaymentWalletCashback(string connectionString) 
+        public RechargeBalance(string connectionString)
         {
             _connectionString = connectionString ?? throw new ArgumentNullException(nameof(connectionString));
         }
-
-        public async Task PaymentWalletCashbackAsync(string mobileNo, int paymentID, int benefitID)
+        public async Task RechargeBalanceAsync(string mobileNo, float amount, string paymentMethod)
         {
             try
             {
                 using var connection = new SqlConnection(_connectionString);
                 await connection.OpenAsync();
 
-                var command = new SqlCommand("Payment_wallet_cashback", connection)
+                var command = new SqlCommand("Initiate_balance_payment", connection)
                 {
                     CommandType = System.Data.CommandType.StoredProcedure
                 };
                 command.Parameters.AddWithValue("@mobile_num", mobileNo);
-                command.Parameters.AddWithValue("@payment_id", paymentID);
-                command.Parameters.AddWithValue("@benefit_id", benefitID);
+                command.Parameters.AddWithValue("@payment_id", amount);
+                command.Parameters.AddWithValue("@benefit_id", paymentMethod);
 
                 await command.ExecuteNonQueryAsync();
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"An error occurred while updating wallet: {ex.Message}");
+                Console.Error.WriteLine($"An error occurred while recharging balance: {ex.Message}");
                 throw;
             }
         }

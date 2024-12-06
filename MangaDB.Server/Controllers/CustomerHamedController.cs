@@ -12,18 +12,24 @@ namespace ControllersMangaDB.Server.Controllers
         private readonly ViewSubscribedPlans5Months _viewSubscribedPlans5Months;
         private readonly RenewSubscription _renewSubscription;
         private readonly PaymentWalletCashback _paymentWalletCashback;
-       
+        private readonly RechargeBalance _rechargeBalance;
+        private readonly RedeemVoucher _redeemVoucher;
+
         public CustomerHamedController(
             ViewAllShops viewAllShops,
             ViewSubscribedPlans5Months viewSubscribedPlans5Months,
             RenewSubscription renewSubscription,
-            PaymentWalletCashback paymentWalletCashback
+            PaymentWalletCashback paymentWalletCashback,
+            RechargeBalance rechargeBalance,
+            RedeemVoucher redeemVoucher
         )
         {
             _viewAllShops = viewAllShops;
             _viewSubscribedPlans5Months = viewSubscribedPlans5Months;
             _renewSubscription = renewSubscription;
             _paymentWalletCashback = paymentWalletCashback;
+            _rechargeBalance = rechargeBalance;
+            _redeemVoucher = redeemVoucher;
         }
 
         [HttpGet]
@@ -97,6 +103,47 @@ namespace ControllersMangaDB.Server.Controllers
                 return StatusCode(500, new { message = "An error occurred while updating wallet." });
             }
         }
+
+        [HttpPost]
+        [Route("recharge-balance")]
+        public async Task<IActionResult> RechargeBalance([FromQuery] string MobileNo, [FromQuery] float Amount, [FromQuery] string PaymentMethod)
+        {
+
+            if (string.IsNullOrWhiteSpace(MobileNo) || Amount < 0 || string.IsNullOrWhiteSpace(PaymentMethod))
+            {
+                return BadRequest(new { message = "Mobile number, amount, and payment method are required." });
+            }
+
+            try
+            {
+                await _rechargeBalance.RechargeBalanceAsync(MobileNo, Amount, PaymentMethod);
+                return Ok(new { message = "Balance recharged successfully." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while recharging balance." });
+            }
+        }
+        [HttpPost]
+        [Route("redeem-voucher")]
+        public async Task<IActionResult> RedeemVoucher([FromQuery] string MobileNo, [FromQuery] int VoucherID)
+        {
+
+            if (string.IsNullOrWhiteSpace(MobileNo) || VoucherID <= 0)
+            {
+                return BadRequest(new { message = "Mobile number and voucher ID are required." });
+            }
+
+            try
+            {
+                await _redeemVoucher.RedeemVoucherAsync(MobileNo, VoucherID);
+                return Ok(new { message = "Voucher redeemed successfully." });
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, new { message = "An error occurred while redeeming voucher." });
+            }
+        }
     }
     public class RenewSubscriptionRequest
     {
@@ -110,5 +157,16 @@ namespace ControllersMangaDB.Server.Controllers
         public string MobileNo { get; set; }
         public int PaymentID { get; set; }
         public int BenefitID { get; set; }
+    }
+    public class RechargeBalanceRequest
+    {
+        public string MobileNo { get; set; }
+        public float Amount { get; set; }
+        public string PaymentMethod { get; set; }
+    }
+    public class RedeemVoucherRequest
+    {
+        public string MobileNo { get; set; }
+        public float VoucherID { get; set; }
     }
 }

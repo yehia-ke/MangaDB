@@ -45,6 +45,11 @@ function CustomerPage() {
     const [cashbackMobileNo, setCashbackMobileNo] = useState(''); // For Payment Wallet Cashback
     const [cashbackPaymentID, setCashbackPaymentID] = useState(''); // For Payment Wallet Cashback
     const [cashbackBenefitID, setCashbackBenefitID] = useState(''); // For Payment Wallet Cashback
+    const [rechargeMobileNo, setRechargeMobileNo] = useState(''); // For Recharge Balance
+    const [rechargeAmount, setRechargeAmount] = useState(''); // For Recharge Balance
+    const [rechargePaymentMethod, setRechargePaymentMethod] = useState(''); // For Recharge Balance
+    const [redeemMobileNo, setRedeemMobileNo] = useState(''); // For Redeem Voucher
+    const [redeemVoucherID, setRedeemVoucherID] = useState(''); // For Redeem Voucher
 
 
     // Error and loading states
@@ -71,6 +76,8 @@ function CustomerPage() {
       fetchSubscribedPlans5Months();
       renewSubscription();
       paymentWalletCashback();
+      rechargeBalance();
+      redeemVoucher();
   }, []);
 
     const fetchOfferedServicePlans = async () => {
@@ -293,13 +300,47 @@ function CustomerPage() {
             return;
         }
         try {
-        setLoading(true);
+            setLoading(true);
             const response = await axios.post(
-                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(cashbackMobileNo)}&PaymentID=${encodeURIComponent(parseFloat(cashbackPaymentID))}&BenefitID=${encodeURIComponent(cashbackBenefitID)}`);
+                `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(cashbackMobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID))}`);
             setError("Wallet Updated Successfully.");
             setLoading(false);
         } catch (err) {
             setError('Failed to update wallet.');
+            setLoading(false);
+        }
+    }
+    const rechargeBalance = async (e) => {
+        e.preventDefault();
+        if (!rechargeMobileNo || !rechargeAmount || !rechargePaymentMethod) {
+            setError('Please provide a valid Mobile Number, Amount, and Payment Method.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.post(
+                `${apiUrl}hamed/recharge-balance?MobileNo=${encodeURIComponent(rechargeMobileNo)}&Amount=${encodeURIComponent(parseFloat(rechargeAmount))}&PaymentMethod=${encodeURIComponent(rechargePaymentMethod)}`);
+            setError("Balance Recharged Successfully.");
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to recharge balance.');
+            setLoading(false);
+        }
+    }
+    const redeemVoucher = async (e) => {
+        e.preventDefault();
+        if (!redeemMobileNo || !redeemVoucherID) {
+            setError('Please provide a valid Mobile Number and Voucher ID.');
+            return;
+        }
+        try {
+            setLoading(true);
+            const response = await axios.post(
+                `${apiUrl}hamed/redeem-voucher?MobileNo=${encodeURIComponent(mobileNo)}&VoucherID=${encodeURIComponent(parseFloat(redeemVoucherID))}`);
+            setError("Voucher Redeemed Successfully.");
+            setLoading(false);
+        } catch (err) {
+            setError('Failed to redeem voucher.');
             setLoading(false);
         }
     }
@@ -742,6 +783,60 @@ function CustomerPage() {
                 />
             </div>
             <button type="submit">Payment Wallet Cashback</button>
+            </form>
+        </section>
+        {/* Recharge Balance */}
+        <section>
+            <h2>Recharge Balance</h2>
+            <form onSubmit={rechargeBalance} className={styles.form}>
+            <div>
+                <label>Mobile No:</label>
+                <input
+                type="text"
+                value={rechargeMobileNo}
+                onChange={(e) => setRechargeMobileNo(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Amount:</label>
+                <input
+                type="number"
+                value={rechargeAmount}
+                onChange={(e) => setRechargeAmount(e.target.value)}
+                />
+            </div>       
+            <div>
+                <label>Payment Method:</label>
+                <input
+                type="text"
+                value={rechargePaymentMethod}
+                onChange={(e) => setRechargePaymentMethod(e.target.value)}
+                />
+            </div>
+            <button type="submit">Recharge Balance</button>
+            </form>
+        </section>
+        {/* Redeem Voucher */}
+        <section>
+            <h2>Redeem Voucher</h2>
+            <form onSubmit={redeemVoucher} className={styles.form}>
+            <div>
+                <label>Mobile No:</label>
+                <input
+                type="text"
+                value={redeemMobileNo}
+                onChange={(e) => setRedeemMobileNo(e.target.value)}
+                />
+            </div>
+            <div>
+                <label>Voucher ID:</label>
+                <input
+                type="number"
+                value={redeemVoucherID}
+                onChange={(e) => setRedeemVoucherID(e.target.value)}
+                />
+            </div>
+            <button type="submit">Redeem Voucher</button>
             </form>
         </section>
       </div>
