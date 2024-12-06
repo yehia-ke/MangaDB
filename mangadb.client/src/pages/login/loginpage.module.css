@@ -1,28 +1,35 @@
 .container {
-  max-width: 40%;
+  width: 30%;
+  min-width: 400px;
   margin: 50px auto;
-  min-height: 660px;
-  padding: 50px;
+  min-height: 600px; 
+  padding: 40px; 
   background: #4d4949;
   border: 1px solid #777b80;
   border-radius: 5px;
-  box-shadow: 0 0 6px rgba(255, 255, 228, 0.4);
+  box-shadow: 0 0 6px rgba(255, 255, 228, 0.164);
   display: flex;
   flex-direction: column;
   align-items: center;
   font-family: Arial, sans-serif;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-image: linear-gradient(45deg, #333333, #00000079);
 }
 
 .logo {
   width: 185px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
 
 h2 {
   color: #ffffe4;
   text-align: center;
   margin-bottom: 1.5rem;
-  font-size: 1.8rem;
+  font-size: 2rem;
+  font-family: 'Satoshi-Bold';
 }
 
 form {
@@ -74,31 +81,55 @@ input:not(:placeholder-shown) + .floatingLabel {
 }
 
 input::placeholder {
-  color: transparent; /* Placeholder invisible when label is visible */
+  color: transparent;
 }
 
 button {
   padding: 10px;
-  background-color: #8d8989;
+  background: linear-gradient(45deg, #00000079, #cccccc, #333333);
   color: #ffffe4;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-position 0.5s ease, transform 0.3s ease;
+  background-size: 400% 400%;
+  font-size: 0.95rem;
+  font-family: 'Satoshi-Bold';
+  background-position: 0% 50%;
 }
 
 button:hover {
-  background-color: #635f5f;
+  background-position: 100% 50%;
+  transition: background-position 0.5s ease, transform 0.3s ease;
+  transform: scale(1.05); /* Slight zoom on hover */
+}
+
+button:active {
+  background-position: 50% 50%;
+  transition: background-position 0.5s ease, transform 0.3s ease;
+  transform: scale();
 }
 
 button:disabled {
-  background-color: #777b80;
+  background-image: linear-gradient(45deg, #777b80, #777b80);
+  transition: background-position 0.5s ease, transform 0.3s ease;
   cursor: not-allowed;
 }
 
-.error {
-  color: #ff5f5f;
-  font-weight: bold;
-  text-align: center;
-  margin-top: 10px;
+
+.signUpPrompt {
+  margin-top: 20px;
+  color: #ffffff;
+  font-size: 1rem;
 }
+
+.signUpLink {
+  color: #747468;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.signUpLink:hover {
+  color: #1f1f1f;
+}
+

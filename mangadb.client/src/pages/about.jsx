@@ -5,7 +5,7 @@ import React from "react";
 import styles from './about.module.css';
 const About = () => {
     return (
-        <div>
+        <div className={styles.container}>
             <h1 className={styles.h1}>
                 Yehia Eltantawi
             </h1>

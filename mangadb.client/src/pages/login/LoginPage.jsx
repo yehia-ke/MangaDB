@@ -4,15 +4,18 @@ import { useNavigate } from "react-router-dom";
 import { useSession } from "../../context/SessionContext";
 import styles from "./loginpage.module.css";
 
+
 const LoginPage = () => {
   const [mobileNumber, setMobileNumber] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-
   const { login } = useSession();
   const navigate = useNavigate();
 
+  const setError = async(err) => {
+    alert(err);
+  };
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -22,9 +25,8 @@ const LoginPage = () => {
     }
 
     setLoading(true);
-    setError(null);
 
-    // Hardcoded admin credentials
+    //Hard coded credentials
     if (mobileNumber === "admin" && password === "admin") {
       login({ mobileNumber, role: "admin" });
       setLoading(false);
@@ -33,16 +35,15 @@ const LoginPage = () => {
     }
 
     try {
-      // Example API request for regular users
       const response = await axios.post("https://localhost:7281/api/login/validate", {
         mobileNumber,
         password,
       });
 
       if (response.status === 200) {
-        login({ ...response.data, role: "user", mobileNumber: mobileNumber }); // Assume API returns user data
+        login({ ...response.data, role: "user", mobileNumber: mobileNumber });
         setLoading(false);
-        navigate("/customer"); // Redirect regular users
+        navigate("/customer");
       }
     } catch (error) {
       setLoading(false);
@@ -57,7 +58,7 @@ const LoginPage = () => {
   return (
     <div className={styles.container}>
       <img src="src/assets/logo.png" alt="logo" className={styles.logo} />
-      <h2>Login</h2>
+      <h2>Welcome</h2>
       <form onSubmit={handleSubmit}>
         <div className={styles.inputWrapper}>
           <input
@@ -89,7 +90,9 @@ const LoginPage = () => {
           {loading ? "Logging in..." : "Login"}
         </button>
       </form>
-      {error && <p className={styles.error}>{error}</p>}
+      <p className={styles.signUpPrompt}>
+        Don't have an account? <span className={styles.signUpLink} onClick={() => navigate("/signup")}>Sign Up</span>
+  </p>
     </div>
   );
 };
