@@ -25,7 +25,7 @@ function TestPage() {
         <div>
             <h1>Database Connection Test</h1>
             <p>This component demonstrates testing the connection to the database.</p>
-            {content}  // Display content (success/error/default message)
+            {content}
         </div>
     );
 
