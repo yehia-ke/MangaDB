@@ -361,7 +361,7 @@ function CustomerPage() {
             setError("Voucher Redeemed Successfully.");
             setLoading(false);
         } catch (err) {
-            setError('Failed to redeem voucher.');
+            setError("Not enough points to redeem Voucher");
             setLoading(false);
         }
     }
@@ -826,24 +826,24 @@ function CustomerPage() {
             <h2>Recharge Balance</h2>
             <form onSubmit={rechargeBalance} className={styles.form}>
             <div>
-                <label>Mobile No:</label>
-                <input
+                <label className={styles.label}>Mobile No:</label>
+                <input className={styles.inputs}
                 type="text"
                 value={rechargeMobileNo}
                 onChange={(e) => setRechargeMobileNo(e.target.value)}
                 />
             </div>
             <div>
-                <label>Amount:</label>
-                <input
+                <label className={styles.label}>Amount:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={rechargeAmount}
                 onChange={(e) => setRechargeAmount(e.target.value)}
                 />
             </div>       
             <div>
-                <label>Payment Method:</label>
-                <input
+                <label className={styles.label}>Payment Method:</label>
+                <input className={styles.inputs}
                 type="text"
                 value={rechargePaymentMethod}
                 onChange={(e) => setRechargePaymentMethod(e.target.value)}
@@ -857,8 +857,8 @@ function CustomerPage() {
             <h2>Redeem Voucher</h2>
             <form onSubmit={redeemVoucher} className={styles.form}>
             <div>
-                <label>Voucher ID:</label>
-                <input
+                <label className={styles.label}>Voucher ID:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={redeemVoucherID}
                 onChange={(e) => setRedeemVoucherID(e.target.value)}

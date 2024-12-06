@@ -7,7 +7,6 @@ import styles from './admincss.module.css';
 
 function AdminPage() {
     const navigate = useNavigate();
-    // State variables
   const [customerProfiles, setCustomerProfiles] = useState([]);
   const [physicalStores, setPhysicalStores] = useState([]);
   const [resolvedTickets, setResolvedTickets] = useState([]);
@@ -15,8 +14,6 @@ function AdminPage() {
   const [accountsSubscribed, setAccountsSubscribed] = useState([]);
   const [totalUsage, setTotalUsage] = useState([]);
   const [smsOffers, setSmsOffers] = useState([]);
-
-  // Input states
   const [planId, setPlanId] = useState('');
   const [date, setDate] = useState('');
   const [mobileNo, setMobileNo] = useState('');

@@ -27,8 +27,8 @@ namespace Repository.Repository
                     CommandType = System.Data.CommandType.StoredProcedure
                 };
                 command.Parameters.AddWithValue("@mobile_num", mobileNo);
-                command.Parameters.AddWithValue("@payment_id", amount);
-                command.Parameters.AddWithValue("@benefit_id", paymentMethod);
+                command.Parameters.AddWithValue("@amount", amount);
+                command.Parameters.AddWithValue("@payment_method", paymentMethod);
 
                 await command.ExecuteNonQueryAsync();
             }

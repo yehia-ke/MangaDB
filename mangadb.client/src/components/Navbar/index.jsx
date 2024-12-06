@@ -24,7 +24,7 @@ const LogoutButton = styled.button`
 
 const Navbar = () => {
     const { user, logout } = useSession();
-    const location = useLocation(); // Get the current location from the router
+    const location = useLocation();
 
     return (
         <Nav>
@@ -35,8 +35,6 @@ const Navbar = () => {
                 <NavLink to="/test" activeStyle>
                     Test
                 </NavLink>
-
-                {/* Conditionally render the Admin link if the user is an admin */}
                 {user?.role === "admin" && (
                     <NavLink
                         to="/admin"
@@ -46,8 +44,6 @@ const Navbar = () => {
                         Admin
                     </NavLink>
                 )}
-
-                {/* Conditionally render the Customer link if the user is a customer */}
                 {user?.role === "user" && (
                     <NavLink
                         to="/customer"
@@ -56,8 +52,6 @@ const Navbar = () => {
                         Customer
                     </NavLink>
                 )}
-
-                {/* Conditionally render login/signup or logout based on user session */}
                 {!user ? (
                     <>
                         <NavLink to="/login" activeStyle>
