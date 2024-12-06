@@ -345,10 +345,10 @@ function Admin2() {
             {/* Payment Points */}
             <section>
                 <h2>Fetch Accepted Payment Transactions And Points</h2>
-                <form onSubmit={handleFetchPaymentPoints} className={styles.form}>
+                <form onSubmit={handleFetchPaymentPoints}>
                     <div>
-                        <label>Mobile No:</label>
-                        <input
+                        <label className={styles.label}>Mobile No:</label>
+                        <input className={styles.inputs}
                             type="text"
                             value={mobileNumber}
                             onChange={(e) => setMobileNumber(e.target.value)}
@@ -371,10 +371,10 @@ function Admin2() {
             <section>
                 <h2>Fetch CashBack Of Wallet  </h2>
 
-                <form onSubmit={handleFetchCashbackAmount} className={styles.form}>
+                <form onSubmit={handleFetchCashbackAmount}>
                     <div>
-                        <label>Wallet ID:</label>
-                        <input
+                        <label className={styles.label}>Wallet ID:</label>
+                        <input className={styles.inputs}
                             type="number"
                             value={walletID}
                             onChange={(e) => setWalletID(e.target.value)}
@@ -382,8 +382,8 @@ function Admin2() {
                         />
                     </div>
                     <div>
-                        <label>Plan ID:</label>
-                        <input
+                        <label className={styles.label}>Plan ID:</label>
+                        <input className={styles.inputs}
                             type="number"
                             value={planID}
                             onChange={(e) => setPlanID(e.target.value)}
@@ -407,26 +407,26 @@ function Admin2() {
             {/* Average Transaction */}
             <section>
                 <h2>Fetch Average Transaction</h2>
-                <form onSubmit={handleFetchAverageTransaction} className={styles.form}>
+                <form onSubmit={handleFetchAverageTransaction}>
                     <div>
-                        <label>Wallet ID:</label>
-                        <input
+                        <label className={styles.label}>Wallet ID:</label>
+                        <input className={styles.inputs}
                             type="number"
                             value={walletIDForAverageTransaction}
                             onChange={(e) => setWalletIDForAverageTransaction(e.target.value)}
                         />
                     </div>
                     <div>
-                        <label>Start Date:</label>
-                        <input
+                        <label className={styles.label}>Start Date:</label>
+                        <input className={styles.inputs}
                             type="date"
                             value={startDate}
                             onChange={(e) => setStartDate(e.target.value)}
                         />
                     </div>
                     <div>
-                        <label>End Date:</label>
-                        <input
+                        <label className={styles.label}>End Date:</label>
+                        <input className={styles.inputs}
                             type="date"
                             value={endDate}
                             onChange={(e) => setEndDate(e.target.value)}
@@ -441,10 +441,10 @@ function Admin2() {
 
             <section>
                 <h2>Check if Mobile Number is Linked to Wallet</h2>
-                <form onSubmit={handleCheckMobileNumber} className={styles.form}>
+                <form onSubmit={handleCheckMobileNumber}>
                     <div>
-                        <label>Mobile Number:</label>
-                        <input
+                        <label className={styles.label}>Mobile Number:</label>
+                        <input className={styles.inputs}
                             type="text"
                             value={mobileNumber2}
                             onChange={(e) => setMobileNumber2(e.target.value)}
@@ -466,10 +466,10 @@ function Admin2() {
             <section>
                 <h1>Update Points</h1>
 
-                <form onSubmit={handleUpdatePoints} className={styles.form}>
+                <form onSubmit={handleUpdatePoints}>
                     <div>
-                        <label>Mobile Number:</label>
-                        <input
+                        <label className={styles.label}>Mobile Number:</label>
+                        <input className={styles.inputs}
                             type="text"
                             value={mobileNumber3}
                             onChange={(e) => setMobileNumber3(e.target.value)}

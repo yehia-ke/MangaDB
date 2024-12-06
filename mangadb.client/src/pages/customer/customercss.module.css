@@ -106,7 +106,7 @@ button:disabled {
 }
 
 /* Form inputs */
-input {
+.inputs {
   padding: 10px; /* Add padding inside input fields */
   margin: 10px auto; /* Center inputs and add spacing */
   border: 1px solid #777b80; /* Subtle border for inputs */
@@ -115,6 +115,11 @@ input {
   color: #fff; /* White text for inputs */
   display: block; /* Make inputs block-level to center them */
   text-align: center; /* Center text in inputs */
+  flex: 4;
+}
+.label {
+  text-align: left;
+  margin-top: 20px;
 }
 
 /* Headings styling */

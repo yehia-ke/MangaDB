@@ -467,24 +467,24 @@ function CustomerPage() {
         <h2>Total Plan Consumption</h2>
         <form onSubmit={fetchTotalPlanConsumption} className={styles.form}>
           <div>
-            <label>Plan name:</label>
-            <input
+            <label className={styles.label}>Plan name:</label>
+            <input className={styles.inputs}
               type="text"
               value={plan_name}
               onChange={(e) => setPlanName(e.target.value)}
             />
           </div>
           <div>
-            <label>Start Date:</label>
-            <input
+            <label className={styles.label}>Start Date:</label>
+            <input className={styles.inputs}
               type="date"
               value={start_date}
               onChange={(e) => setStart_Date(e.target.value)}
             />
           </div>
           <div>
-            <label>End Date:</label>
-            <input
+            <label className={styles.label}>End Date:</label>
+            <input className={styles.inputs}
               type="date"
               value={end_date}
               onChange={(e) => setEnd_Date(e.target.value)}
@@ -548,8 +548,8 @@ function CustomerPage() {
               <h2>Amount of Unresolved Tickets</h2>
               <form onSubmit={fetchUnresolvedTickets} className={styles.form}>
                   <div>
-                      <label>National ID:</label>
-                      <input
+                      <label className={styles.label}>National ID:</label>
+                      <input className={styles.inputs}
                           type="text"
                           value={nid}
                           onChange={(e) => setNid(e.target.value)}
@@ -602,8 +602,8 @@ function CustomerPage() {
               <h2>Remaining Plan Amount</h2>
               <form onSubmit={fetchRemainingAmountPlan} className={styles.form}>
                   <div>
-                      <label>Plan name:</label>
-                      <input
+                      <label className={styles.label}>Plan name:</label>
+                      <input className={styles.inputs}
                           type="text"
                           value={plan__name}
                           onChange={(e) => setPlan_name(e.target.value)}
@@ -635,8 +635,8 @@ function CustomerPage() {
               <h2>Extra Plan Amount</h2>
               <form onSubmit={fetchExtraAmountPlan} className={styles.form}>
                   <div>
-                      <label>Plan name:</label>
-                      <input
+                      <label className={styles.label}>Plan name:</label>
+                      <input className={styles.inputs}
                           type="text"
                           value={plan___name}
                           onChange={(e) => setPlan__name(e.target.value)}
@@ -719,32 +719,32 @@ function CustomerPage() {
             <h2>Renew Subscription</h2>
             <form onSubmit={renewSubscription} className={styles.form}>
             <div>
-                <label>Mobile No:</label>
-                <input
+                <label className={styles.label}>Mobile No:</label>
+                <input className={styles.inputs}
                 type="text"
                 value={renewMobileNo}
                 onChange={(e) => setRenewMobileNo(e.target.value)}
                 />
             </div>
             <div>
-                <label>Amount:</label>
-                <input
+                <label className={styles.label}>Amount:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={renewAmount}
                 onChange={(e) => setRenewAmount(e.target.value)}
                 />
             </div>       
             <div>
-                <label>Payment Method:</label>
-                <input
+                <label className={styles.label}>Payment Method:</label>
+                <input className={styles.inputs}
                 type="text"
                 value={renewPaymentMethod}
                 onChange={(e) => setRenewPaymentMethod(e.target.value)}
                 />
             </div>
             <div>
-                <label>Plan ID:</label>
-                <input
+                <label className={styles.label}>Plan ID:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={renewPlanId}
                 onChange={(e) => setRenewPlanId(e.target.value)}
@@ -759,16 +759,24 @@ function CustomerPage() {
             <h2>Payment Wallet Cashback</h2>
             <form onSubmit={paymentWalletCashback} className={styles.form}>
             <div>
-                <label>Payment ID:</label>
-                <input
+                <label className={styles.label}>Mobile No:</label>
+                <input className={styles.inputs}
+                type="text"
+                value={cashbackMobileNo}
+                onChange={(e) => setCashbackMobileNo(e.target.value)}
+                />
+            </div>
+            <div>
+                <label className={styles.label}>Payment ID:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={cashbackPaymentID}
                 onChange={(e) => setCashbackPaymentID(e.target.value)}
                 />
             </div>       
             <div>
-                <label>Benefit ID:</label>
-                <input
+                <label className={styles.label}>Benefit ID:</label>
+                <input className={styles.inputs}
                 type="number"
                 value={cashbackBenefitID}
                 onChange={(e) => setCashbackBenefitID(e.target.value)}

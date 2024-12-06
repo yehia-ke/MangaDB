@@ -59,9 +59,9 @@ const LoginPage = () => {
     <div className={styles.container}>
       <img src="src/assets/logo.png" alt="logo" className={styles.logo} />
       <h2>Welcome</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.form}>
         <div className={styles.inputWrapper}>
-          <input
+          <input className={styles.input}
             type="text"
             id="mobileNumber"
             value={mobileNumber}
@@ -74,7 +74,7 @@ const LoginPage = () => {
           </label>
         </div>
         <div className={styles.inputWrapper}>
-          <input
+          <input className={styles.input}
             type="password"
             id="password"
             value={password}

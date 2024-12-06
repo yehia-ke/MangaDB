@@ -289,18 +289,18 @@ function AdminPage() {
       {/* Accounts Subscribed to Plan */}
       <section>
         <h2>Accounts Subscribed to Plan</h2>
-        <form onSubmit={fetchAccountsSubscribed} className={styles.form}>
+        <form onSubmit={fetchAccountsSubscribed}>
           <div>
-            <label>Plan ID:</label>
-            <input
+             <label className={styles.label}>Plan ID:</label>
+            <input className={styles.inputs}
               type="number"
               value={planId}
               onChange={(e) => setPlanId(e.target.value)}
             />
           </div>
           <div>
-            <label>Date:</label>
-            <input
+             <label className={styles.label}>Date:</label>
+            <input className={styles.inputs}
               type="date"
               value={date}
               onChange={(e) => setDate(e.target.value)}
@@ -333,18 +333,18 @@ function AdminPage() {
       {/* Total Usage */}
       <section>
         <h2>Total Usage</h2>
-        <form onSubmit={fetchTotalUsage} className={styles.form}>
+        <form onSubmit={fetchTotalUsage}>
           <div>
-            <label>Mobile No:</label>
-            <input
+             <label className={styles.label}>Mobile No:</label>
+            <input className={styles.inputs}
               type="text"
               value={mobileNo}
               onChange={(e) => setMobileNo(e.target.value)}
             />
           </div>
           <div>
-            <label>Start Date:</label>
-            <input
+             <label className={styles.label}>Start Date:</label>
+            <input className={styles.inputs}
               type="date"
               value={startDate}
               onChange={(e) => setStartDate(e.target.value)}
@@ -379,10 +379,10 @@ function AdminPage() {
       {/* Remove Benefits */}
       <section>
       <h2>Remove Benefits</h2>
-      <form onSubmit={removeBenefits} className={styles.form}>
+      <form onSubmit={removeBenefits}>
         <div>
-          <label>Mobile No:</label>
-          <input
+           <label className={styles.label}>Mobile No:</label>
+          <input className={styles.inputs}
             type="text"
             value={removeMobileNo}
             onChange={(e) => setRemoveMobileNo(e.target.value)}
@@ -390,8 +390,8 @@ function AdminPage() {
           />
         </div>
         <div>
-          <label>Plan ID:</label>
-          <input
+           <label className={styles.label}>Plan ID:</label>
+          <input className={styles.inputs}
             type="number"
             value={removePlanId}
             onChange={(e) => setRemovePlanId(e.target.value)}
@@ -407,10 +407,10 @@ function AdminPage() {
       {/* SMS Offers */}
       <section>
         <h2>SMS Offers</h2>
-        <form onSubmit={fetchSmsOffers} className={styles.form}>
+        <form onSubmit={fetchSmsOffers}>
           <div>
-            <label>Mobile No:</label>
-            <input
+             <label className={styles.label}>Mobile No:</label>
+            <input className={styles.inputs}
               type="text"
               value={smsMobileNo}
               onChange={(e) => setSmsMobileNo(e.target.value)}
