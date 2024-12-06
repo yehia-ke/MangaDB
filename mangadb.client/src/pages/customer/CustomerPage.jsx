@@ -26,6 +26,7 @@ function CustomerPage() {
 
     const [shops, setShops] = useState([]);
     const [subscribedPlans5Months, setSubscribedPlans5Months] = useState([]);
+    const [cashbackAmount, setCashbackAmount] = useState([])
 
     const setError = async (err) => {
         alert(err);
@@ -322,8 +323,9 @@ function CustomerPage() {
         }
         try {
             setLoading(true);
-            const response = await axios.post(
+            const response = await axios.get(
                 `${apiUrl}hamed/payment-wallet-cashback?MobileNo=${encodeURIComponent(mobileNo)}&PaymentID=${encodeURIComponent(parseInt(cashbackPaymentID2))}&BenefitID=${encodeURIComponent(parseInt(cashbackBenefitID2))}`);
+            setCashbackAmount(response.data);
             setError("Wallet Updated Successfully.");
             setLoading(false);
         } catch (err) {
@@ -333,7 +335,7 @@ function CustomerPage() {
     }
     const rechargeBalance = async (e) => {
         e.preventDefault();
-        if (!rechargeMobileNo2 || !rechargeAmount2 || !rechargePaymentMethod2) {
+        if (!rechargeMobileNo || !rechargeAmount || !rechargePaymentMethod) {
             setError('Please provide a valid Mobile Number, Amount, and Payment Method.');
             return;
         }
@@ -820,6 +822,11 @@ function CustomerPage() {
             </div>
             <button type="submit">Payment Wallet Cashback 2</button>
             </form>
+                {cashbackAmount !== null && (
+                    <div>
+                        <h3>Cashback Amount: {cashbackAmount}</h3> {/* Show the actual cashback amount */}
+                    </div>
+                )}
         </section>
         {/* Recharge Balance */}
         <section>

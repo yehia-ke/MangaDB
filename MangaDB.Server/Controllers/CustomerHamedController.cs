@@ -107,7 +107,7 @@ namespace ControllersMangaDB.Server.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("payment-wallet-cashback-2")]
         public async Task<IActionResult> PaymentWalletCashback2([FromQuery] string MobileNo, [FromQuery] int PaymentID, [FromQuery] int BenefitID)
         {
@@ -119,8 +119,8 @@ namespace ControllersMangaDB.Server.Controllers
 
             try
             {
-                await _paymentWalletCashback2.PaymentWalletCashback2Async(MobileNo, PaymentID, BenefitID);
-                return Ok(new { message = "Wallet updated successfully." });
+                var paymentWalletCashback2 = await _paymentWalletCashback2.PaymentWalletCashback2Async(MobileNo, PaymentID, BenefitID);
+                return Ok(paymentWalletCashback2);
             }
             catch (Exception)
             {
