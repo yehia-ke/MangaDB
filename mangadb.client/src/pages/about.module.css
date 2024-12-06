@@ -25,10 +25,33 @@
   font-display: swap;
   font-style: normal;
 }
-.h1{
-  color:  #ffffe4;
-  font-size: 75px;
-  font-weight: 500px;
-  padding: 450px;
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+/* h1 styling */
+.h1 {
+  color: #ffffe4;
+  font-size: 70px;
+  font-weight: 500;
   font-family: 'Panchang-Extralight';
+  margin: 10px 0; /* Space between the h1 elements */
+}
+.h2 {
+  color: #ffffe4;
+  font-size: 75px;
+  font-weight: 500;
+  padding: 0;
+  font-family: 'Panchang-Extralight';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }

@@ -6,7 +6,7 @@ import styles from './about.module.css';
 const Home = () => {
   return (
     <div>
-      <h1 className={styles.h1}>Welcome Everyone!</h1>
+      <h1 className={styles.h2}>Welcome Everyone!</h1>
     </div>
   );
 };

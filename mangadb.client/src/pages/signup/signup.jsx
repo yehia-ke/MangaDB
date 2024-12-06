@@ -6,7 +6,7 @@ import styles from "../general.module.css";
 const SignUp = () => {
     return (
         <div>
-            <h1 className={styles.h1}>Sign Up Successful</h1>
+            <h1 className={styles.Signup}>Work in Progress</h1>
         </div>
     );
 };
