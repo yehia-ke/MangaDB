@@ -208,7 +208,6 @@ function Admin2() {
     const handleUpdatePoints = async (e) => {
         e.preventDefault();
 
-        // Validate mobile number
         if (mobileNumber3.length !== 11) {
             setUpdatePointsError('Invalid mobile number. Please enter an 11-digit mobile number.');
             return;

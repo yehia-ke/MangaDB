@@ -40,7 +40,6 @@ function App() {
             <Router>
                 <Navbar />
                 <Routes>
-                    {/* Public Routes */}
                     <Route path="/" element={<Home />} />
                     <Route path="/login" element={
                         <LoginRoute>
@@ -50,12 +49,9 @@ function App() {
                             />
                     <Route path="/signup" element={<SignUp />} />
                     <Route path="/test" element={<TestPage />} />
-                    {/* Private Route for About */}
                     <Route
                         path="/about"
                         element={<About />}/>
-
-                    {/* Admin Route */}
                     <Route
                         path="/admin"
                         element={
@@ -64,8 +60,6 @@ function App() {
                             </AdminRoute>
                         }
                     />
-
-                    {/* New AdminPage2 Route */}
                     <Route
                         path="/admin2"
                         element={
@@ -74,8 +68,6 @@ function App() {
                             </AdminRoute>
                         }
                     />
-
-                    {/* Customer Route */}
                     <Route
                         path="/customer"
                         element={
@@ -84,8 +76,6 @@ function App() {
                             </CustomerRoute>
                         }
                     />
-
-                    {/* Catch-All Route */}
                     <Route path="*" element={<Navigate to="/" />} />
                 </Routes>
             </Router>
