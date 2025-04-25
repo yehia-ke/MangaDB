@@ -1,16 +1,16 @@
 # MangaDB
 
-Welcome to MangaDB! This project is a comprehensive bank management system that includes functionalities such as payment transaction management, cashback processing, user login, and registration. Designed with both performance and user experience in mind, MangaDB leverages a robust tech stack to deliver a seamless banking experience.
+Welcome to MangaDB! This project is a robust telecom database system designed to manage essential telecom operations. It includes functionalities such as user management, billing and transaction processing, and detailed record tracking. Built with a modern tech stack, MangaDB ensures scalability, reliability, and a seamless user experience.
 
 ---
 
 ## 🚀 Features
 
-- **User-Friendly Interface**: A sleek and intuitive UI built with React and styled using CSS.
+- **User-Friendly Interface**: A modern and intuitive UI built with React and styled using CSS.
 - **Secure User Authentication**: Login and registration functionalities to ensure secure access.
-- **Payment Transaction Management**: Easily handle payment processing with detailed tracking.
-- **Cashback System**: Integrated cashback functionality to reward users.
-- **SQL Backend**: A reliable database powered by T-SQL for secure and efficient data storage.
+- **Billing and Payment Transactions**: Efficiently handles billing, payment processing, and detailed transaction records.
+- **Telecom Data Management**: Manage customer data, service subscriptions, and usage records.
+- **SQL Backend**: A powerful database powered by T-SQL for secure and efficient data storage.
 - **ASP.NET Integration**: Backend logic implemented using ASP.NET to connect the SQL database and business logic seamlessly.
 
 ---
@@ -101,11 +101,17 @@ Follow these steps to set up the project locally:
 
 ## 🌟 Screenshots
 
-### Login Page
-![Login Page](https://via.placeholder.com/800x400?text=Login+Page+Screenshot)
-
 ### Dashboard
-![Dashboard](https://via.placeholder.com/800x400?text=Dashboard+Screenshot)
+![Dashboard](https://i.imgur.com/bw2zsjb.png)
+
+### Login Page
+![Login Page](https://i.imgur.com/sahMghH.png)
+
+### Page 1
+![Page 1](https://i.imgur.com/adAagQG.png)
+
+### About Page
+![About Page](https://i.imgur.com/Jre3hIY.gif)
 
 ---
 
