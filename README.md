@@ -111,7 +111,7 @@ Follow these steps to set up the project locally:
 ![Page 1](https://i.imgur.com/adAagQG.png)
 
 ### About Page
-![About Page](https://i.imgur.com/Jre3hIY.gif)
+![About Page](https://i.imgur.com/EaWRzeF.gif)
 
 ---
 
@@ -127,8 +127,8 @@ Follow these steps to set up the project locally:
 
 For any inquiries or suggestions, feel free to reach out:
 
-- **Authors**: Yehia KE (Yehia Eltantawi), RemoteShift (Aly Gaafar)
-- **Emails**: [Yehia Eltantawi](mailto:your-email@example.com), [Aly Gaafar](mailto:alimohamedgaafar@gmail.com)
+- **Authors**: Yehia-KE (Yehia Eltantawi), RemoteShift (Aly Gaafar)
+- **Emails**: [Yehia Eltantawi](mailto:yehia.eltantawi30@gmail.com), [Aly Gaafar](mailto:alimohamedgaafar@gmail.com)
 - **GitHubs**: [yehia-ke](https://github.com/yehia-ke), [RemoteShift](https://github.com/RemoteShift)
 
 ---
